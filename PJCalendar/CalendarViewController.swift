@@ -16,8 +16,6 @@ class CalendarFlowLayout: UICollectionViewFlowLayout {
   var header: UICollectionReusableView? = nil
 
   override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-    print("layoutAttributesForSupplementaryView -> \(elementKind)")
-
     let dest = super.layoutAttributesForSupplementaryView(ofKind: elementKind, at: indexPath)
 
     if let myFrame = self.collectionView?.frame, let contentOffset = self.collectionView?.contentOffset {
@@ -26,18 +24,16 @@ class CalendarFlowLayout: UICollectionViewFlowLayout {
 
         let avancement = contentOffset.y / (myFrame.size.height / 3.0)
 
-        print("avancement -> \(avancement)")
-
-        if 40 - (avancement * 40) > 20 {
-          dest?.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 40 - (avancement * 40))
-          self.headerHeight = (40 - (avancement * 40))
+        if 40 - (avancement * 50) > 20 {
+          dest?.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 50 - (avancement * 50))
+          self.headerHeight = (50 - (avancement * 50))
         } else {
           dest?.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: self.headerHeight)
         }
-
+        print("Content Offset -> \(contentOffset.y)")
+        print("Avancement -> \(avancement)")
+        print("size -> \(50 - (avancement * 50))")
       }
-
-      print("Content Offset -> \(contentOffset.y)")
     }
 
     return dest
@@ -54,9 +50,9 @@ class CalendarFlowLayout: UICollectionViewFlowLayout {
         print("avancement -> \(avancement)")
 
         if contentOffset.y > 0 {
-          if 40 - (avancement * 40) > 20 {
-          $0.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 40 - (avancement * 40))
-            self.headerHeight = (40 - (avancement * 40))
+          if 50 - (avancement * 50) > 20 {
+          $0.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 50 - (avancement * 50))
+            self.headerHeight = (50 - (avancement * 50))
           } else {
             $0.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: self.headerHeight)
           }
