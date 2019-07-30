@@ -23,10 +23,9 @@ class ViewController: UIViewController {
     var constraints = [NSLayoutConstraint]()
 
     constraints.append(calendar.view.topAnchor.constraint(equalTo: self.view.topAnchor))
-        constraints.append(calendar.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor))
-      constraints.append(calendar.view.leftAnchor.constraint(equalTo: self.view.leftAnchor))
-
-          constraints.append(calendar.view.rightAnchor.constraint(equalTo: self.view.rightAnchor))
+    constraints.append(calendar.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor))
+    constraints.append(calendar.view.leftAnchor.constraint(equalTo: self.view.leftAnchor))
+    constraints.append(calendar.view.rightAnchor.constraint(equalTo: self.view.rightAnchor))
 
     NSLayoutConstraint.activate(constraints)
     

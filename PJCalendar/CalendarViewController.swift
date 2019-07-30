@@ -11,7 +11,7 @@ import UIKit
 
 class CalendarFlowLayout: UICollectionViewFlowLayout {
 
-  var headerHeight: CGFloat = 40
+  var headerHeight: CGFloat = HeaderCell.hearderheight
 
   var header: UICollectionReusableView? = nil
 
@@ -24,15 +24,15 @@ class CalendarFlowLayout: UICollectionViewFlowLayout {
 
         let avancement = contentOffset.y / (myFrame.size.height / 3.0)
 
-        if 40 - (avancement * 50) > 20 {
-          dest?.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 50 - (avancement * 50))
-          self.headerHeight = (50 - (avancement * 50))
+        if HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight) > 167 {
+          dest?.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight))
+          self.headerHeight = (HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight))
         } else {
-          dest?.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: self.headerHeight)
+          dest?.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 167)
         }
         print("Content Offset -> \(contentOffset.y)")
         print("Avancement -> \(avancement)")
-        print("size -> \(50 - (avancement * 50))")
+        print("size -> \(HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight))")
       }
     }
 
@@ -50,11 +50,11 @@ class CalendarFlowLayout: UICollectionViewFlowLayout {
         print("avancement -> \(avancement)")
 
         if contentOffset.y > 0 {
-          if 50 - (avancement * 50) > 20 {
-          $0.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 50 - (avancement * 50))
-            self.headerHeight = (50 - (avancement * 50))
+          if HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight) > 167 {
+          $0.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight))
+            self.headerHeight = (HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight))
           } else {
-            $0.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: self.headerHeight)
+            $0.frame = CGRect(x: 0, y: contentOffset.y, width: myFrame.size.width, height: 167)
           }
         }
       }
@@ -69,7 +69,7 @@ class CalendarViewController: UIViewController {
 
     let layout = CalendarFlowLayout()
 
-    layout.headerReferenceSize = CGSize(width: 50, height: 50)
+    layout.headerReferenceSize = CGSize(width: HeaderCell.hearderheight, height: HeaderCell.hearderheight)
 
     layout.sectionHeadersPinToVisibleBounds = true
 
