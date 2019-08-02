@@ -75,6 +75,8 @@ class DaySelectorCell: UICollectionViewCell {
 
 class DaySelectorView: UIView {
 
+  var index: CGFloat = 0
+
   let glassView: UIView = {
     let dest = UIView()
     dest.translatesAutoresizingMaskIntoConstraints = false
@@ -202,4 +204,55 @@ extension DaySelectorView: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
       return CGSize(width: 72, height: 56)
   }
+}
+
+extension DaySelectorView: UIScrollViewDelegate {
+
+  func snapToCenter() {
+    let centerPoint = self.convert(self.center, to: collectionView)
+    guard let centerIndexPath = collectionView.indexPathForItem(at: centerPoint) else
+    {
+      print("pas d'index")
+
+      var distance: CGFloat = CGFloat.greatestFiniteMagnitude
+      var destCell: UICollectionViewCell? = nil
+
+      for aCell in collectionView.visibleCells {
+        if abs(aCell.center.x - centerPoint.x) < distance {
+          distance = abs(aCell.center.x - centerPoint.x)
+          destCell = aCell
+        }
+      }
+
+      if let destCell = destCell, let indexPath = collectionView.indexPath(for: destCell) {
+        print("sauvé :)")
+        collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+      }
+      return
+    }
+    collectionView.scrollToItem(at: centerIndexPath, at: .centeredHorizontally, animated: true)
+  }
+
+
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    snapToCenter()
+  }
+
+
+  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    self.snapToCenter()
+    }
+
+
+//  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//    if velocity.x > 0.5 {
+//      self.index += 1
+//      targetContentOffset.pointee =  CGPoint(x: 82.0 * self.index, y: targetContentOffset.pointee.y)
+//    } else if velocity.x < -0.5 {
+//      self.index -= 1
+//      targetContentOffset.pointee =  CGPoint(x: 82.0 * self.index, y: targetContentOffset.pointee.y)
+//    }
+//    print("Will End")
+//  }
+
 }
