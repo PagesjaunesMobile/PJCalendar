@@ -136,6 +136,7 @@ class DaySelectorView: UIView {
     constraints.append(self.glassView.centerXAnchor.constraint(equalTo: self.collectionView.centerXAnchor))
     constraints.append(self.glassView.centerYAnchor.constraint(equalTo: self.collectionView.centerYAnchor))
 
+
     constraints.append(self.glassView.widthAnchor.constraint(equalToConstant: 72))
     constraints.append(self.glassView.heightAnchor.constraint(equalToConstant: 56))
 
@@ -208,51 +209,27 @@ extension DaySelectorView: UICollectionViewDelegateFlowLayout {
 
 extension DaySelectorView: UIScrollViewDelegate {
 
-  func snapToCenter() {
-    let centerPoint = self.convert(self.center, to: collectionView)
-    guard let centerIndexPath = collectionView.indexPathForItem(at: centerPoint) else
-    {
-      print("pas d'index")
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
-      var distance: CGFloat = CGFloat.greatestFiniteMagnitude
-      var destCell: UICollectionViewCell? = nil
+    guard let collectionView = scrollView as? UICollectionView else { return }
 
-      for aCell in collectionView.visibleCells {
-        if abs(aCell.center.x - centerPoint.x) < distance {
-          distance = abs(aCell.center.x - centerPoint.x)
-          destCell = aCell
-        }
+    guard let attribute0 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) else { return }
+    guard let attribute1 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 1, section: 0)) else { return }
+
+    let itemSpace: CGFloat = attribute1.frame.origin.x - attribute0.frame.origin.x
+
+    let offset: CGFloat
+
+      let precisePage = targetContentOffset.pointee.x / itemSpace
+      let page: Int
+      if precisePage.truncatingRemainder(dividingBy: 1.0) < 0.5 {
+        page = Int(floor(targetContentOffset.pointee.x / itemSpace))
+      } else {
+        page = Int(ceil(targetContentOffset.pointee.x / itemSpace))
       }
+      offset = (CGFloat(page) * itemSpace)
 
-      if let destCell = destCell, let indexPath = collectionView.indexPath(for: destCell) {
-        print("sauvé :)")
-        collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
-      }
-      return
-    }
-    collectionView.scrollToItem(at: centerIndexPath, at: .centeredHorizontally, animated: true)
+    targetContentOffset.pointee = CGPoint(x: offset , y:  targetContentOffset.pointee.y)
   }
-
-
-  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-    snapToCenter()
-  }
-
-
-  func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-    self.snapToCenter()
-    }
-
-
-//  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//    if velocity.x > 0.5 {
-//      self.index += 1
-//      targetContentOffset.pointee =  CGPoint(x: 82.0 * self.index, y: targetContentOffset.pointee.y)
-//    } else if velocity.x < -0.5 {
-//      self.index -= 1
-//      targetContentOffset.pointee =  CGPoint(x: 82.0 * self.index, y: targetContentOffset.pointee.y)
-//    }
-//    print("Will End")
-//  }
 
 }
