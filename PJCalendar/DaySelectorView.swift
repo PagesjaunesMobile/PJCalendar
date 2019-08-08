@@ -14,66 +14,33 @@ struct DayModel {
   let dayNumber: String
 }
 
-class DaySelectorCell: UICollectionViewCell {
 
-  let dayTextLabel: UILabel = {
-    let dest = UILabel()
-    dest.textColor = UIColor.red
-    dest.textAlignment = NSTextAlignment.center
-    dest.translatesAutoresizingMaskIntoConstraints = false
-    return dest
-  }()
+class PaginableView: UIView, UIScrollViewDelegate {
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
-  let dayNumberLabel: UILabel = {
-    let dest = UILabel()
-    dest.textColor = UIColor.red
-    dest.textAlignment = NSTextAlignment.center
-    dest.translatesAutoresizingMaskIntoConstraints = false
-    return dest
-  }()
+    guard let collectionView = scrollView as? UICollectionView else { return }
 
-  func setupLayout() {
-    var constraints = [NSLayoutConstraint]()
+    guard let attribute0 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) else { return }
+    guard let attribute1 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 1, section: 0)) else { return }
 
-    // dayTextLabel
-    constraints.append(self.dayTextLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor))
-    constraints.append(self.dayTextLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor))
-    constraints.append(self.dayTextLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor))
+    let itemSpace: CGFloat = attribute1.frame.origin.x - attribute0.frame.origin.x
 
-    // dayNumberLabel
-    constraints.append(self.dayNumberLabel.topAnchor.constraint(equalTo: self.dayTextLabel.bottomAnchor))
-    constraints.append(self.dayNumberLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor))
-    constraints.append(self.dayNumberLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor))
-    constraints.append(self.dayNumberLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor))
+    let offset: CGFloat
 
-    NSLayoutConstraint.activate(constraints)
-  }
+    let precisePage = targetContentOffset.pointee.x / itemSpace
+    let page: Int
+    if precisePage.truncatingRemainder(dividingBy: 1.0) < 0.5 {
+      page = Int(floor(targetContentOffset.pointee.x / itemSpace))
+    } else {
+      page = Int(ceil(targetContentOffset.pointee.x / itemSpace))
+    }
+    offset = (CGFloat(page) * itemSpace)
 
-  func setupView() {
-    self.contentView.addSubview(self.dayTextLabel)
-    self.contentView.addSubview(self.dayNumberLabel)
-
-    self.dayTextLabel.font = UIFont.systemFont(ofSize: 17)
-    self.dayNumberLabel.font = UIFont.systemFont(ofSize: 32)
-  }
-
-  func configure(_ model: DayModel) {
-    self.dayTextLabel.text = model.dayText
-    self.dayNumberLabel.text = model.dayNumber
-  }
-
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    self.setupView()
-    self.setupLayout()
-  }
-
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    targetContentOffset.pointee = CGPoint(x: offset , y:  targetContentOffset.pointee.y)
   }
 }
 
-class DaySelectorView: UIView {
+class DaySelectorView: PaginableView {
 
   var index: CGFloat = 0
 
@@ -127,7 +94,7 @@ class DaySelectorView: UIView {
   func setupCollectionView() {
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
-    self.collectionView.register(DaySelectorCell.self, forCellWithReuseIdentifier: "DaySelectorCell")
+    self.collectionView.register(DaySelectorCell.self, forCellWithReuseIdentifier: DaySelectorCell.reeuseIdentier)
   }
 
   func setupLayout() {
@@ -168,68 +135,29 @@ class DaySelectorView: UIView {
     self.setupLayout()
     self.setupCollectionView()
   }
-
 }
-
 
 extension DaySelectorView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return self.days.count
   }
 
-
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DaySelectorCell", for: indexPath) as! DaySelectorCell
-    cell.configure(self.days[indexPath.item])
-    return cell
-  }
-
-}
-
-extension DaySelectorView: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DaySelectorCell.reeuseIdentier, for: indexPath)
+    guard let castedCell = cell as? DaySelectorCell else { return cell }
+    castedCell.configure(self.days[indexPath.item])
+    return castedCell
   }
 }
 
 extension DaySelectorView: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-
-    let size = ((collectionView.frame.size.width / 2.0) - 36)
-
-    return UIEdgeInsets(top: 0, left: size, bottom: 0, right: size)
-
-
+    let offset = ((collectionView.frame.size.width / 2.0) - (DaySelectorCell.cellSize.width / 2.0))
+    return UIEdgeInsets(top: 0, left: offset, bottom: 0, right: offset)
   }
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-      return CGSize(width: 72, height: 56)
+    return DaySelectorCell.cellSize
   }
 }
 
-extension DaySelectorView: UIScrollViewDelegate {
-
-  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-
-    guard let collectionView = scrollView as? UICollectionView else { return }
-
-    guard let attribute0 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) else { return }
-    guard let attribute1 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 1, section: 0)) else { return }
-
-    let itemSpace: CGFloat = attribute1.frame.origin.x - attribute0.frame.origin.x
-
-    let offset: CGFloat
-
-      let precisePage = targetContentOffset.pointee.x / itemSpace
-      let page: Int
-      if precisePage.truncatingRemainder(dividingBy: 1.0) < 0.5 {
-        page = Int(floor(targetContentOffset.pointee.x / itemSpace))
-      } else {
-        page = Int(ceil(targetContentOffset.pointee.x / itemSpace))
-      }
-      offset = (CGFloat(page) * itemSpace)
-
-    targetContentOffset.pointee = CGPoint(x: offset , y:  targetContentOffset.pointee.y)
-  }
-
-}

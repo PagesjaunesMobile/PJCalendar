@@ -8,7 +8,13 @@
 
 import Foundation
 import UIKit
+
 class HeaderCell: UICollectionReusableView {
+
+  static let reusueIdentifier = String(describing:self)
+
+  static let hearderheight: CGFloat = 237
+  static let minHeaderSize: CGFloat = 167
 
   override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
     super.apply(layoutAttributes)
@@ -39,12 +45,6 @@ class HeaderCell: UICollectionReusableView {
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
   }()
-
-
-
-  static let hearderheight: CGFloat = 237
-
-  var oldFrame: CGRect = .zero
 
   func setupView() {
 
