@@ -1,0 +1,6 @@
+framework module StargateKitRequest {
+  umbrella header "StargateKitRequest-umbrella.h"
+
+  export *
+  module * { export * }
+}

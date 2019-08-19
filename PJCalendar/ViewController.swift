@@ -30,6 +30,10 @@ class ViewController: UIViewController {
     NSLayoutConstraint.activate(constraints)
     
     calendar.didMove(toParent: self)
+
+
+    RdvApiService.makeRequest()
+
   }
 
 

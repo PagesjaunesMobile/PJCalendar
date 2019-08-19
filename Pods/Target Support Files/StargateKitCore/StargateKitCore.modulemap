@@ -1,0 +1,6 @@
+framework module StargateKitCore {
+  umbrella header "StargateKitCore-umbrella.h"
+
+  export *
+  module * { export * }
+}
