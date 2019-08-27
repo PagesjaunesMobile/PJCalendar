@@ -51,7 +51,7 @@ class MonthListViewModel {
 
   init(dataController: CalendarDataController) {
     self.dataController = dataController
-    let months = self.dataController.days.map(MonthViewModel.init)
+    let months = self.dataController.days.value.map(MonthViewModel.init)
     if let first = months.first {
       self.displayState = .monthSelected(monthSelected: first, months: months)
     } else {

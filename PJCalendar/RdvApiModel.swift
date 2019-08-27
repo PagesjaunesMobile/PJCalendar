@@ -58,7 +58,8 @@ struct RdvApiModel {
       self.yearText.isEmpty == false,
       self.dayText.isEmpty == false,
       self.monthText.isEmpty == false,
-      self.dayNumberText.isEmpty == false, self.shortDayText.isEmpty else { return nil }
+      self.dayNumberText.isEmpty == false,
+      self.shortDayText.isEmpty == false else { return nil }
 
   }
 

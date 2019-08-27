@@ -9,12 +9,6 @@
 import Foundation
 import UIKit
 
-struct DayModel {
-  let dayText: String
-  let dayNumber: String
-}
-
-
 class PaginableView: UIView, UIScrollViewDelegate {
   func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
@@ -97,6 +91,19 @@ class DaySelectorView: PaginableView {
     self.addSubview(self.collectionView)
   }
 
+  func setupViewModel() {
+    self.viewModel.shouldDisplayDays.bind { [weak self] _, newValue in
+      guard let `self` = self else { return }
+      UIView.animate(withDuration: 0.35, animations: { [weak self] in
+        guard let `self` = self else { return }
+        self.collectionView.alpha = newValue ? 1.0 : 0.0
+        if newValue == true {
+          self.collectionView.reloadData()
+        }
+      })
+    }
+  }
+
   init(viewModel: DayListViewModel) {
     self.viewModel = viewModel
     super.init(frame: .zero)
@@ -112,17 +119,19 @@ class DaySelectorView: PaginableView {
     self.setupView()
     self.setupLayout()
     self.setupCollectionView()
+    self.setupViewModel()
   }
 }
 
 extension DaySelectorView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 0
+    return self.viewModel.daysCount
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DaySelectorCell.reeuseIdentier, for: indexPath)
-    guard let castedCell = cell as? DaySelectorCell else { return cell }
+    guard let castedCell = cell as? DaySelectorCell, let model = self.viewModel[indexPath] else { return cell }
+    castedCell.configure(model)
     return castedCell
   }
 }

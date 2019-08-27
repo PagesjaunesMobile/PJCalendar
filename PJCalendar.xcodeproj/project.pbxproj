@@ -27,6 +27,7 @@
 		A1850D9B22E9D55C007E8FAD /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9A22E9D55C007E8FAD /* HeaderCell.swift */; };
 		A1850D9D22E9DF25007E8FAD /* SlotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9C22E9DF25007E8FAD /* SlotCell.swift */; };
 		A1E2A893231426CE00471757 /* MonthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2A892231426CE00471757 /* MonthCell.swift */; };
+		A1E2A8952315573700471757 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2A8942315573700471757 /* Observable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		A1850D9A22E9D55C007E8FAD /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 		A1850D9C22E9DF25007E8FAD /* SlotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotCell.swift; sourceTree = "<group>"; };
 		A1E2A892231426CE00471757 /* MonthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCell.swift; sourceTree = "<group>"; };
+		A1E2A8942315573700471757 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		D4BA38064A651262A9DA4AA0 /* Pods-PJCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJCalendar.debug.xcconfig"; path = "Target Support Files/Pods-PJCalendar/Pods-PJCalendar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,6 +123,7 @@
 				A13263C022FC47CB00B5C53E /* RdvApiService.swift */,
 				A13263C2230AE72400B5C53E /* RdvApiModel.swift */,
 				A13263C4230B037500B5C53E /* CalendarDataController.swift */,
+				A1E2A8942315573700471757 /* Observable.swift */,
 			);
 			path = PJCalendar;
 			sourceTree = "<group>";
@@ -281,6 +284,7 @@
 				A13263C3230AE72400B5C53E /* RdvApiModel.swift in Sources */,
 				A1850D8922E9D4F6007E8FAD /* ViewController.swift in Sources */,
 				A13263CB230BFA9700B5C53E /* TimeSlotListViewModel.swift in Sources */,
+				A1E2A8952315573700471757 /* Observable.swift in Sources */,
 				A1850D9D22E9DF25007E8FAD /* SlotCell.swift in Sources */,
 				A13263C5230B037500B5C53E /* CalendarDataController.swift in Sources */,
 				A1850D8722E9D4F6007E8FAD /* AppDelegate.swift in Sources */,

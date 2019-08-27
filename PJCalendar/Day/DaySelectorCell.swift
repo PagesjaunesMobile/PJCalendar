@@ -56,8 +56,8 @@ class DaySelectorCell: UICollectionViewCell {
     self.dayNumberLabel.font = UIFont.systemFont(ofSize: 32)
   }
 
-  func configure(_ model: DayModel) {
-    self.dayTextLabel.text = model.dayText
+  func configure(_ model: DayViewModel) {
+    self.dayTextLabel.text = model.dayOfTheWeek
     self.dayNumberLabel.text = model.dayNumber
   }
 

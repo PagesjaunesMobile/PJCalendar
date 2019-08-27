@@ -38,12 +38,12 @@ class MonthSelectorView: UIView {
     constraints.append(self.leftButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5))
     constraints.append(self.leftButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
 
-    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightButton.rightAnchor, constant: -5))
+    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5))
     constraints.append(self.rightButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
 
     constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.topAnchor))
     constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.leftButton.rightAnchor, constant: 5))
-    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.rightButton.leftAnchor, constant: 5))
+    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.rightButton.leftAnchor, constant: -5))
     constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor))
 
     NSLayoutConstraint.activate(constraints)
@@ -90,11 +90,14 @@ extension MonthSelectorView: UICollectionViewDelegate {
 extension MonthSelectorView: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    self.viewModel.monthsCount
+    return self.viewModel.monthsCount
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    return UICollectionViewCell()
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthCell.reuseCellIdentifier, for: indexPath)
+    guard let castedCell = cell as? MonthCell, let monthModel = self.viewModel[indexPath] else { return cell }
+    castedCell.configure(model: monthModel)
+    return castedCell
   }
 
 }

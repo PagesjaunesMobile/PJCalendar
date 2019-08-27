@@ -46,15 +46,17 @@ struct RdvApiService {
 
           guard let days = resDispoSante.days?.day else { return }
 
-          completion(.success(rdvList: days.compactMap {
+          let dest: [RdvApiModel] = days.compactMap {
             guard let dText = $0.dtext else { return nil }
+
             let slots:[SlotApiModel]? = $0.hour?.compactMap {
               guard let text = $0.htext, let code = $0.hcode else { return nil }
               return SlotApiModel(htext: text, hcode: code)
             }
             return RdvApiModel(dtext: dText, dcode: $0.dcode, slots: slots)
-          }))
+          }
 
+          completion(.success(rdvList: dest))
         case .status500(_):
           completion(.error)
         }

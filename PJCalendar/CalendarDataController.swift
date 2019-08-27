@@ -16,7 +16,7 @@ class CalendarDataController {
   }
 
   let apiService: RdvApiService
-  var days: [RdvApiModel] = []
+  var days: Observable<[RdvApiModel]> = Observable<[RdvApiModel]>([])
 
   init(apiService: RdvApiService) {
     self.apiService = apiService
@@ -26,7 +26,7 @@ class CalendarDataController {
     self.apiService.makeRequest { result in
       switch result {
       case .success(rdvList: let model):
-        self.days = model
+        self.days.value = model
         completion(.success(days: model))
       case .error:
         completion(.error)

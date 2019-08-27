@@ -58,7 +58,14 @@ class CalendarViewController: UIViewController {
   }
 
   func setupDataController() {
-
+    self.dataController.loadData { result in
+      switch result {
+      case .success(days: let days):
+        break
+      case .error:
+        break
+      }
+    }
   }
 
   override func viewDidLoad() {
