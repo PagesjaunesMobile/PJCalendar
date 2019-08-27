@@ -16,61 +16,30 @@ class HeaderCell: UICollectionReusableView {
   static let hearderheight: CGFloat = 237
   static let minHeaderSize: CGFloat = 167
 
-  override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-    super.apply(layoutAttributes)
-  }
 
-  let label: UILabel = {
-    let dest = UILabel(frame: .zero)
-    dest.translatesAutoresizingMaskIntoConstraints = false
-    dest.numberOfLines = 0
-    return dest
-  }()
-
-  let firstView: UIView = {
+  let firstViewContainer: UIView = {
     let dest = UIView()
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
   }()
 
-  let secondView: UIView = {
+  let secondViewContainer: UIView = {
     let dest = UIView()
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
   }()
 
-  let dayView: DaySelectorView = {
-    let dest = DaySelectorView(frame: .zero)
-    dest.backgroundColor = .yellow
-    dest.translatesAutoresizingMaskIntoConstraints = false
-    return dest
-  }()
+  let dayView: DaySelectorView? = nil
+  let monthView: MonthSelectorView? = nil
 
   func setupView() {
 
-    self.addSubview(self.firstView)
-    self.firstView.addSubview(self.label)
-    self.addSubview(self.secondView)
-    self.secondView.addSubview(self.dayView)
-
-
-    // Label
-
-    label.text = "Septembre\n2019"
-    label.font = UIFont.systemFont(ofSize: 48)
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.1
-    label.textColor = .red
-    label.lineBreakMode = .byClipping
-    label.backgroundColor = UIColor.orange
-    label.clipsToBounds = true
-    label.textAlignment = .left
-    label.textColor = UIColor.red
+    self.addSubview(self.firstViewContainer)
+    self.addSubview(self.secondViewContainer)
 
     self.backgroundColor = .blue
-    self.firstView.backgroundColor = .orange
-    self.secondView.backgroundColor = UIColor.purple
-
+    self.firstViewContainer.backgroundColor = .orange
+    self.secondViewContainer.backgroundColor = UIColor.purple
   }
 
   func setupLayout() {
@@ -78,29 +47,57 @@ class HeaderCell: UICollectionReusableView {
     var constraints = [NSLayoutConstraint]()
 
     // FirstView
-    constraints.append(self.topAnchor.constraint(equalTo: self.firstView.topAnchor))
-    constraints.append(self.leadingAnchor.constraint(equalTo: self.firstView.leadingAnchor))
-    constraints.append(self.trailingAnchor.constraint(equalTo: self.firstView.trailingAnchor))
-
-    // Label
-    constraints.append(self.label.topAnchor.constraint(equalTo: self.firstView.topAnchor))
-    constraints.append(self.label.bottomAnchor.constraint(equalTo: self.firstView.bottomAnchor))
-    constraints.append(self.label.centerXAnchor.constraint(equalTo: self.firstView.centerXAnchor))
+    constraints.append(self.topAnchor.constraint(equalTo: self.firstViewContainer.topAnchor))
+    constraints.append(self.leadingAnchor.constraint(equalTo: self.firstViewContainer.leadingAnchor))
+    constraints.append(self.trailingAnchor.constraint(equalTo: self.firstViewContainer.trailingAnchor))
 
     // SecoundView
-    constraints.append(self.secondView.topAnchor.constraint(equalTo: self.firstView.bottomAnchor))
-    constraints.append(self.secondView.leadingAnchor.constraint(equalTo: self.leadingAnchor))
-    constraints.append(self.secondView.trailingAnchor.constraint(equalTo: self.trailingAnchor))
-    constraints.append(self.secondView.bottomAnchor.constraint(equalTo: self.bottomAnchor))
-    constraints.append(self.secondView.heightAnchor.constraint(equalToConstant: HeaderCell.hearderheight / 2))
-
-    // DayView
-    constraints.append(self.dayView.topAnchor.constraint(equalTo: self.secondView.topAnchor))
-    constraints.append(self.dayView.bottomAnchor.constraint(equalTo: self.secondView.bottomAnchor))
-    constraints.append(self.dayView.leadingAnchor.constraint(equalTo: self.secondView.leadingAnchor))
-    constraints.append(self.dayView.trailingAnchor.constraint(equalTo: self.secondView.trailingAnchor))
+    constraints.append(self.secondViewContainer.topAnchor.constraint(equalTo: self.firstViewContainer.bottomAnchor))
+    constraints.append(self.secondViewContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor))
+    constraints.append(self.secondViewContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor))
+    constraints.append(self.secondViewContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor))
+    constraints.append(self.secondViewContainer.heightAnchor.constraint(equalToConstant: HeaderCell.hearderheight / 2))
 
     NSLayoutConstraint.activate(constraints)
+  }
+
+  func setupMonthView(monthListViewModel: MonthListViewModel) {
+    guard self.monthView == nil else { return }
+    let monthView = MonthSelectorView(viewModel: monthListViewModel)
+    monthView.translatesAutoresizingMaskIntoConstraints = false
+    self.firstViewContainer.addSubview(monthView)
+
+    var constraints = [NSLayoutConstraint]()
+
+    // MonthView
+    constraints.append(monthView.topAnchor.constraint(equalTo: self.firstViewContainer.topAnchor))
+    constraints.append(monthView.bottomAnchor.constraint(equalTo: self.firstViewContainer.bottomAnchor))
+    constraints.append(monthView.centerXAnchor.constraint(equalTo: self.firstViewContainer.centerXAnchor))
+
+    NSLayoutConstraint.activate(constraints)
+
+  }
+
+  func setupDayView(dayListViewModel: DayListViewModel) {
+    guard self.dayView == nil else { return }
+    let dayView = DaySelectorView(viewModel: dayListViewModel)
+    dayView.translatesAutoresizingMaskIntoConstraints = false
+    self.secondViewContainer.addSubview(dayView)
+
+    var constraints = [NSLayoutConstraint]()
+
+    // DayView
+    constraints.append(dayView.topAnchor.constraint(equalTo: self.secondViewContainer.topAnchor))
+    constraints.append(dayView.bottomAnchor.constraint(equalTo: self.secondViewContainer.bottomAnchor))
+    constraints.append(dayView.leadingAnchor.constraint(equalTo: self.secondViewContainer.leadingAnchor))
+    constraints.append(dayView.trailingAnchor.constraint(equalTo: self.secondViewContainer.trailingAnchor))
+
+    NSLayoutConstraint.activate(constraints)
+  }
+
+  func configure(monthListViewModel: MonthListViewModel, dayListViewModel: DayListViewModel) {
+    self.setupMonthView(monthListViewModel: monthListViewModel)
+    self.setupDayView(dayListViewModel: dayListViewModel)
   }
 
   override init(frame: CGRect) {

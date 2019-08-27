@@ -10,20 +10,57 @@ import Foundation
 import StargateKitCore
 import StargateKitRequest
 
+
 struct RdvApiService {
-  static func makeRequest() {
 
-    /*
+  enum Result {
+    case success(rdvList: [RdvApiModel])
+    case error
+  }
 
-https://uiphone-sg.mob.pagesjaunes.fr/CI118/rendezvous/disponibilite?etab_code=55806040&type_transactionnel=SANTE&calend_id=619343&goto=AVAILABILITY&interv_id=4750363&token=20716054259955370046031385
+  let transacType: String
+  let etabCode: String
+  let calendId: String
+  let intervId: String
 
-    */
+  init(transacType: String = "SANTE", etabCode: String = "55806040", calendId: String = "619343", intervId: String = "4750363") {
+    self.transacType = transacType
+    self.etabCode = etabCode
+    self.calendId = calendId
+    self.intervId = intervId
+  }
 
-    let request = StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.Request(token: nil, typeTransactionnel: "SANTE", etabCode: "55806040", serviceId: nil, categId: nil, calendId: "619343", intervId: "4750363", groupeId: nil, goto: StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.SKRGoto.availability, landingStep: nil, period: nil, sdtime: nil, dtime: nil)
+  func makeRequest(completion: @escaping (Result) -> Void) {
 
+    let request = StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.Request(typeTransactionnel: self.transacType,
+                                                                                             etabCode: self.etabCode,
+                                                                                             calendId: self.calendId,
+                                                                                             intervId: self.intervId,
+                                                                                             goto: StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.SKRGoto.availability)
     StargateClient.setServer(.prod_HTTPS)
     StargateClient.makeRequest(request: request) { result in
-      print(result)
+      switch result.result {
+      case .success(let value):
+        switch value {
+        case .status200(let resDispoSante):
+
+          guard let days = resDispoSante.days?.day else { return }
+
+          completion(.success(rdvList: days.compactMap {
+            guard let dText = $0.dtext else { return nil }
+            let slots:[SlotApiModel]? = $0.hour?.compactMap {
+              guard let text = $0.htext, let code = $0.hcode else { return nil }
+              return SlotApiModel(htext: text, hcode: code)
+            }
+            return RdvApiModel(dtext: dText, dcode: $0.dcode, slots: slots)
+          }))
+
+        case .status500(_):
+          completion(.error)
+        }
+      case .failure:
+        completion(.error)
+      }
     }
   }
 }

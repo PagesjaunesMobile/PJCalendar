@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		47C80D072DDCD1D99B75165E /* Pods_PJCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61493DFF722567178D133637 /* Pods_PJCalendar.framework */; };
 		A13263C122FC47CB00B5C53E /* RdvApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C022FC47CB00B5C53E /* RdvApiService.swift */; };
+		A13263C3230AE72400B5C53E /* RdvApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C2230AE72400B5C53E /* RdvApiModel.swift */; };
+		A13263C5230B037500B5C53E /* CalendarDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C4230B037500B5C53E /* CalendarDataController.swift */; };
+		A13263C7230BF4BA00B5C53E /* MonthListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C6230BF4BA00B5C53E /* MonthListViewModel.swift */; };
+		A13263C9230BF77E00B5C53E /* DayListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C8230BF77E00B5C53E /* DayListViewModel.swift */; };
+		A13263CB230BFA9700B5C53E /* TimeSlotListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263CA230BFA9700B5C53E /* TimeSlotListViewModel.swift */; };
+		A13263CF230D8B8000B5C53E /* MonthSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263CE230D8B8000B5C53E /* MonthSelectorView.swift */; };
 		A146A02522F0837100B5D369 /* DaySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A146A02422F0837100B5D369 /* DaySelectorView.swift */; };
 		A161712122FB2692005450C4 /* CalendarViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A161712022FB2692005450C4 /* CalendarViewLayout.swift */; };
 		A161712322FB271B005450C4 /* DaySelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A161712222FB271B005450C4 /* DaySelectorCell.swift */; };
@@ -19,13 +25,20 @@
 		A1850D9122E9D4F6007E8FAD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1850D8F22E9D4F6007E8FAD /* LaunchScreen.storyboard */; };
 		A1850D9922E9D52A007E8FAD /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9822E9D52A007E8FAD /* CalendarViewController.swift */; };
 		A1850D9B22E9D55C007E8FAD /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9A22E9D55C007E8FAD /* HeaderCell.swift */; };
-		A1850D9D22E9DF25007E8FAD /* DummyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9C22E9DF25007E8FAD /* DummyCell.swift */; };
+		A1850D9D22E9DF25007E8FAD /* SlotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9C22E9DF25007E8FAD /* SlotCell.swift */; };
+		A1E2A893231426CE00471757 /* MonthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2A892231426CE00471757 /* MonthCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3F0813D74FF016968A8146E6 /* Pods-PJCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJCalendar.release.xcconfig"; path = "Target Support Files/Pods-PJCalendar/Pods-PJCalendar.release.xcconfig"; sourceTree = "<group>"; };
 		61493DFF722567178D133637 /* Pods_PJCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A13263C022FC47CB00B5C53E /* RdvApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdvApiService.swift; sourceTree = "<group>"; };
+		A13263C2230AE72400B5C53E /* RdvApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdvApiModel.swift; sourceTree = "<group>"; };
+		A13263C4230B037500B5C53E /* CalendarDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataController.swift; sourceTree = "<group>"; };
+		A13263C6230BF4BA00B5C53E /* MonthListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthListViewModel.swift; sourceTree = "<group>"; };
+		A13263C8230BF77E00B5C53E /* DayListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayListViewModel.swift; sourceTree = "<group>"; };
+		A13263CA230BFA9700B5C53E /* TimeSlotListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlotListViewModel.swift; sourceTree = "<group>"; };
+		A13263CE230D8B8000B5C53E /* MonthSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthSelectorView.swift; sourceTree = "<group>"; };
 		A146A02422F0837100B5D369 /* DaySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectorView.swift; sourceTree = "<group>"; };
 		A161712022FB2692005450C4 /* CalendarViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewLayout.swift; sourceTree = "<group>"; };
 		A161712222FB271B005450C4 /* DaySelectorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectorCell.swift; sourceTree = "<group>"; };
@@ -38,7 +51,8 @@
 		A1850D9222E9D4F6007E8FAD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1850D9822E9D52A007E8FAD /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		A1850D9A22E9D55C007E8FAD /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
-		A1850D9C22E9DF25007E8FAD /* DummyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyCell.swift; sourceTree = "<group>"; };
+		A1850D9C22E9DF25007E8FAD /* SlotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotCell.swift; sourceTree = "<group>"; };
+		A1E2A892231426CE00471757 /* MonthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCell.swift; sourceTree = "<group>"; };
 		D4BA38064A651262A9DA4AA0 /* Pods-PJCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJCalendar.debug.xcconfig"; path = "Target Support Files/Pods-PJCalendar/Pods-PJCalendar.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +106,9 @@
 		A1850D8522E9D4F6007E8FAD /* PJCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				A1E2A88F2313DBF000471757 /* Slot */,
+				A1E2A88E2313DBE800471757 /* Month */,
+				A1E2A88D2313DBE000471757 /* Day */,
 				A1850D8622E9D4F6007E8FAD /* AppDelegate.swift */,
 				A1850D8822E9D4F6007E8FAD /* ViewController.swift */,
 				A1850D8A22E9D4F6007E8FAD /* Main.storyboard */,
@@ -100,13 +117,41 @@
 				A1850D9222E9D4F6007E8FAD /* Info.plist */,
 				A1850D9822E9D52A007E8FAD /* CalendarViewController.swift */,
 				A1850D9A22E9D55C007E8FAD /* HeaderCell.swift */,
-				A1850D9C22E9DF25007E8FAD /* DummyCell.swift */,
-				A146A02422F0837100B5D369 /* DaySelectorView.swift */,
 				A161712022FB2692005450C4 /* CalendarViewLayout.swift */,
-				A161712222FB271B005450C4 /* DaySelectorCell.swift */,
 				A13263C022FC47CB00B5C53E /* RdvApiService.swift */,
+				A13263C2230AE72400B5C53E /* RdvApiModel.swift */,
+				A13263C4230B037500B5C53E /* CalendarDataController.swift */,
 			);
 			path = PJCalendar;
+			sourceTree = "<group>";
+		};
+		A1E2A88D2313DBE000471757 /* Day */ = {
+			isa = PBXGroup;
+			children = (
+				A146A02422F0837100B5D369 /* DaySelectorView.swift */,
+				A13263C8230BF77E00B5C53E /* DayListViewModel.swift */,
+				A161712222FB271B005450C4 /* DaySelectorCell.swift */,
+			);
+			path = Day;
+			sourceTree = "<group>";
+		};
+		A1E2A88E2313DBE800471757 /* Month */ = {
+			isa = PBXGroup;
+			children = (
+				A13263CE230D8B8000B5C53E /* MonthSelectorView.swift */,
+				A13263C6230BF4BA00B5C53E /* MonthListViewModel.swift */,
+				A1E2A892231426CE00471757 /* MonthCell.swift */,
+			);
+			path = Month;
+			sourceTree = "<group>";
+		};
+		A1E2A88F2313DBF000471757 /* Slot */ = {
+			isa = PBXGroup;
+			children = (
+				A13263CA230BFA9700B5C53E /* TimeSlotListViewModel.swift */,
+				A1850D9C22E9DF25007E8FAD /* SlotCell.swift */,
+			);
+			path = Slot;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,13 +269,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1E2A893231426CE00471757 /* MonthCell.swift in Sources */,
+				A13263CF230D8B8000B5C53E /* MonthSelectorView.swift in Sources */,
 				A146A02522F0837100B5D369 /* DaySelectorView.swift in Sources */,
+				A13263C7230BF4BA00B5C53E /* MonthListViewModel.swift in Sources */,
 				A1850D9B22E9D55C007E8FAD /* HeaderCell.swift in Sources */,
 				A161712122FB2692005450C4 /* CalendarViewLayout.swift in Sources */,
 				A13263C122FC47CB00B5C53E /* RdvApiService.swift in Sources */,
+				A13263C9230BF77E00B5C53E /* DayListViewModel.swift in Sources */,
 				A1850D9922E9D52A007E8FAD /* CalendarViewController.swift in Sources */,
+				A13263C3230AE72400B5C53E /* RdvApiModel.swift in Sources */,
 				A1850D8922E9D4F6007E8FAD /* ViewController.swift in Sources */,
-				A1850D9D22E9DF25007E8FAD /* DummyCell.swift in Sources */,
+				A13263CB230BFA9700B5C53E /* TimeSlotListViewModel.swift in Sources */,
+				A1850D9D22E9DF25007E8FAD /* SlotCell.swift in Sources */,
+				A13263C5230B037500B5C53E /* CalendarDataController.swift in Sources */,
 				A1850D8722E9D4F6007E8FAD /* AppDelegate.swift in Sources */,
 				A161712322FB271B005450C4 /* DaySelectorCell.swift in Sources */,
 			);

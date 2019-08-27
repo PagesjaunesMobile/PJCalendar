@@ -13,7 +13,9 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    let calendar = CalendarViewController(nibName: nil, bundle: nil)
+    let apiService = RdvApiService()
+    let dataController = CalendarDataController(apiService: apiService)
+    let calendar = CalendarViewController(dataController: dataController)
 
     self.addChild(calendar)
     self.view.addSubview(calendar.view)
@@ -30,9 +32,6 @@ class ViewController: UIViewController {
     NSLayoutConstraint.activate(constraints)
     
     calendar.didMove(toParent: self)
-
-
-    RdvApiService.makeRequest()
 
   }
 

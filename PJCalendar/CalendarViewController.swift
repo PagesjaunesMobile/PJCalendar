@@ -12,6 +12,25 @@ import UIKit
 
 class CalendarViewController: UIViewController {
 
+  init(dataController: CalendarDataController) {
+    self.dataController = dataController
+    self.dayListViewModel = DayListViewModel(dataController: dataController)
+    self.monthListViewModel = MonthListViewModel(dataController: dataController)
+    self.slotListViewModel = TimeSlotListViewModel(dataController: dataController)
+
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  let dataController: CalendarDataController
+
+  let dayListViewModel: DayListViewModel
+  let monthListViewModel: MonthListViewModel
+  let slotListViewModel: TimeSlotListViewModel
+
   let collectionView: UICollectionView = {
 
     let layout = CalendarFlowLayout()
@@ -31,11 +50,15 @@ class CalendarViewController: UIViewController {
     self.collectionView.isOpaque = true
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
-    self.collectionView.register(DummyCell.self,
-                                 forCellWithReuseIdentifier: DummyCell.reusueIdentifier)
+    self.collectionView.register(SlotCell.self,
+                                 forCellWithReuseIdentifier: SlotCell.reusueIdentifier)
     self.collectionView.register(HeaderCell.self,
                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                  withReuseIdentifier: HeaderCell.reusueIdentifier)
+  }
+
+  func setupDataController() {
+
   }
 
   override func viewDidLoad() {
@@ -52,6 +75,8 @@ class CalendarViewController: UIViewController {
     constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor))
 
     NSLayoutConstraint.activate(constraints)
+
+    self.setupDataController()
   }
 }
 
@@ -64,29 +89,30 @@ extension CalendarViewController: UICollectionViewDelegate {
 extension CalendarViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 2000
+    return self.slotListViewModel.slotCount
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let dest = collectionView.dequeueReusableCell(withReuseIdentifier: DummyCell.reusueIdentifier, for: indexPath)
-
+    let dequeueCell = collectionView.dequeueReusableCell(withReuseIdentifier: SlotCell.reusueIdentifier, for: indexPath)
+    guard let dest = dequeueCell as? SlotCell else { return dequeueCell }
+    guard let model = self.slotListViewModel[indexPath] else { return dequeueCell }
+    dest.configure(model: model)
     return dest
   }
 
-  func numberOfSections(in collectionView: UICollectionView) -> Int {
-    return 1
-  }
-
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
+    let hederView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
                                                            withReuseIdentifier: HeaderCell.reusueIdentifier, for: indexPath)
+    guard let castedHeaderView = hederView as? HeaderCell else { return hederView }
+    castedHeaderView.configure(monthListViewModel: self.monthListViewModel, dayListViewModel: self.dayListViewModel)
+    return castedHeaderView
   }
 }
 
 extension CalendarViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return DummyCell.cellSize
+    return SlotCell.cellSize
   }
 
 

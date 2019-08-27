@@ -44,6 +44,8 @@ class DaySelectorView: PaginableView {
 
   var index: CGFloat = 0
 
+  let viewModel: DayListViewModel
+
   let glassView: UIView = {
     let dest = UIView()
     dest.translatesAutoresizingMaskIntoConstraints = false
@@ -51,31 +53,6 @@ class DaySelectorView: PaginableView {
     dest.layer.cornerRadius = 7.0
 
     return dest
-  }()
-
-  let days: [DayModel] = {
-    return [
-      DayModel(dayText: "ven.", dayNumber: "23"),
-      DayModel(dayText: "sam.", dayNumber: "24"),
-      DayModel(dayText: "dim.", dayNumber: "25"),
-      DayModel(dayText: "lun.", dayNumber: "26"),
-      DayModel(dayText: "mar.", dayNumber: "27"),
-      DayModel(dayText: "ven.", dayNumber: "23"),
-      DayModel(dayText: "sam.", dayNumber: "24"),
-      DayModel(dayText: "dim.", dayNumber: "25"),
-      DayModel(dayText: "lun.", dayNumber: "26"),
-      DayModel(dayText: "mar.", dayNumber: "27"),
-      DayModel(dayText: "ven.", dayNumber: "23"),
-      DayModel(dayText: "sam.", dayNumber: "24"),
-      DayModel(dayText: "dim.", dayNumber: "25"),
-      DayModel(dayText: "lun.", dayNumber: "26"),
-      DayModel(dayText: "mar.", dayNumber: "27"),
-      DayModel(dayText: "ven.", dayNumber: "23"),
-      DayModel(dayText: "sam.", dayNumber: "24"),
-      DayModel(dayText: "dim.", dayNumber: "25"),
-      DayModel(dayText: "lun.", dayNumber: "26"),
-      DayModel(dayText: "mar.", dayNumber: "27"),
-    ]
   }()
 
   let collectionView: UICollectionView = {
@@ -120,8 +97,9 @@ class DaySelectorView: PaginableView {
     self.addSubview(self.collectionView)
   }
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(viewModel: DayListViewModel) {
+    self.viewModel = viewModel
+    super.init(frame: .zero)
     self.setup()
   }
 
@@ -139,13 +117,12 @@ class DaySelectorView: PaginableView {
 
 extension DaySelectorView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.days.count
+    return 0
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DaySelectorCell.reeuseIdentier, for: indexPath)
     guard let castedCell = cell as? DaySelectorCell else { return cell }
-    castedCell.configure(self.days[indexPath.item])
     return castedCell
   }
 }
