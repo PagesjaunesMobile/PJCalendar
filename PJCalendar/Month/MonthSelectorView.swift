@@ -13,8 +13,17 @@ class MonthSelectorView: UIView {
 
   let viewModel: MonthListViewModel
 
+  var selectedIndexPath = IndexPath(item: 0, section: 0) {
+    didSet {
+      self.viewModel.userWantToDisplayMonthDay(indexPath: selectedIndexPath)
+    }
+  }
+
   let collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
+    layout.scrollDirection = .horizontal
+    layout.minimumInteritemSpacing = 0
+    layout.minimumLineSpacing = 0
     let dest = UICollectionView(frame: .zero, collectionViewLayout: layout)
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
@@ -46,10 +55,13 @@ class MonthSelectorView: UIView {
     constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.rightButton.leftAnchor, constant: -5))
     constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor))
 
+    self.collectionView.backgroundColor = UIColor.yellow
+
     NSLayoutConstraint.activate(constraints)
   }
 
   func setupCollectionView() {
+    self.collectionView.isPagingEnabled = true
     self.collectionView.register(MonthCell.self, forCellWithReuseIdentifier: MonthCell.reuseCellIdentifier)
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
@@ -59,12 +71,32 @@ class MonthSelectorView: UIView {
     self.addSubview(self.leftButton)
     self.addSubview(self.rightButton)
     self.addSubview(self.collectionView)
+    self.backgroundColor = UIColor.blue
+  }
+
+  func setupViewModel() {
+    self.viewModel.shouldShowMonth.bind { [weak self] _, result in
+      guard let `self` = self else { return }
+      UIView.animate(withDuration: 0.35, animations: { [weak self] in
+        guard let `self` = self else { return }
+        self.collectionView.alpha = result ? 1.0 : 0.0
+        if result == true {
+          self.collectionView.reloadData()
+        }
+      })
+    }
+
+    self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
+      guard let `self` = self else { return }
+      self.collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+    }
   }
 
   func setup() {
     self.setupView()
     self.setupLayout()
     self.setupCollectionView()
+    self.setupViewModel()
   }
 
   init(viewModel: MonthListViewModel) {
@@ -81,10 +113,18 @@ class MonthSelectorView: UIView {
 }
 
 
-extension MonthSelectorView: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+extension MonthSelectorView: UIScrollViewDelegate {
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
   }
+
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    let center = self.convert(self.collectionView.center, to: self.collectionView)
+    if let index = collectionView.indexPathForItem(at: center)/*, self.selectedIndexPath != index*/ {
+      self.selectedIndexPath = index
+    }
+  }
+
 }
 
 extension MonthSelectorView: UICollectionViewDataSource {
@@ -99,5 +139,12 @@ extension MonthSelectorView: UICollectionViewDataSource {
     castedCell.configure(model: monthModel)
     return castedCell
   }
-
 }
+
+extension MonthSelectorView: UICollectionViewDelegateFlowLayout {
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return collectionView.frame.size
+  }
+}
+
+

@@ -11,15 +11,24 @@ import Foundation
 class CalendarDataController {
 
   enum Result {
-    case success(days: [RdvApiModel])
+    case success(days: [DayApiModel])
     case error
   }
 
   let apiService: RdvApiService
-  var days: Observable<[RdvApiModel]> = Observable<[RdvApiModel]>([])
+
+  var days: Observable<[DayApiModel]> = Observable<[DayApiModel]>([])
+
+  var selectedDay: Observable<Int> = Observable<Int>(0)
 
   init(apiService: RdvApiService) {
     self.apiService = apiService
+  }
+
+  func updateSelectedDay(day: DayApiModel) {
+    if let dest = self.days.value.firstIndex(of: day)/*, Int(dest) != self.selectedDay.value*/ {
+      self.selectedDay.value = Int(dest)
+    }
   }
 
   func loadData(completion: @escaping ((Result) -> Void)) {

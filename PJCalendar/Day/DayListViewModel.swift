@@ -9,17 +9,23 @@
 import Foundation
 
 class DayViewModel {
-  private let originalModel: RdvApiModel
+  private let originalModel: DayApiModel
   let dayOfTheWeek: String
   let dayNumber: String
+  let dataController: CalendarDataController
 
   var slotsViewModel: [TimeSlotViewModel]
 
-  init(model: RdvApiModel) {
+  init(model: DayApiModel, dataController: CalendarDataController) {
     self.originalModel = model
     self.dayOfTheWeek = "\(model.shortDayText)."
     self.dayNumber = model.dayNumberText
     self.slotsViewModel = self.originalModel.slots.map(TimeSlotViewModel.init)
+    self.dataController = dataController
+  }
+
+  func userWantToShowSlotOfThisMonth() {
+    self.dataController.updateSelectedDay(day: self.originalModel)
   }
 }
 
@@ -28,18 +34,13 @@ class DayListViewModel {
   enum DisplayState {
 
     case notReady
-    case daySelected(day: DayViewModel, days: [DayViewModel])
+    case daySelected(day: Int, days: [DayViewModel])
 
-    init(days: [RdvApiModel]) {
+    init(days: [DayApiModel], selectedDay: Int = 0, dataController: CalendarDataController) {
       if days.isEmpty == true {
         self = .notReady
       } else {
-        let days = days.map(DayViewModel.init)
-        if let day = days.first {
-          self = .daySelected(day: day, days: days)
-        } else {
-          self = .notReady
-        }
+        self = .daySelected(day: selectedDay, days: days.map { DayViewModel(model: $0, dataController: dataController) })
       }
     }
   }
@@ -53,6 +54,7 @@ class DayListViewModel {
 
   var shouldDisplayDays: Observable<Bool> = Observable<Bool>(false)
   var shouldDisplaySpinner: Observable<Bool> = Observable<Bool>(false)
+  var selectedIndexPath: Observable<IndexPath> = Observable<IndexPath>(IndexPath.init(row: 0, section: 0))
 
   var daysCount: Int {
     switch self.displayState {
@@ -73,27 +75,65 @@ class DayListViewModel {
     }
   }
 
+  func userSelectNewDay(indexPath: IndexPath) {
+    switch self.displayState {
+    case .daySelected(day: _, days: let days):
+      if indexPath.item < days.count && indexPath.item >= 0 {
+        days[indexPath.item].userWantToShowSlotOfThisMonth()
+      }
+    case .notReady:
+      break
+    }
+  }
+
   func updateObervableFromDisplaySate(state: DisplayState) {
     switch state {
-    case .daySelected:
-      self.shouldDisplayDays.value = true
-      self.shouldDisplaySpinner.value = false
+    case .daySelected(day: let selectedDay, days: _):
+      if self.shouldDisplayDays.value == false {
+        self.shouldDisplayDays.value = true
+      }
+
+      if self.shouldDisplaySpinner.value == true {
+        self.shouldDisplaySpinner.value = false
+      }
+
+      if self.selectedIndexPath.value != IndexPath(item: selectedDay, section: 0) {
+        self.selectedIndexPath.value = IndexPath(item: selectedDay, section: 0)
+      }
+
     case .notReady:
-      self.shouldDisplayDays.value = false
-      self.shouldDisplaySpinner.value = true
+      if self.shouldDisplayDays.value == true {
+        self.shouldDisplayDays.value = false
+      }
+
+      if self.shouldDisplaySpinner.value == false {
+        self.shouldDisplaySpinner.value = true
+      }
     }
   }
 
   func setupDataController() {
     self.dataController.days.bind { [weak self] _, newModels in
       guard let `self` = self else { return }
-      self.displayState = DisplayState(days: newModels)
+      self.displayState = DisplayState(days: newModels, dataController: self.dataController)
     }
+
+    self.dataController.selectedDay.bind { [weak self] _ , day in
+      guard let `self` = self else { return }
+
+      switch self.displayState {
+      case .daySelected(day: _, days: let days):
+        self.displayState = .daySelected(day: day, days: days)
+      case .notReady:
+        break
+      }
+    }
+
   }
 
   init(dataController: CalendarDataController) {
     self.dataController = dataController
-    self.displayState = DisplayState(days: dataController.days.value)
+    self.displayState = DisplayState(days: dataController.days.value, selectedDay: dataController.selectedDay.value, dataController: dataController)
     self.updateObervableFromDisplaySate(state: self.displayState)
     self.setupDataController()
   }

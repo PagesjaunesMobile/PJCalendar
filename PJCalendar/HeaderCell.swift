@@ -71,9 +71,10 @@ class HeaderCell: UICollectionReusableView {
 
     // MonthView
     constraints.append(monthView.topAnchor.constraint(equalTo: self.firstViewContainer.topAnchor))
+    constraints.append(monthView.leadingAnchor.constraint(equalTo: self.firstViewContainer.leadingAnchor))
+    constraints.append(monthView.trailingAnchor.constraint(equalTo: self.firstViewContainer.trailingAnchor))
     constraints.append(monthView.bottomAnchor.constraint(equalTo: self.firstViewContainer.bottomAnchor))
-    constraints.append(monthView.centerXAnchor.constraint(equalTo: self.firstViewContainer.centerXAnchor))
-
+    
     NSLayoutConstraint.activate(constraints)
 
   }

@@ -56,7 +56,7 @@ class MonthCell: UICollectionViewCell {
   }
 
   func configure(model: MonthViewModel) {
-    self.titleLabel.text = model.monthText
+    self.titleLabel.text = model.name
   }
 
 }

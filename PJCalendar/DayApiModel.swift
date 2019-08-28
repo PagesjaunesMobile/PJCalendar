@@ -1,5 +1,5 @@
 //
-//  RdvApiModel.swift
+//  DayApiModel.swift
 //  PJCalendar
 //
 //  Created by Nicolas Bellon on 19/08/2019.
@@ -13,7 +13,20 @@ struct SlotApiModel {
   let hcode: String
 }
 
-struct RdvApiModel {
+extension DayApiModel: Equatable {
+  static func == (lhs: DayApiModel, rhs: DayApiModel) -> Bool {
+    if lhs.realDate == rhs.realDate { return true }
+    return false
+  }
+}
+
+extension DayApiModel: Comparable {
+  static func < (lhs: DayApiModel, rhs: DayApiModel) -> Bool {
+    return lhs.realDate < rhs.realDate
+  }
+}
+
+struct DayApiModel {
   let dtext: String
   let dcode: String?
   let slots: [SlotApiModel]
@@ -24,7 +37,7 @@ struct RdvApiModel {
   let shortDayText: String
   let dayNumberText: String
 
-
+  let realDate: Date
 
   init?(dtext: String, dcode: String? = nil, slots: [SlotApiModel]? = nil) {
     self.dtext = dtext
@@ -36,6 +49,8 @@ struct RdvApiModel {
     dateFormater.locale = Locale(identifier: "fr_FR")
 
     guard let date = dateFormater.date(from: dtext) else { return nil }
+
+    self.realDate = date
 
     dateFormater.dateFormat = "MMMM"
     self.monthText = dateFormater.string(from: date)
@@ -60,7 +75,6 @@ struct RdvApiModel {
       self.monthText.isEmpty == false,
       self.dayNumberText.isEmpty == false,
       self.shortDayText.isEmpty == false else { return nil }
-
   }
 
 }

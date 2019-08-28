@@ -38,6 +38,14 @@ class DaySelectorView: PaginableView {
 
   var index: CGFloat = 0
 
+  var isScrollAnimated = false
+
+  var selectedIndexPath = IndexPath(item: 0, section: 0) {
+    didSet {
+      self.viewModel.userSelectNewDay(indexPath: selectedIndexPath)
+    }
+  }
+
   let viewModel: DayListViewModel
 
   let glassView: UIView = {
@@ -102,6 +110,12 @@ class DaySelectorView: PaginableView {
         }
       })
     }
+
+    self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
+      guard let `self` = self, indexPath != self.selectedIndexPath  else { return }
+      self.isScrollAnimated = true
+      self.collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+    }
   }
 
   init(viewModel: DayListViewModel) {
@@ -114,13 +128,20 @@ class DaySelectorView: PaginableView {
     fatalError("init(coder:) has not been implemented")
   }
 
-
   func setup() {
     self.setupView()
     self.setupLayout()
     self.setupCollectionView()
     self.setupViewModel()
   }
+
+  func updateSelectedIndexPath() {
+    let center = self.convert(self.collectionView.center, to: self.collectionView)
+    if let index = collectionView.indexPathForItem(at: center)/*, self.selectedIndexPath != index*/ {
+      self.selectedIndexPath = index
+    }
+  }
+
 }
 
 extension DaySelectorView: UICollectionViewDataSource {
@@ -144,6 +165,21 @@ extension DaySelectorView: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     return DaySelectorCell.cellSize
+  }
+}
+
+extension DaySelectorView {
+
+  func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    self.isScrollAnimated = false
+    self.updateSelectedIndexPath()
+  }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    guard self.isScrollAnimated == false else {
+      return
+    }
+    self.updateSelectedIndexPath()
   }
 }
 
