@@ -11,15 +11,15 @@ public struct SKRReqSynchronizeFavorites: StargateKitModel {
 
     public var actions: [SKRAbstractFavoriAction]?
 
-    public var ajoutFavoris: [SKRFavori]?
+    public var ajoutFavoris: [SKRFavoriRequest]?
 
     public var dateDerniereSynchronisation: DateTime?
 
-    public var suppressionFavoris: [SKRFavori]?
+    public var suppressionFavoris: [SKRFavoriRequest]?
 
     public var token: String?
 
-    public init(actions: [SKRAbstractFavoriAction]? = nil, ajoutFavoris: [SKRFavori]? = nil, dateDerniereSynchronisation: DateTime? = nil, suppressionFavoris: [SKRFavori]? = nil, token: String? = nil) {
+    public init(actions: [SKRAbstractFavoriAction]? = nil, ajoutFavoris: [SKRFavoriRequest]? = nil, dateDerniereSynchronisation: DateTime? = nil, suppressionFavoris: [SKRFavoriRequest]? = nil, token: String? = nil) {
         self.actions = actions
         self.ajoutFavoris = ajoutFavoris
         self.dateDerniereSynchronisation = dateDerniereSynchronisation

@@ -18,22 +18,38 @@ struct RdvApiService {
     case error
   }
 
-  let transacType: String
+  //let transacType: String
   let etabCode: String
   let calendId: String
   let intervId: String
 
-  init(transacType: String = "SANTE", etabCode: String = "55806040", calendId: String = "619343", intervId: String = "4750363") {
-    self.transacType = transacType
+//  etab_code=09415876
+//  period=30J
+//  goto=AVAILABILITY
+//  service_id=
+//  categ_id=14
+//  interv_id=1047303-756
+//  calend_id=887
+//  groupe_id=
+//  dtime=
+//  sdtime=
+//  init(transacType: String = "SANTE", etabCode: String = "55806040", calendId: String = "619343", intervId: String = "4750363") {
+//    self.transacType = transacType
+//    self.etabCode = etabCode
+//    self.calendId = calendId
+//    self.intervId = intervId
+//  }
+
+  init(etabCode: String = "55806040", calendId: String = "619343", intervId: String = "4750363") {
     self.etabCode = etabCode
     self.calendId = calendId
     self.intervId = intervId
   }
 
+
   func makeRequest(completion: @escaping (Result) -> Void) {
 
-    let request = StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.Request(typeTransactionnel: self.transacType,
-                                                                                             etabCode: self.etabCode,
+    let request = StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.Request(etabCode: self.etabCode,
                                                                                              calendId: self.calendId,
                                                                                              intervId: self.intervId,
                                                                                              goto: StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.SKRGoto.availability)
@@ -49,10 +65,12 @@ struct RdvApiService {
           let dest: [DayApiModel] = days.compactMap {
             guard let dText = $0.dtext else { return nil }
 
-            let slots:[SlotApiModel]? = $0.hour?.compactMap {
+            let slots:[SlotApiModel]? = $0.hours?.compactMap {
               guard let text = $0.htext, let code = $0.hcode else { return nil }
+              
               return SlotApiModel(htext: text, hcode: code)
             }
+
             return DayApiModel(dtext: dText, dcode: $0.dcode, slots: slots)
           }
 

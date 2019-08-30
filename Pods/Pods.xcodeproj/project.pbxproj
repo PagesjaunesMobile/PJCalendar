@@ -291,6 +291,7 @@
 		A0FB207E34823DE3A5EE61208C0609A3 /* SKRDispoSanteResumes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF2F0D7CC528CDA16D4FD40DEA5E3CF /* SKRDispoSanteResumes.swift */; };
 		A11819B5B9559CD1D7929625EC96FE88 /* AnnulerRendezVous.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A983A145D0F315FE2C74383E1327354 /* AnnulerRendezVous.swift */; };
 		A1412149343A39A9E59078A90E02A42E /* SKRProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = C44B2A4053853D57F91945821E3FC97C /* SKRProduct.swift */; };
+		A1428CD523181FEF006ED983 /* SKRFavoriRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1428CD323181FD8006ED983 /* SKRFavoriRequest.swift */; };
 		A293D3680A8E4E5568213ADA0237DC11 /* SKRMasquableSEOElementListeOrcFDDonneesSousTitresOrcFD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D783599D19490F413F9D8C4512ED6A7 /* SKRMasquableSEOElementListeOrcFDDonneesSousTitresOrcFD.swift */; };
 		A3407EEA27316A6487D7113F2A23BB38 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68AEE5791E782430704EF902F23250E /* APIResponse.swift */; };
 		A3A753F64C98C167E8C2E5161E75D198 /* SKRResCtx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A0312BC1EC5334ED2AC9A4AE61171C2 /* SKRResCtx.swift */; };
@@ -556,10 +557,10 @@
 		02F924BC50A10ABBC48E47C857C16FEE /* SKRAnnonceOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRAnnonceOrcFD.swift; path = Sources/Models/SKRAnnonceOrcFD.swift; sourceTree = "<group>"; };
 		02FF4AE49D014FF696DFFEC694956BDF /* SKRResLIR.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRResLIR.swift; path = Sources/Models/SKRResLIR.swift; sourceTree = "<group>"; };
 		03101C394B7B0058F8E27E0C90074689 /* SKRSug.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRSug.swift; path = Sources/Models/SKRSug.swift; sourceTree = "<group>"; };
-		037680716E3ABEBDE11D79520552DA52 /* StargateKitRequest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = StargateKitRequest.framework; path = StargateKitRequest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		037680716E3ABEBDE11D79520552DA52 /* StargateKitRequest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StargateKitRequest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		038A12CD1DFC3368DBDB2FB27690F559 /* SKRChamp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRChamp.swift; path = Sources/Models/SKRChamp.swift; sourceTree = "<group>"; };
 		03A2144D63DE771F35F764272C943D79 /* SKRYes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRYes.swift; path = Sources/Models/SKRYes.swift; sourceTree = "<group>"; };
-		0461B3F80FC05957690727254D64DB36 /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Result.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0461B3F80FC05957690727254D64DB36 /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B724E9CD9A4294D0ABB0698C71DAC3 /* RequestBehaviour.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RequestBehaviour.swift; path = Sources/RequestBehaviour.swift; sourceTree = "<group>"; };
 		054DBF8D6AF054D414114B9E066B8CA3 /* Coding.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Coding.swift; path = Sources/Coding.swift; sourceTree = "<group>"; };
 		06569EA79642CB46FD077FA3E1E6EC62 /* SKRInfoContributifOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRInfoContributifOrcFD.swift; path = Sources/Models/SKRInfoContributifOrcFD.swift; sourceTree = "<group>"; };
@@ -583,7 +584,7 @@
 		148ED9944CE0C019B5370735FDC22A1C /* SKRPap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRPap.swift; path = Sources/Models/SKRPap.swift; sourceTree = "<group>"; };
 		14901DA632788B57D255A7B8CDCE7B47 /* SKRMenuOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRMenuOrcFD.swift; path = Sources/Models/SKRMenuOrcFD.swift; sourceTree = "<group>"; };
 		154D2D571F1E1E3E418E272825C0DBB8 /* SKRParams.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRParams.swift; path = Sources/Models/SKRParams.swift; sourceTree = "<group>"; };
-		159B4B4F924868E2A0C879F2B8F5C147 /* Pods_PJCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_PJCalendar.framework; path = "Pods-PJCalendar.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		159B4B4F924868E2A0C879F2B8F5C147 /* Pods_PJCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		16152574CE4DD809BD491761A9EC38BE /* SKRAbstractFavoriAction.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRAbstractFavoriAction.swift; path = Sources/Models/SKRAbstractFavoriAction.swift; sourceTree = "<group>"; };
 		16339CDA6922C08E2F5CDAE51E3EA822 /* Tagged-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Tagged-prefix.pch"; sourceTree = "<group>"; };
 		185C77F3DE3F9ECA30AAD773D3DB0325 /* SKRTag.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRTag.swift; path = Sources/Models/SKRTag.swift; sourceTree = "<group>"; };
@@ -622,7 +623,7 @@
 		2A523C7D1752A9F817E002FA79B43734 /* SKRSearchLr.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRSearchLr.swift; path = Sources/Models/SKRSearchLr.swift; sourceTree = "<group>"; };
 		2A625778D5E4E6473D19223B17390408 /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AD8244135DA7A8635ACA27B00E2B475 /* SKRChampComplementaire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRChampComplementaire.swift; path = Sources/Models/SKRChampComplementaire.swift; sourceTree = "<group>"; };
-		2C283202245CDDF062D870A3234ED0E4 /* StargateKitCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = StargateKitCore.framework; path = StargateKitCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C283202245CDDF062D870A3234ED0E4 /* StargateKitCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StargateKitCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D19B80108AF3F441027A0F8A13575DE /* GetDate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GetDate.swift; path = Sources/Requests/Session/GetDate.swift; sourceTree = "<group>"; };
 		2DD294BFD602C8700FD367CD2EF38731 /* SKRDetail.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRDetail.swift; path = Sources/Models/SKRDetail.swift; sourceTree = "<group>"; };
 		2EC719A72256BA49204EE75AF22C17C9 /* SKRMetsApiInscriptionOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRMetsApiInscriptionOrcFD.swift; path = Sources/Models/SKRMetsApiInscriptionOrcFD.swift; sourceTree = "<group>"; };
@@ -737,7 +738,7 @@
 		5C66EF192A95C27AA7DAA16C635102E3 /* SKRSearchReview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRSearchReview.swift; path = Sources/Models/SKRSearchReview.swift; sourceTree = "<group>"; };
 		5C98619F0D9592A788C17D53CC6C922C /* SKRAccount.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRAccount.swift; path = Sources/Models/SKRAccount.swift; sourceTree = "<group>"; };
 		5D67B0CC22CF1D8F2267B6D44AD6B9C3 /* Alamofire.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Alamofire.modulemap; sourceTree = "<group>"; };
-		5D797E9A5C5782CE845840781FA1CC81 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Alamofire.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D797E9A5C5782CE845840781FA1CC81 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DB53CAAC22ACC1575B069408F63F493 /* CheckReview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CheckReview.swift; path = Sources/Requests/Contributif/CheckReview.swift; sourceTree = "<group>"; };
 		5ED0DDB33D519CF529F6F964F5F78302 /* SKRContactMailOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRContactMailOrcFD.swift; path = Sources/Models/SKRContactMailOrcFD.swift; sourceTree = "<group>"; };
 		5FE1DC4676DBD6E5948E1F7A4CD72878 /* SKRCard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRCard.swift; path = Sources/Models/SKRCard.swift; sourceTree = "<group>"; };
@@ -852,12 +853,13 @@
 		9CE83FEF1400D6B0B76A15A447D20E9C /* SKRContextePubliciteX20OrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRContextePubliciteX20OrcFD.swift; path = Sources/Models/SKRContextePubliciteX20OrcFD.swift; sourceTree = "<group>"; };
 		9D4D0BE83DC5A6340A9200182C7FD62A /* SKRSchedule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRSchedule.swift; path = Sources/Models/SKRSchedule.swift; sourceTree = "<group>"; };
 		9D783599D19490F413F9D8C4512ED6A7 /* SKRMasquableSEOElementListeOrcFDDonneesSousTitresOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRMasquableSEOElementListeOrcFDDonneesSousTitresOrcFD.swift; path = Sources/Models/SKRMasquableSEOElementListeOrcFDDonneesSousTitresOrcFD.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E0D87CFE46687BD15D3B268C165AED1 /* SendPicture.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SendPicture.swift; path = Sources/Requests/Contributif/SendPicture.swift; sourceTree = "<group>"; };
 		9E19F534141CD5924D19374356B93FA6 /* SKRFilters.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRFilters.swift; path = Sources/Models/SKRFilters.swift; sourceTree = "<group>"; };
 		9F173611F1920693CFBB6DA83CDE109D /* Result.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Result.swift; path = Source/Result.swift; sourceTree = "<group>"; };
 		A0AAB1180A65B1539ADB7EC83D0D6B09 /* SKRCgu.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRCgu.swift; path = Sources/Models/SKRCgu.swift; sourceTree = "<group>"; };
 		A131B7FE0C4B129691C3DD8243618D52 /* SKRTeaser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRTeaser.swift; path = Sources/Models/SKRTeaser.swift; sourceTree = "<group>"; };
+		A1428CD323181FD8006ED983 /* SKRFavoriRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SKRFavoriRequest.swift; path = Sources/Models/SKRFavoriRequest.swift; sourceTree = "<group>"; };
 		A179C20090524189048DD4E9BC79B935 /* SKRRendezvous.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRRendezvous.swift; path = Sources/Models/SKRRendezvous.swift; sourceTree = "<group>"; };
 		A4102B354495F0624FCCB5551910FB84 /* SKRContributionApiInscriptionOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRContributionApiInscriptionOrcFD.swift; path = Sources/Models/SKRContributionApiInscriptionOrcFD.swift; sourceTree = "<group>"; };
 		A42613478065C820CFE4A249C5B270CE /* SKRResPvi.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRResPvi.swift; path = Sources/Models/SKRResPvi.swift; sourceTree = "<group>"; };
@@ -1007,7 +1009,7 @@
 		E40A13188BF8DB1781D5815652802971 /* SKRContenuChaud.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRContenuChaud.swift; path = Sources/Models/SKRContenuChaud.swift; sourceTree = "<group>"; };
 		E486AC7845BED4DC2C7D2293BE2D858F /* SynchronizeDraftReview.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SynchronizeDraftReview.swift; path = Sources/Requests/Contributif/SynchronizeDraftReview.swift; sourceTree = "<group>"; };
 		E57AFB49F1E42699AD07CDE96997E905 /* SKRCategories.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRCategories.swift; path = Sources/Models/SKRCategories.swift; sourceTree = "<group>"; };
-		E60623D9E8BF7E10A73630FAB547B82A /* Tagged.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Tagged.framework; path = Tagged.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E60623D9E8BF7E10A73630FAB547B82A /* Tagged.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Tagged.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E649791DD65E3BC207EC34AE8673BE9F /* SKRBlocPrestationsOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRBlocPrestationsOrcFD.swift; path = Sources/Models/SKRBlocPrestationsOrcFD.swift; sourceTree = "<group>"; };
 		E6989E89C9B145E2B9F0400DF31F6806 /* SKRMoyensContactsDesignesOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRMoyensContactsDesignesOrcFD.swift; path = Sources/Models/SKRMoyensContactsDesignesOrcFD.swift; sourceTree = "<group>"; };
 		E85345B562946661B9325457F3A7A94C /* SKRContactsB2BApiInscriptionOrcFD.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SKRContactsB2BApiInscriptionOrcFD.swift; path = Sources/Models/SKRContactsB2BApiInscriptionOrcFD.swift; sourceTree = "<group>"; };
@@ -1354,6 +1356,7 @@
 				E8779EB1C7D88EF3DAE825E3390DD8DB /* SKRIntervention.swift */,
 				60A3170929DAB38C8A4EAEE0FFA7A44E /* SKRInterventionGenOrcFD.swift */,
 				63294E1FEF9016D799077B9B18831D2D /* SKRItem.swift */,
+				A1428CD323181FD8006ED983 /* SKRFavoriRequest.swift */,
 				A93560E456A15DC22135A2C8FC6D1424 /* SKRItemChampStructure.swift */,
 				28CF00909E8322FF954820FAADF048EA /* SKRItemCommun.swift */,
 				DE11D386C412277C47588C6238DC3A16 /* SKRItemFicheDetaillee.swift */,
@@ -1566,7 +1569,6 @@
 				B7DA799DD1C00FD7BFF78156D3FD750D /* VerifyAccount.swift */,
 				5936F66A0CFD56CC6413F655F7D8FCB3 /* Support Files */,
 			);
-			name = StargateKitRequest;
 			path = StargateKitRequest;
 			sourceTree = "<group>";
 		};
@@ -1593,7 +1595,6 @@
 				F7665ABF673103B5200449BF2BEB4ABC /* Tagged.swift */,
 				A819E70A8C0BAC0BFFB3AABA23ED6282 /* Support Files */,
 			);
-			name = Tagged;
 			path = Tagged;
 			sourceTree = "<group>";
 		};
@@ -1661,7 +1662,6 @@
 				B5FE8B3FBDF87BF20628DA9AE62EF9F1 /* Validation.swift */,
 				D829EFACB08C4AC984EEA2A5D392BC72 /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -1674,7 +1674,6 @@
 				EC75A60CEDA035F318C08804FC2BDEE4 /* ResultProtocol.swift */,
 				BE8CF126EEC47373B8A5E28A42876C7E /* Support Files */,
 			);
-			name = Result;
 			path = Result;
 			sourceTree = "<group>";
 		};
@@ -1736,7 +1735,6 @@
 				BA8E1472A3CFA568B803587D2100C671 /* UserDefaults+StargateKit.swift */,
 				0D6A123834E3DD3A0818F7CFAF8FCDC8 /* Support Files */,
 			);
-			name = StargateKitCore;
 			path = StargateKitCore;
 			sourceTree = "<group>";
 		};
@@ -2455,6 +2453,7 @@
 				DA15A228E1DF926B3032A65F3F258BC9 /* SKRSuggestionStargate.swift in Sources */,
 				A5FA90253202B6F4FCE4FABD75DEE910 /* SKRSynchronizeDraftReviewRequest.swift in Sources */,
 				0AE743E78CFFCCFCE7F4D972C91C0C63 /* SKRTag.swift in Sources */,
+				A1428CD523181FEF006ED983 /* SKRFavoriRequest.swift in Sources */,
 				0C9E5C19CBEA18DF7EC123A94CB30E25 /* SKRTarifOrcFD.swift in Sources */,
 				D2853AE6AFB70E5E0ED41443F1CAE3DF /* SKRTarifSanteOrcFD.swift in Sources */,
 				3CE3CCD82A83C3DE4F0B85D10B67D5FF /* SKRTeaser.swift in Sources */,

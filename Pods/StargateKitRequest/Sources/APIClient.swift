@@ -118,7 +118,6 @@ public class APIClient {
                 },
                 with: urlRequest,
                 encodingCompletion: { result in
-                  
                     switch result {
                     case .success(let uploadRequest, _, _):
                         cancellableRequest.networkRequest = uploadRequest
@@ -138,7 +137,6 @@ public class APIClient {
         } else {
             let networkRequest = sessionManager.request(urlRequest)
                 .responseData(queue: decodingQueue) { dataResponse in
-
                     self.handleResponse(request: request, requestBehaviour: requestBehaviour, dataResponse: dataResponse, completionQueue: completionQueue, complete: complete)
 
             }

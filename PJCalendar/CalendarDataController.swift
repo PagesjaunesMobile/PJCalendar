@@ -10,10 +10,16 @@ import Foundation
 
 class CalendarDataController {
 
-  enum Result {
-    case success(days: [DayApiModel])
+  enum LoadingState {
+    case ready
+    case loading
     case error
   }
+
+  let morningName = "Matin"
+  let afterNoonName = "Apres midi"
+
+  var loadingState = Observable<LoadingState>(.loading)
 
   let apiService: RdvApiService
 
@@ -26,19 +32,20 @@ class CalendarDataController {
   }
 
   func updateSelectedDay(day: DayApiModel) {
-    if let dest = self.days.value.firstIndex(of: day)/*, Int(dest) != self.selectedDay.value*/ {
+    if let dest = self.days.value.firstIndex(of: day) {
       self.selectedDay.value = Int(dest)
     }
   }
 
-  func loadData(completion: @escaping ((Result) -> Void)) {
+  func loadData() {
+    self.loadingState.value = .loading
     self.apiService.makeRequest { result in
       switch result {
       case .success(rdvList: let model):
+        self.loadingState.value = .ready
         self.days.value = model
-        completion(.success(days: model))
       case .error:
-        completion(.error)
+        self.loadingState.value = .error
       }
     }
   }

@@ -44,6 +44,7 @@ class MonthViewModel {
     guard let first = self.originalModels.first else { return }
     self.dataController.updateSelectedDay(day: first)
   }
+
 }
 
 class MonthListViewModel {
@@ -185,6 +186,14 @@ class MonthListViewModel {
     case .notReady:
       break
     }
+  }
+
+  func userWantToDisplayNextMont() {
+    self.userWantToDisplayMonthDay(indexPath: IndexPath(item: self.selectedIndexPath.value.item + 1, section: 0))
+  }
+
+  func userWantToDisplayPreviousMonth() {
+    self.userWantToDisplayMonthDay(indexPath: IndexPath(item: self.selectedIndexPath.value.item - 1, section: 0))
   }
 
   init(dataController: CalendarDataController) {

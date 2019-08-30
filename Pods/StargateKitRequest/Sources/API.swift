@@ -16,7 +16,7 @@ public struct StargateKitRequest {
     /// Whether to remove invalid elements instead of throwing when decoding arrays
     public static var safeArrayDecoding = true
 
-    public static let version = "1.0-20190717104426"
+    public static let version = "1"
 
     public enum Actualites {}
     public enum BonsPlans {}

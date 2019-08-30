@@ -29,8 +29,8 @@ class HeaderCell: UICollectionReusableView {
     return dest
   }()
 
-  let dayView: DaySelectorView? = nil
-  let monthView: MonthSelectorView? = nil
+  var dayView: DaySelectorView? = nil
+  var monthView: MonthSelectorView? = nil
 
   func setupView() {
 
@@ -74,9 +74,9 @@ class HeaderCell: UICollectionReusableView {
     constraints.append(monthView.leadingAnchor.constraint(equalTo: self.firstViewContainer.leadingAnchor))
     constraints.append(monthView.trailingAnchor.constraint(equalTo: self.firstViewContainer.trailingAnchor))
     constraints.append(monthView.bottomAnchor.constraint(equalTo: self.firstViewContainer.bottomAnchor))
-    
-    NSLayoutConstraint.activate(constraints)
 
+    NSLayoutConstraint.activate(constraints)
+    self.monthView = monthView
   }
 
   func setupDayView(dayListViewModel: DayListViewModel) {
@@ -94,6 +94,7 @@ class HeaderCell: UICollectionReusableView {
     constraints.append(dayView.trailingAnchor.constraint(equalTo: self.secondViewContainer.trailingAnchor))
 
     NSLayoutConstraint.activate(constraints)
+    self.dayView = dayView
   }
 
   func configure(monthListViewModel: MonthListViewModel, dayListViewModel: DayListViewModel) {

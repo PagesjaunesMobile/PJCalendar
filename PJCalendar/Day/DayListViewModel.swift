@@ -9,7 +9,9 @@
 import Foundation
 
 class DayViewModel {
+
   private let originalModel: DayApiModel
+
   let dayOfTheWeek: String
   let dayNumber: String
   let dataController: CalendarDataController
@@ -24,8 +26,20 @@ class DayViewModel {
     self.dataController = dataController
   }
 
+  var moringSlots: [TimeSlotViewModel] {
+    return self.slotsViewModel.filter { $0.isAfterNoon == false }
+  }
+
+  var afterNoonSlots: [TimeSlotViewModel] {
+    return self.slotsViewModel.filter { $0.isAfterNoon == true }
+  }
+
   func userWantToShowSlotOfThisMonth() {
     self.dataController.updateSelectedDay(day: self.originalModel)
+  }
+
+  func representDay(day: DayApiModel) -> Bool {
+    return day == self.originalModel
   }
 }
 

@@ -38,6 +38,7 @@ class MonthCell: UICollectionViewCell {
 
   func setupStyle() {
     self.titleLabel.textColor = UIColor.red
+    self.titleLabel.font = UIFont.systemFont(ofSize: 30)
   }
 
   func setup() {

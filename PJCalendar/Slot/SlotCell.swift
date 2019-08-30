@@ -11,7 +11,7 @@ import UIKit
 
 class SlotCell: UICollectionViewCell {
 
-  static let cellSize =  CGSize(width: 50, height: 50)
+  static let cellSize =  CGSize(width: 88, height: 40)
 
   let titleLabel: UILabel = {
     let dest = UILabel(frame: .zero)

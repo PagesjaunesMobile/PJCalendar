@@ -67,6 +67,19 @@ class MonthSelectorView: UIView {
     self.collectionView.delegate = self
   }
 
+  @objc func handleButtonAction(button: UIButton) {
+    if button == self.leftButton {
+        self.viewModel.userWantToDisplayPreviousMonth()
+    } else if button == self.rightButton {
+        self.viewModel.userWantToDisplayNextMont()
+    }
+  }
+
+  func setupButtons() {
+    self.leftButton.addTarget(self, action: #selector(handleButtonAction), for: .touchUpInside)
+    self.rightButton.addTarget(self, action: #selector(handleButtonAction), for: .touchUpInside)
+  }
+
   func setupView() {
     self.addSubview(self.leftButton)
     self.addSubview(self.rightButton)
@@ -97,6 +110,7 @@ class MonthSelectorView: UIView {
     self.setupLayout()
     self.setupCollectionView()
     self.setupViewModel()
+    self.setupButtons()
   }
 
   init(viewModel: MonthListViewModel) {

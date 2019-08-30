@@ -55,25 +55,16 @@ class CalendarViewController: UIViewController {
     self.collectionView.register(HeaderCell.self,
                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                  withReuseIdentifier: HeaderCell.reusueIdentifier)
+
+    self.collectionView.register(SlotHeaderCell.self,
+                                 forCellWithReuseIdentifier: SlotHeaderCell.reusueIdentifier)
   }
 
   func setupDataController() {
-    self.dataController.loadData { result in
-      switch result {
-      case .success(days: let days):
-        break
-      case .error:
-        break
-      }
-    }
+    self.dataController.loadData()
   }
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    self.view.addSubview(self.collectionView)
-
-    self.setupCollectionView()
-
+  func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
     constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor))
@@ -82,8 +73,33 @@ class CalendarViewController: UIViewController {
     constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor))
 
     NSLayoutConstraint.activate(constraints)
+  }
 
+  func setupView() {
+    self.view.addSubview(self.collectionView)
+  }
+
+  func setupViewModel() {
+    self.slotListViewModel.shouldDisplaySLots.bind { [weak self] _, result in
+      guard let `self` = self else { return }
+      if result == true {
+        self.collectionView.reloadData()
+      }
+    }
+    self.slotListViewModel.delegate = self
+  }
+
+  func setup() {
+    self.setupView()
+    self.setupLayout()
+    self.setupCollectionView()
+    self.setupViewModel()
     self.setupDataController()
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    self.setup()
   }
 }
 
@@ -100,28 +116,44 @@ extension CalendarViewController: UICollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+    guard self.slotListViewModel.shouldDisplayHeaderSlotCellForIndexPath(indexPath) == false else {
+      return collectionView.dequeueReusableCell(withReuseIdentifier: SlotHeaderCell.reusueIdentifier, for: indexPath)
+    }
+
     let dequeueCell = collectionView.dequeueReusableCell(withReuseIdentifier: SlotCell.reusueIdentifier, for: indexPath)
+
     guard let dest = dequeueCell as? SlotCell else { return dequeueCell }
-    guard let model = self.slotListViewModel[indexPath] else { return dequeueCell }
+    guard let model = self.slotListViewModel[indexPath.item] else { return dequeueCell }
     dest.configure(model: model)
+
     return dest
   }
 
+
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    let hederView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
-                                                           withReuseIdentifier: HeaderCell.reusueIdentifier, for: indexPath)
-    guard let castedHeaderView = hederView as? HeaderCell else { return hederView }
-    castedHeaderView.configure(monthListViewModel: self.monthListViewModel, dayListViewModel: self.dayListViewModel)
-    return castedHeaderView
+      let hederView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                      withReuseIdentifier: HeaderCell.reusueIdentifier, for: indexPath)
+      guard let castedHeaderView = hederView as? HeaderCell else { return hederView }
+      castedHeaderView.configure(monthListViewModel: self.monthListViewModel, dayListViewModel: self.dayListViewModel)
+      return castedHeaderView
   }
 }
 
 extension CalendarViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    guard self.slotListViewModel.shouldDisplayHeaderSlotCellForIndexPath(indexPath) == false else
+    { return  CGSize(width: collectionView.frame.width, height: 88) }
+    
     return SlotCell.cellSize
   }
 
 
 }
 
+extension CalendarViewController: TimeSlotListViewModelDelegate {
+  func reloadSlots() {
+    self.collectionView.reloadData()
+  }
+}

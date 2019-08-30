@@ -9,87 +9,135 @@ import Foundation
 
 public struct SKRFavori: StargateKitModel {
 
-    public var codeActivite: String?
+    public enum SKRStatut: String, Codable, Hashable, CaseIterable {
+        case valide = "VALIDE"
+        case modifie = "MODIFIE"
+        case supprime = "SUPPRIME"
+    }
 
-    public var dateAction: DateTime?
+    public var bloc: SKRBloc?
 
-    public var dateAjout: DateTime?
+    public var code: String?
 
-    public var designation: String?
+    public var codeAN9: String?
 
-    public var epj: String?
+    public var codeCI: String?
 
-    public var localiteId: String?
+    public var codeEtab: String?
 
-    public var locationId: String?
+    public var codeLoc: String?
+
+    public var dateCreation: String?
+
+    public var designationLigne: String?
+
+    public var id: String?
+
+    public var idMobile: String?
+
+    public var msg: String?
 
     public var raisonSociale: String?
 
-    public var source: String?
+    public var statut: SKRStatut?
 
-    public init(codeActivite: String? = nil, dateAction: DateTime? = nil, dateAjout: DateTime? = nil, designation: String? = nil, epj: String? = nil, localiteId: String? = nil, locationId: String? = nil, raisonSociale: String? = nil, source: String? = nil) {
-        self.codeActivite = codeActivite
-        self.dateAction = dateAction
-        self.dateAjout = dateAjout
-        self.designation = designation
-        self.epj = epj
-        self.localiteId = localiteId
-        self.locationId = locationId
+    public var title: String?
+
+    public var userId: String?
+
+    public init(bloc: SKRBloc? = nil, code: String? = nil, codeAN9: String? = nil, codeCI: String? = nil, codeEtab: String? = nil, codeLoc: String? = nil, dateCreation: String? = nil, designationLigne: String? = nil, id: String? = nil, idMobile: String? = nil, msg: String? = nil, raisonSociale: String? = nil, statut: SKRStatut? = nil, title: String? = nil, userId: String? = nil) {
+        self.bloc = bloc
+        self.code = code
+        self.codeAN9 = codeAN9
+        self.codeCI = codeCI
+        self.codeEtab = codeEtab
+        self.codeLoc = codeLoc
+        self.dateCreation = dateCreation
+        self.designationLigne = designationLigne
+        self.id = id
+        self.idMobile = idMobile
+        self.msg = msg
         self.raisonSociale = raisonSociale
-        self.source = source
+        self.statut = statut
+        self.title = title
+        self.userId = userId
     }
 
     private enum CodingKeys: String, Hashable, CodingKey {
-        case codeActivite = "code_activite"
-        case dateAction = "date_action"
-        case dateAjout = "date_ajout"
-        case designation
-        case epj
-        case localiteId = "localite_id"
-        case locationId = "location_id"
-        case raisonSociale = "raison_sociale"
-        case source
+        case bloc
+        case code
+        case codeAN9
+        case codeCI
+        case codeEtab
+        case codeLoc
+        case dateCreation
+        case designationLigne
+        case id
+        case idMobile = "id_mobile"
+        case msg
+        case raisonSociale
+        case statut
+        case title
+        case userId
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        codeActivite = try container.decodeIfPresent(.codeActivite)
-        dateAction = try container.decodeIfPresent(.dateAction)
-        dateAjout = try container.decodeIfPresent(.dateAjout)
-        designation = try container.decodeIfPresent(.designation)
-        epj = try container.decodeIfPresent(.epj)
-        localiteId = try container.decodeIfPresent(.localiteId)
-        locationId = try container.decodeIfPresent(.locationId)
+        bloc = try container.decodeIfPresent(.bloc)
+        code = try container.decodeIfPresent(.code)
+        codeAN9 = try container.decodeIfPresent(.codeAN9)
+        codeCI = try container.decodeIfPresent(.codeCI)
+        codeEtab = try container.decodeIfPresent(.codeEtab)
+        codeLoc = try container.decodeIfPresent(.codeLoc)
+        dateCreation = try container.decodeIfPresent(.dateCreation)
+        designationLigne = try container.decodeIfPresent(.designationLigne)
+        id = try container.decodeIfPresent(.id)
+        idMobile = try container.decodeIfPresent(.idMobile)
+        msg = try container.decodeIfPresent(.msg)
         raisonSociale = try container.decodeIfPresent(.raisonSociale)
-        source = try container.decodeIfPresent(.source)
+        statut = try container.decodeIfPresent(.statut)
+        title = try container.decodeIfPresent(.title)
+        userId = try container.decodeIfPresent(.userId)
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encodeIfPresent(codeActivite, forKey: .codeActivite)
-        try container.encodeIfPresent(dateAction, forKey: .dateAction)
-        try container.encodeIfPresent(dateAjout, forKey: .dateAjout)
-        try container.encodeIfPresent(designation, forKey: .designation)
-        try container.encodeIfPresent(epj, forKey: .epj)
-        try container.encodeIfPresent(localiteId, forKey: .localiteId)
-        try container.encodeIfPresent(locationId, forKey: .locationId)
+        try container.encodeIfPresent(bloc, forKey: .bloc)
+        try container.encodeIfPresent(code, forKey: .code)
+        try container.encodeIfPresent(codeAN9, forKey: .codeAN9)
+        try container.encodeIfPresent(codeCI, forKey: .codeCI)
+        try container.encodeIfPresent(codeEtab, forKey: .codeEtab)
+        try container.encodeIfPresent(codeLoc, forKey: .codeLoc)
+        try container.encodeIfPresent(dateCreation, forKey: .dateCreation)
+        try container.encodeIfPresent(designationLigne, forKey: .designationLigne)
+        try container.encodeIfPresent(id, forKey: .id)
+        try container.encodeIfPresent(idMobile, forKey: .idMobile)
+        try container.encodeIfPresent(msg, forKey: .msg)
         try container.encodeIfPresent(raisonSociale, forKey: .raisonSociale)
-        try container.encodeIfPresent(source, forKey: .source)
+        try container.encodeIfPresent(statut, forKey: .statut)
+        try container.encodeIfPresent(title, forKey: .title)
+        try container.encodeIfPresent(userId, forKey: .userId)
     }
 
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRFavori else { return false }
-      guard self.codeActivite == object.codeActivite else { return false }
-      guard self.dateAction == object.dateAction else { return false }
-      guard self.dateAjout == object.dateAjout else { return false }
-      guard self.designation == object.designation else { return false }
-      guard self.epj == object.epj else { return false }
-      guard self.localiteId == object.localiteId else { return false }
-      guard self.locationId == object.locationId else { return false }
+      guard self.bloc == object.bloc else { return false }
+      guard self.code == object.code else { return false }
+      guard self.codeAN9 == object.codeAN9 else { return false }
+      guard self.codeCI == object.codeCI else { return false }
+      guard self.codeEtab == object.codeEtab else { return false }
+      guard self.codeLoc == object.codeLoc else { return false }
+      guard self.dateCreation == object.dateCreation else { return false }
+      guard self.designationLigne == object.designationLigne else { return false }
+      guard self.id == object.id else { return false }
+      guard self.idMobile == object.idMobile else { return false }
+      guard self.msg == object.msg else { return false }
       guard self.raisonSociale == object.raisonSociale else { return false }
-      guard self.source == object.source else { return false }
+      guard self.statut == object.statut else { return false }
+      guard self.title == object.title else { return false }
+      guard self.userId == object.userId else { return false }
       return true
     }
 

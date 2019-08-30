@@ -11,6 +11,18 @@ import Foundation
 struct SlotApiModel {
   let htext: String
   let hcode: String
+  let isAfterNoon: Bool
+
+  init(htext: String, hcode: String) {
+    self.hcode = hcode
+    self.htext = htext
+
+    if let dest = self.htext.lowercased().split(separator: "h").first, let intValue = Int(String(dest).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)), intValue >= 15 {
+      self.isAfterNoon = true
+    } else {
+      self.isAfterNoon = false
+    }
+  }
 }
 
 extension DayApiModel: Equatable {

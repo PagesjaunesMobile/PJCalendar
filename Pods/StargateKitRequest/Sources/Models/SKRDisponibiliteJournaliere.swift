@@ -13,18 +13,18 @@ public struct SKRDisponibiliteJournaliere: StargateKitModel {
 
     public var dtext: String?
 
-    public var hour: [SKRHour]?
+    public var hours: [SKRHour]?
 
-    public init(dcode: String? = nil, dtext: String? = nil, hour: [SKRHour]? = nil) {
+    public init(dcode: String? = nil, dtext: String? = nil, hours: [SKRHour]? = nil) {
         self.dcode = dcode
         self.dtext = dtext
-        self.hour = hour
+        self.hours = hours
     }
 
     private enum CodingKeys: String, Hashable, CodingKey {
         case dcode
         case dtext
-        case hour
+        case hours
     }
 
     public init(from decoder: Decoder) throws {
@@ -32,7 +32,7 @@ public struct SKRDisponibiliteJournaliere: StargateKitModel {
 
         dcode = try container.decodeIfPresent(.dcode)
         dtext = try container.decodeIfPresent(.dtext)
-        hour = try container.decodeArrayIfPresent(.hour)
+        hours = try container.decodeArrayIfPresent(.hours)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -40,14 +40,14 @@ public struct SKRDisponibiliteJournaliere: StargateKitModel {
 
         try container.encodeIfPresent(dcode, forKey: .dcode)
         try container.encodeIfPresent(dtext, forKey: .dtext)
-        try container.encodeIfPresent(hour, forKey: .hour)
+        try container.encodeIfPresent(hours, forKey: .hours)
     }
 
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRDisponibiliteJournaliere else { return false }
       guard self.dcode == object.dcode else { return false }
       guard self.dtext == object.dtext else { return false }
-      guard self.hour == object.hour else { return false }
+      guard self.hours == object.hours else { return false }
       return true
     }
 

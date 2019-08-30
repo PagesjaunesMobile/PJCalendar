@@ -15,6 +15,7 @@
 		A13263C9230BF77E00B5C53E /* DayListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C8230BF77E00B5C53E /* DayListViewModel.swift */; };
 		A13263CB230BFA9700B5C53E /* TimeSlotListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263CA230BFA9700B5C53E /* TimeSlotListViewModel.swift */; };
 		A13263CF230D8B8000B5C53E /* MonthSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263CE230D8B8000B5C53E /* MonthSelectorView.swift */; };
+		A1428CD723183884006ED983 /* SlotHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1428CD623183884006ED983 /* SlotHeader.swift */; };
 		A146A02522F0837100B5D369 /* DaySelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A146A02422F0837100B5D369 /* DaySelectorView.swift */; };
 		A161712122FB2692005450C4 /* CalendarViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A161712022FB2692005450C4 /* CalendarViewLayout.swift */; };
 		A161712322FB271B005450C4 /* DaySelectorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A161712222FB271B005450C4 /* DaySelectorCell.swift */; };
@@ -40,6 +41,7 @@
 		A13263C8230BF77E00B5C53E /* DayListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayListViewModel.swift; sourceTree = "<group>"; };
 		A13263CA230BFA9700B5C53E /* TimeSlotListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSlotListViewModel.swift; sourceTree = "<group>"; };
 		A13263CE230D8B8000B5C53E /* MonthSelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthSelectorView.swift; sourceTree = "<group>"; };
+		A1428CD623183884006ED983 /* SlotHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotHeader.swift; sourceTree = "<group>"; };
 		A146A02422F0837100B5D369 /* DaySelectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectorView.swift; sourceTree = "<group>"; };
 		A161712022FB2692005450C4 /* CalendarViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewLayout.swift; sourceTree = "<group>"; };
 		A161712222FB271B005450C4 /* DaySelectorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectorCell.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			children = (
 				A13263CA230BFA9700B5C53E /* TimeSlotListViewModel.swift */,
 				A1850D9C22E9DF25007E8FAD /* SlotCell.swift */,
+				A1428CD623183884006ED983 /* SlotHeader.swift */,
 			);
 			path = Slot;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1428CD723183884006ED983 /* SlotHeader.swift in Sources */,
 				A1E2A893231426CE00471757 /* MonthCell.swift in Sources */,
 				A13263CF230D8B8000B5C53E /* MonthSelectorView.swift in Sources */,
 				A146A02522F0837100B5D369 /* DaySelectorView.swift in Sources */,
