@@ -33,7 +33,7 @@ class CalendarViewController: UIViewController {
 
   let collectionView: UICollectionView = {
 
-    let layout = CalendarFlowLayout()
+    let layout = UICollectionViewFlowLayout() // CalendarFlowLayout()
 
     layout.headerReferenceSize = CGSize(width: HeaderCell.hearderheight, height: HeaderCell.hearderheight)
 
@@ -145,8 +145,10 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     guard self.slotListViewModel.shouldDisplayHeaderSlotCellForIndexPath(indexPath) == false else
     { return  CGSize(width: collectionView.frame.width, height: 88) }
-    
-    return SlotCell.cellSize
+
+    return CGSize(width: 88, height: 40)
+
+//    return SlotCell.cellSize
   }
 
 
