@@ -11,7 +11,7 @@ import UIKit
 
 class DaySelectorCell: UICollectionViewCell {
 
-  static let reeuseIdentier = String(describing: self)
+  static let reeuseIdentier = String(describing: MonthCell.self)
 
   static let cellSize = CGSize(width: 72, height: 56)
 

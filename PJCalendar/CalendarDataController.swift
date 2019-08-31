@@ -24,8 +24,12 @@ class CalendarDataController {
   let apiService: RdvApiService
 
   var days: Observable<[DayApiModel]> = Observable<[DayApiModel]>([])
-
   var selectedDay: Observable<Int> = Observable<Int>(0)
+  
+  var dayModel: DayApiModel? {
+    guard selectedDay.value >= 0, selectedDay.value < self.days.value.count else { return nil }
+    return self.days.value[self.selectedDay.value]
+  }
 
   init(apiService: RdvApiService) {
     self.apiService = apiService
@@ -44,6 +48,7 @@ class CalendarDataController {
       case .success(rdvList: let model):
         self.loadingState.value = .ready
         self.days.value = model
+        self.selectedDay.value = 0
       case .error:
         self.loadingState.value = .error
       }

@@ -23,7 +23,7 @@ class TimeSlotViewModel {
 }
 
 protocol TimeSlotListViewModelDelegate: class {
-  func reloadSlots()
+	func reloadSlots()
 }
 
 extension TimeSlotListViewModel.DayPeriod {
@@ -72,6 +72,22 @@ class TimeSlotListViewModel {
     case timeSlot(day: DayViewModel, period: DayPeriod)
     case timeSlotEmpty(previousDayWithSlot: DayViewModel?, nextDayWithSlot: DayViewModel?)
 
+    var segmentedControllPeriodIndex: Int {
+      switch self {
+      case .timeSlot(day: _, period: let period):
+        switch period {
+        case .morning:
+          return 0
+        case .afternoon:
+          return 1
+        }
+      case .notReady:
+        return 0
+      case .timeSlotEmpty:
+        return 0
+      }
+    }
+    
     var slotCount: Int {
       switch self {
       case .notReady:
@@ -93,7 +109,7 @@ class TimeSlotListViewModel {
       case .timeSlot(day: let day, period: let timePeriod):
         switch timePeriod {
         case .morning:
-          if index - 1 >= 0 && index - 1 < day.moringSlots.count{
+          if index - 1 >= 0 && index - 1 < day.moringSlots.count {
             return day.moringSlots[index - 1]
           } else { return nil }
         case .afternoon:
@@ -117,6 +133,8 @@ class TimeSlotListViewModel {
   var shouldDisplaySpinner: Observable<Bool> = Observable<Bool>(true)
   var shouldDisplaySLots: Observable<Bool> = Observable<Bool>(true)
   var shouldDisplayNoSlotView: Observable<Bool> = Observable<Bool>(false)
+  
+  var segmentedControlIndexToDisplay: Observable<Int> = Observable<Int>(0)
 
   private var displayState: DisplayState {
     didSet {
@@ -131,10 +149,12 @@ class TimeSlotListViewModel {
   var afterNoonPeriod: DayPeriod {
     return .afternoon(periodName: self.dataController.afterNoonName)
   }
+  
+  var lastPeriod: DayPeriod? = nil
 
   private func updateObservableFromDisplayState(_ displayState: DisplayState) {
     switch displayState {
-    case .timeSlot(day: _):
+    case .timeSlot:
       if self.shouldDisplaySpinner.value == true {
         self.shouldDisplaySpinner.value = false
       }
@@ -146,6 +166,11 @@ class TimeSlotListViewModel {
       if self.shouldDisplayNoSlotView.value == true {
         self.shouldDisplayNoSlotView.value = false
       }
+      
+      if self.segmentedControlIndexToDisplay.value != displayState.segmentedControllPeriodIndex {
+        self.segmentedControlIndexToDisplay.value = displayState.segmentedControllPeriodIndex
+      }
+      
 
     case .timeSlotEmpty(previousDayWithSlot: _, nextDayWithSlot: _):
       if self.shouldDisplaySLots.value == true {
@@ -177,22 +202,31 @@ class TimeSlotListViewModel {
   private func setupDataController() {
     self.dataController.selectedDay.bind { [weak self] _, index in
       guard let `self` = self else { return }
-      let day = self.dataController.days.value[self.dataController.selectedDay.value]
+      
+      guard let day = self.dataController.dayModel else { return }
+      let dayViewModel = DayViewModel(model: day, dataController: self.dataController)
+      
+      guard dayViewModel.noSlotAlviable == false else {
+        self.displayState = .timeSlotEmpty(previousDayWithSlot: nil, nextDayWithSlot: nil)
+        self.delegate?.reloadSlots()
+        return
+      }
+      
       switch self.displayState {
       case .timeSlot(day: let currentDay, period: let period):
-        if currentDay.representDay(day: day) == false {
-          self.displayState = .timeSlot(day: DayViewModel(model: day, dataController: self.dataController), period: period)
+        if dayViewModel != currentDay {
+          self.displayState = .timeSlot(day: dayViewModel, period: period)
           self.delegate?.reloadSlots()
         }
       case .timeSlotEmpty(_):
-        self.displayState = .timeSlot(day: DayViewModel(model: day, dataController: self.dataController), period: self.moringPeriod)
+        self.displayState = .timeSlot(day: dayViewModel, period: self.moringPeriod)
         self.delegate?.reloadSlots()
       case .notReady:
-        self.displayState = .timeSlot(day: DayViewModel(model: day, dataController: self.dataController), period: self.moringPeriod)
+        self.displayState = .timeSlot(day: dayViewModel, period: self.moringPeriod)
         self.delegate?.reloadSlots()
       }
     }
-  }
+}
 
   init(dataController: CalendarDataController) {
     self.dataController = dataController

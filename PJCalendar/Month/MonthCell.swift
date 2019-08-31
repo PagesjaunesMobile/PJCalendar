@@ -11,7 +11,7 @@ import UIKit
 
 class MonthCell: UICollectionViewCell {
 
-  static let reuseCellIdentifier: String = String(describing: self)
+  static let reuseCellIdentifier: String = String(describing: MonthCell.self)
 
   let titleLabel: UILabel = {
     let dest = UILabel()

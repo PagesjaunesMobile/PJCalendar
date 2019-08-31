@@ -11,7 +11,7 @@ import UIKit
 
 class HeaderCell: UICollectionReusableView {
 
-  static let reusueIdentifier = String(describing:self)
+  static let reusueCellIdentifier = String(describing: MonthCell.self)
 
   static let hearderheight: CGFloat = 237
   static let minHeaderSize: CGFloat = 167

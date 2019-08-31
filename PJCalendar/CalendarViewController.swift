@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 class CalendarViewController: UIViewController {
 
   init(dataController: CalendarDataController) {
@@ -33,7 +32,7 @@ class CalendarViewController: UIViewController {
 
   let collectionView: UICollectionView = {
 
-    let layout = UICollectionViewFlowLayout() // CalendarFlowLayout()
+    let layout = CalendarFlowLayout()
 
     layout.headerReferenceSize = CGSize(width: HeaderCell.hearderheight, height: HeaderCell.hearderheight)
 
@@ -50,14 +49,16 @@ class CalendarViewController: UIViewController {
     self.collectionView.isOpaque = true
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
+    
     self.collectionView.register(SlotCell.self,
-                                 forCellWithReuseIdentifier: SlotCell.reusueIdentifier)
+                                 forCellWithReuseIdentifier: SlotCell.reusueCellIdentifier)
+    
     self.collectionView.register(HeaderCell.self,
                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                                 withReuseIdentifier: HeaderCell.reusueIdentifier)
+                                 withReuseIdentifier: HeaderCell.reusueCellIdentifier)
 
     self.collectionView.register(SlotHeaderCell.self,
-                                 forCellWithReuseIdentifier: SlotHeaderCell.reusueIdentifier)
+                                 forCellWithReuseIdentifier: SlotHeaderCell.reusueCellIdentifier)
   }
 
   func setupDataController() {
@@ -118,12 +119,21 @@ extension CalendarViewController: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
     guard self.slotListViewModel.shouldDisplayHeaderSlotCellForIndexPath(indexPath) == false else {
-      return collectionView.dequeueReusableCell(withReuseIdentifier: SlotHeaderCell.reusueIdentifier, for: indexPath)
+      
+      let headercell = collectionView.dequeueReusableCell(withReuseIdentifier: SlotHeaderCell.reusueCellIdentifier, for: indexPath)
+      guard let castedHeadercell = headercell as? SlotHeaderCell else {
+        return headercell
+      }
+      castedHeadercell.configure(viewModel: self.slotListViewModel)
+      return castedHeadercell
     }
 
-    let dequeueCell = collectionView.dequeueReusableCell(withReuseIdentifier: SlotCell.reusueIdentifier, for: indexPath)
+    let dequeueCell = collectionView.dequeueReusableCell(withReuseIdentifier: SlotCell.reusueCellIdentifier, for: indexPath)
 
-    guard let dest = dequeueCell as? SlotCell else { return dequeueCell }
+    guard let dest = dequeueCell as? SlotCell else {
+        return dequeueCell
+    }
+    
     guard let model = self.slotListViewModel[indexPath.item] else { return dequeueCell }
     dest.configure(model: model)
 
@@ -133,7 +143,7 @@ extension CalendarViewController: UICollectionViewDataSource {
 
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
       let hederView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader,
-                                                                      withReuseIdentifier: HeaderCell.reusueIdentifier, for: indexPath)
+                                                                      withReuseIdentifier: HeaderCell.reusueCellIdentifier, for: indexPath)
       guard let castedHeaderView = hederView as? HeaderCell else { return hederView }
       castedHeaderView.configure(monthListViewModel: self.monthListViewModel, dayListViewModel: self.dayListViewModel)
       return castedHeaderView
@@ -145,10 +155,8 @@ extension CalendarViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     guard self.slotListViewModel.shouldDisplayHeaderSlotCellForIndexPath(indexPath) == false else
     { return  CGSize(width: collectionView.frame.width, height: 88) }
-
-    return CGSize(width: 88, height: 40)
-
-//    return SlotCell.cellSize
+    
+   return SlotCell.cellSize
   }
 
 

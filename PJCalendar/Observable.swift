@@ -31,4 +31,8 @@ public class Observable<ObservedType> {
       observer(self, value)
     }
   }
+  
+  func removeAllObserver() {
+    self.observers.removeAll()
+  }
 }

@@ -8,7 +8,14 @@
 
 import Foundation
 
-class DayViewModel {
+extension DayViewModel{
+  static func == (lhs: DayViewModel, rhs: DayViewModel) -> Bool {
+    return lhs.originalModel == rhs.originalModel
+  }
+}
+
+
+class DayViewModel: Equatable {
 
   private let originalModel: DayApiModel
 
@@ -32,6 +39,10 @@ class DayViewModel {
 
   var afterNoonSlots: [TimeSlotViewModel] {
     return self.slotsViewModel.filter { $0.isAfterNoon == true }
+  }
+  
+  var noSlotAlviable: Bool {
+    return self.slotsViewModel.isEmpty
   }
 
   func userWantToShowSlotOfThisMonth() {

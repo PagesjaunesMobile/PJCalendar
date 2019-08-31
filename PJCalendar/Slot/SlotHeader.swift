@@ -11,13 +11,15 @@ import UIKit
 
 class SlotHeaderCell: UICollectionViewCell {
 
-  static let reusueIdentifier = String(describing:self)
+  static let reusueCellIdentifier = String(describing:SlotHeaderCell.self)
 
   let segmentedControll: UISegmentedControl = {
     let dest = UISegmentedControl()
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
   }()
+  
+  var viewModel: TimeSlotListViewModel? = nil
 
   func setupLayout() {
     var constraints = [NSLayoutConstraint]()
@@ -29,16 +31,51 @@ class SlotHeaderCell: UICollectionViewCell {
 
     NSLayoutConstraint.activate(constraints)
   }
+  
+  @objc func segmentedControllDidChange() {
+    if self.segmentedControll.selectedSegmentIndex == 0 {
+      self.viewModel?.userDidSelectMoringPeriod()
+    } else {
+      self.viewModel?.userDidSelectAfternoonPeriod()
+    }
+  }
 
   func setupView() {
     self.contentView.addSubview(self.segmentedControll)
-    self.segmentedControll.insertSegment(withTitle: "Matin", at: 0, animated: false)
-    self.segmentedControll.insertSegment(withTitle: "Apres midi", at: 1, animated: false)
+  }
+  
+  override func prepareForReuse() {
+    guard let viewModel = self.viewModel else { return }
+    viewModel.segmentedControlIndexToDisplay.removeAllObserver()
   }
 
   func setup() {
     self.setupView()
     self.setupLayout()
+  }
+  
+  func setupModel() {
+    guard let viewModel = self.viewModel else { return }
+    
+    self.segmentedControll.insertSegment(withTitle: viewModel.dataController.morningName, at: 0, animated: false)
+    self.segmentedControll.insertSegment(withTitle: viewModel.dataController.afterNoonName, at: 1, animated: false)
+    self.segmentedControll.addTarget(self, action: #selector(segmentedControllDidChange), for: UIControl.Event.valueChanged)
+    
+    viewModel.segmentedControlIndexToDisplay.bind { [weak self] _, indexToDisplay in
+      guard let `self` = self else { return }
+      guard indexToDisplay >= 0, indexToDisplay < self.segmentedControll.numberOfSegments else { return }
+      self.segmentedControll.selectedSegmentIndex = indexToDisplay
+    }
+    self.segmentedControll.selectedSegmentIndex = viewModel.segmentedControlIndexToDisplay.value
+  }
+
+  func configure(viewModel: TimeSlotListViewModel) {
+    guard self.viewModel == nil else {
+      self.segmentedControll.selectedSegmentIndex = viewModel.segmentedControlIndexToDisplay.value
+      return
+    }
+    self.viewModel = viewModel
+    self.setupModel()
   }
 
   override init(frame: CGRect) {
@@ -49,6 +86,4 @@ class SlotHeaderCell: UICollectionViewCell {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
-
 }
