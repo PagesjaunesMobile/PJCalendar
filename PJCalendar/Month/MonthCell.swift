@@ -66,7 +66,8 @@ class MonthCell: UICollectionViewCell {
   func setupStyle() {
     self.monthTitle.textColor = UIColor.black
     self.yearTitle.textColor = UIColor.black
-    self.monthTitle.font = UIFont.systemFont(ofSize: 32)
+    self.monthTitle.font = UIFont.diloRoman(size: 32)
+    self.yearTitle.font = UIFont.diloBold(size: 20)
   }
 
   func setup() {

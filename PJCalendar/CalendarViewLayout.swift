@@ -12,7 +12,6 @@ import UIKit
 class NewCalendarFlowLayout: UICollectionViewLayout {
 
   let cellSize = SlotCell.cellSize
-
   let shrinkableHeightRation: CGFloat = 3.0
 
   var attributes = [UICollectionViewLayoutAttributes]()
@@ -26,6 +25,21 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
     self.attributes.removeAll()
   }
 
+  func getSmallHeaderContentOffet() -> CGFloat {
+
+    guard let collectionView = self.collectionView else { return 0 }
+
+    var i: CGFloat = 0
+    var size = HeaderCell.hearderheight
+
+    while size >= HeaderCell.minHeaderSize {
+      let avancement = i / (collectionView.frame.size.height / self.shrinkableHeightRation)
+      size = HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight)
+      i += 1
+    }
+    return i
+  }
+
   private func getHeaderFrame(contentOffset: CGPoint) -> CGRect {
     guard
       let frame = self.collectionView?.frame,
@@ -37,6 +51,7 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
     let headerSize = HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight)
 
     guard headerSize >= HeaderCell.minHeaderSize else {
+
       return CGRect(x: 0, y: contentOffset.y, width: frame.size.width, height: HeaderCell.minHeaderSize)
     }
 
@@ -114,8 +129,8 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
 
   func addScrolableContentOffsetIfNeeded(size: CGSize) -> CGSize {
     guard let collectionView = self.collectionView else { return size }
-    if size.height < collectionView.frame.height + (HeaderCell.hearderheight - HeaderCell.minHeaderSize) {
-      return CGSize(width: size.width, height: collectionView.frame.height + (HeaderCell.hearderheight - HeaderCell.minHeaderSize))
+    if size.height < collectionView.frame.height + self.getSmallHeaderContentOffet() {
+      return CGSize(width: size.width, height: (collectionView.frame.height + self.getSmallHeaderContentOffet()))
     } else {
       return size
     }

@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import KitUI
 
 class MonthSelectorViewCollectionViewLayout: UICollectionViewLayout {
 
@@ -65,10 +66,6 @@ class MonthSelectorView: UIView {
 
   let collectionView: UICollectionView = {
     let layout = MonthSelectorViewCollectionViewLayout()
-//    layout.scrollDirection = .horizontal
-//    layout.sectionInset = UIEdgeInsets.zero
-//    layout.minimumInteritemSpacing = 0
-//    layout.minimumLineSpacing = 0
     let dest = UICollectionView(frame: .zero, collectionViewLayout: layout)
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
@@ -89,26 +86,27 @@ class MonthSelectorView: UIView {
   func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
-    constraints.append(self.leftButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5))
+    constraints.append(self.leftButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16))
     constraints.append(self.leftButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
 
-    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5))
+    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16))
     constraints.append(self.rightButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
 
     constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.topAnchor))
-    constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.leftButton.rightAnchor, constant: 5))
-    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.rightButton.leftAnchor, constant: -5))
+    constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.leftButton.rightAnchor, constant: 16))
+    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.rightButton.leftAnchor, constant: -16))
     constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor))
 
     NSLayoutConstraint.activate(constraints)
   }
 
   func setupCollectionView() {
+    self.collectionView.contentInsetAdjustmentBehavior = .never
     self.collectionView.isPagingEnabled = true
     self.collectionView.register(MonthCell.self, forCellWithReuseIdentifier: MonthCell.reuseCellIdentifier)
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
-    self.collectionView.backgroundColor = UIColor.white
+    self.collectionView.backgroundColor = UIColor.clear
   }
 
   @objc func handleButtonAction(button: UIButton) {
@@ -148,14 +146,19 @@ class MonthSelectorView: UIView {
     }
   }
 
+  func setupStyle() {
+    self.leftButton.setImage(UIImage.resize(UIImage(named: "chevronGauche")!, size: KitUIAssetSize._16pt, color: UIColor.black), for: UIControl.State.normal)
+    self.rightButton.setImage(UIImage.resize(UIImage(named: "chevronDroit")!, size: KitUIAssetSize._16pt, color: UIColor.black), for: UIControl.State.normal)
+  }
+
   func setup() {
-    self.backgroundColor = UIColor.white
     self.setupView()
     self.setupLayout()
     self.setupCollectionView()
     self.setupViewModel()
     self.setupButtons()
-    self.collectionView.contentInsetAdjustmentBehavior = .never
+    self.setupLayout()
+    self.setupStyle()
   }
 
   init(viewModel: MonthListViewModel) {
@@ -167,7 +170,6 @@ class MonthSelectorView: UIView {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-
 
 }
 

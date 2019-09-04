@@ -27,6 +27,10 @@
 		A1850D9922E9D52A007E8FAD /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9822E9D52A007E8FAD /* CalendarViewController.swift */; };
 		A1850D9B22E9D55C007E8FAD /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9A22E9D55C007E8FAD /* HeaderCell.swift */; };
 		A1850D9D22E9DF25007E8FAD /* SlotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1850D9C22E9DF25007E8FAD /* SlotCell.swift */; };
+		A197001A232022E500EDDE1A /* DiLoIOS-45Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A19700192320229F00EDDE1A /* DiLoIOS-45Light.ttf */; };
+		A197001B232022E700EDDE1A /* DiLoIOS-55Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A19700172320229F00EDDE1A /* DiLoIOS-55Roman.ttf */; };
+		A197001C232022E900EDDE1A /* DiLoIOS-65Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A19700182320229F00EDDE1A /* DiLoIOS-65Bold.ttf */; };
+		A197001E2320251B00EDDE1A /* KitUIImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A197001D2320251B00EDDE1A /* KitUIImages.xcassets */; };
 		A1E2A893231426CE00471757 /* MonthCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2A892231426CE00471757 /* MonthCell.swift */; };
 		A1E2A8952315573700471757 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1E2A8942315573700471757 /* Observable.swift */; };
 /* End PBXBuildFile section */
@@ -55,6 +59,10 @@
 		A1850D9822E9D52A007E8FAD /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		A1850D9A22E9D55C007E8FAD /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 		A1850D9C22E9DF25007E8FAD /* SlotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlotCell.swift; sourceTree = "<group>"; };
+		A19700172320229F00EDDE1A /* DiLoIOS-55Roman.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DiLoIOS-55Roman.ttf"; path = "Pods/KitUI/Sources/iOS-KitUI/Fonts/DiLoIOS-55Roman.ttf"; sourceTree = SOURCE_ROOT; };
+		A19700182320229F00EDDE1A /* DiLoIOS-65Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DiLoIOS-65Bold.ttf"; path = "Pods/KitUI/Sources/iOS-KitUI/Fonts/DiLoIOS-65Bold.ttf"; sourceTree = SOURCE_ROOT; };
+		A19700192320229F00EDDE1A /* DiLoIOS-45Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "DiLoIOS-45Light.ttf"; path = "Pods/KitUI/Sources/iOS-KitUI/Fonts/DiLoIOS-45Light.ttf"; sourceTree = SOURCE_ROOT; };
+		A197001D2320251B00EDDE1A /* KitUIImages.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = KitUIImages.xcassets; sourceTree = "<group>"; };
 		A1E2A892231426CE00471757 /* MonthCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthCell.swift; sourceTree = "<group>"; };
 		A1E2A8942315573700471757 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		D4BA38064A651262A9DA4AA0 /* Pods-PJCalendar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJCalendar.debug.xcconfig"; path = "Target Support Files/Pods-PJCalendar/Pods-PJCalendar.debug.xcconfig"; sourceTree = "<group>"; };
@@ -92,6 +100,7 @@
 		A1850D7A22E9D4F6007E8FAD = {
 			isa = PBXGroup;
 			children = (
+				A197001D2320251B00EDDE1A /* KitUIImages.xcassets */,
 				A1850D8522E9D4F6007E8FAD /* PJCalendar */,
 				A1850D8422E9D4F6007E8FAD /* Products */,
 				676717D21A0C505072CFCBEA /* Pods */,
@@ -110,6 +119,7 @@
 		A1850D8522E9D4F6007E8FAD /* PJCalendar */ = {
 			isa = PBXGroup;
 			children = (
+				A19700162320228A00EDDE1A /* Font */,
 				A1E2A88F2313DBF000471757 /* Slot */,
 				A1E2A88E2313DBE800471757 /* Month */,
 				A1E2A88D2313DBE000471757 /* Day */,
@@ -128,6 +138,16 @@
 				A1E2A8942315573700471757 /* Observable.swift */,
 			);
 			path = PJCalendar;
+			sourceTree = "<group>";
+		};
+		A19700162320228A00EDDE1A /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				A19700192320229F00EDDE1A /* DiLoIOS-45Light.ttf */,
+				A19700172320229F00EDDE1A /* DiLoIOS-55Roman.ttf */,
+				A19700182320229F00EDDE1A /* DiLoIOS-65Bold.ttf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		A1E2A88D2313DBE000471757 /* Day */ = {
@@ -220,9 +240,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A197001A232022E500EDDE1A /* DiLoIOS-45Light.ttf in Resources */,
+				A197001B232022E700EDDE1A /* DiLoIOS-55Roman.ttf in Resources */,
+				A197001C232022E900EDDE1A /* DiLoIOS-65Bold.ttf in Resources */,
 				A1850D9122E9D4F6007E8FAD /* LaunchScreen.storyboard in Resources */,
 				A1850D8E22E9D4F6007E8FAD /* Assets.xcassets in Resources */,
 				A1850D8C22E9D4F6007E8FAD /* Main.storyboard in Resources */,
+				A197001E2320251B00EDDE1A /* KitUIImages.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

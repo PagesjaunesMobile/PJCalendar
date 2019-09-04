@@ -15,7 +15,7 @@ public struct SKRAd: StargateKitModel {
 
     public var module: SKRModule?
 
-    public var photo: [SKRPhoto]?
+    public var photos: [SKRPhoto]?
 
     public var pvi: SKRPvi?
 
@@ -23,11 +23,11 @@ public struct SKRAd: StargateKitModel {
 
     public var webUrl: [SKRWebUrl]?
 
-    public init(freeCallUrl: String? = nil, image: String? = nil, module: SKRModule? = nil, photo: [SKRPhoto]? = nil, pvi: SKRPvi? = nil, videos: SKRVideos? = nil, webUrl: [SKRWebUrl]? = nil) {
+    public init(freeCallUrl: String? = nil, image: String? = nil, module: SKRModule? = nil, photos: [SKRPhoto]? = nil, pvi: SKRPvi? = nil, videos: SKRVideos? = nil, webUrl: [SKRWebUrl]? = nil) {
         self.freeCallUrl = freeCallUrl
         self.image = image
         self.module = module
-        self.photo = photo
+        self.photos = photos
         self.pvi = pvi
         self.videos = videos
         self.webUrl = webUrl
@@ -37,7 +37,7 @@ public struct SKRAd: StargateKitModel {
         case freeCallUrl
         case image
         case module
-        case photo
+        case photos
         case pvi
         case videos
         case webUrl
@@ -49,7 +49,7 @@ public struct SKRAd: StargateKitModel {
         freeCallUrl = try container.decodeIfPresent(.freeCallUrl)
         image = try container.decodeIfPresent(.image)
         module = try container.decodeIfPresent(.module)
-        photo = try container.decodeArrayIfPresent(.photo)
+        photos = try container.decodeArrayIfPresent(.photos)
         pvi = try container.decodeIfPresent(.pvi)
         videos = try container.decodeIfPresent(.videos)
         webUrl = try container.decodeArrayIfPresent(.webUrl)
@@ -61,7 +61,7 @@ public struct SKRAd: StargateKitModel {
         try container.encodeIfPresent(freeCallUrl, forKey: .freeCallUrl)
         try container.encodeIfPresent(image, forKey: .image)
         try container.encodeIfPresent(module, forKey: .module)
-        try container.encodeIfPresent(photo, forKey: .photo)
+        try container.encodeIfPresent(photos, forKey: .photos)
         try container.encodeIfPresent(pvi, forKey: .pvi)
         try container.encodeIfPresent(videos, forKey: .videos)
         try container.encodeIfPresent(webUrl, forKey: .webUrl)
@@ -72,7 +72,7 @@ public struct SKRAd: StargateKitModel {
       guard self.freeCallUrl == object.freeCallUrl else { return false }
       guard self.image == object.image else { return false }
       guard self.module == object.module else { return false }
-      guard self.photo == object.photo else { return false }
+      guard self.photos == object.photos else { return false }
       guard self.pvi == object.pvi else { return false }
       guard self.videos == object.videos else { return false }
       guard self.webUrl == object.webUrl else { return false }

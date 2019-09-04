@@ -17,7 +17,6 @@ class DaySelectorCell: UICollectionViewCell {
 
   let dayTextLabel: UILabel = {
     let dest = UILabel()
-    dest.textColor = UIColor.red
     dest.textAlignment = NSTextAlignment.center
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
@@ -51,9 +50,6 @@ class DaySelectorCell: UICollectionViewCell {
   func setupView() {
     self.contentView.addSubview(self.dayTextLabel)
     self.contentView.addSubview(self.dayNumberLabel)
-
-    self.dayTextLabel.font = UIFont.systemFont(ofSize: 17)
-    self.dayNumberLabel.font = UIFont.systemFont(ofSize: 32)
   }
 
   func configure(_ model: DayViewModel) {
@@ -61,10 +57,22 @@ class DaySelectorCell: UICollectionViewCell {
     self.dayNumberLabel.text = model.dayNumber
   }
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  func setupStyle() {
+    self.dayNumberLabel.font = UIFont.diloRoman(size: 32)
+    self.dayTextLabel.font = UIFont.diloRoman(size: 17)
+    self.dayTextLabel.textColor = UIColor.black
+    self.dayNumberLabel.textColor = UIColor.black
+  }
+
+  func setup() {
     self.setupView()
     self.setupLayout()
+    self.setupStyle()
+  }
+
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    self.setup()
   }
 
   required init?(coder aDecoder: NSCoder) {

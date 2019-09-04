@@ -33,7 +33,7 @@ class MonthViewModel {
 
   init?(model: [DayApiModel], name: String, dataController: CalendarDataController) {
     self.originalModels = model
-    self.monthText = name
+    self.monthText = name.capitalized
     guard let year =  model.first?.yearText else { return nil }
     self.yearText = year
     self.dataController = dataController

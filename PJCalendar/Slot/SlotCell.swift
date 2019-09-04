@@ -16,7 +16,6 @@ class SlotCell: UICollectionViewCell {
   let titleLabel: UILabel = {
     let dest = UILabel(frame: .zero)
     dest.translatesAutoresizingMaskIntoConstraints = false
-    dest.backgroundColor = UIColor.red
     return dest
   }()
 
@@ -35,13 +34,23 @@ class SlotCell: UICollectionViewCell {
   }
 
   func setupView() {
-    self.contentView.backgroundColor = .green
     self.contentView.addSubview(self.titleLabel)
+  }
+
+  func setupStyle() {
+    self.contentView.backgroundColor = UIColor.white
+    self.contentView.layer.borderWidth = 1
+    self.contentView.layer.cornerRadius = 4.0
+    self.contentView.clipsToBounds = true
+    self.contentView.layer.borderColor = UIColor.bluePJ().cgColor
+    self.titleLabel.textColor = UIColor.bluePJ()
+    self.titleLabel.font = UIFont.diloRoman(size: 16)
   }
 
   func setup() {
     self.setupView()
     self.setupLayout()
+    self.setupStyle()
   }
 
   override init(frame: CGRect) {

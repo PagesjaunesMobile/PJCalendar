@@ -19,7 +19,7 @@ public struct SKRPlace: StargateKitModel {
 
     public var cqfd: SKRCqfd?
 
-    public var dvElement: [SKRDvElement]?
+    public var dv: [SKRDvElement]?
 
     public var email: [SKREmail]?
 
@@ -35,6 +35,8 @@ public struct SKRPlace: StargateKitModel {
 
     public var lstNews: SKRLstNews?
 
+    public var lstProduct: [SKRProduct]?
+
     public var lstPromo: SKRLstPromo?
 
     public var map: String?
@@ -47,17 +49,15 @@ public struct SKRPlace: StargateKitModel {
 
     public var pInfo: SKRPInfos?
 
-    public var pap: [SKRPap]?
+    public var paps: [SKRPap]?
 
-    public var part: [SKRPart]?
+    public var parts: [SKRPart]?
 
     public var phone: [SKRPhone]?
 
     public var photos: SKRPhotos?
 
     public var pic: String?
-
-    public var product: [SKRProduct]?
 
     public var pushA: SKRPushA?
 
@@ -83,13 +83,13 @@ public struct SKRPlace: StargateKitModel {
 
     public var videos: SKRVideos?
 
-    public init(act: [SKRActPlace]? = nil, address: SKRAddress? = nil, albums: SKRAlbums? = nil, codEtab: String? = nil, cqfd: SKRCqfd? = nil, dvElement: [SKRDvElement]? = nil, email: [SKREmail]? = nil, goTo: String? = nil, id: String? = nil, idf: Bool? = nil, index: Int? = nil, lbMenu: Bool? = nil, lstNews: SKRLstNews? = nil, lstPromo: SKRLstPromo? = nil, map: String? = nil, name: String? = nil, nbReview: String? = nil, notGeocod: Bool? = nil, pInfo: SKRPInfos? = nil, pap: [SKRPap]? = nil, part: [SKRPart]? = nil, phone: [SKRPhone]? = nil, photos: SKRPhotos? = nil, pic: String? = nil, product: [SKRProduct]? = nil, pushA: SKRPushA? = nil, pushR: SKRPushR? = nil, ratg: String? = nil, revAllowed: Bool? = nil, revBlocked: Bool? = nil, sat: String? = nil, sat3d: String? = nil, schedule: [SKRSchedule]? = nil, tags: String? = nil, url: SKRUrlLr? = nil, uRLSeo: String? = nil, videos: SKRVideos? = nil) {
+    public init(act: [SKRActPlace]? = nil, address: SKRAddress? = nil, albums: SKRAlbums? = nil, codEtab: String? = nil, cqfd: SKRCqfd? = nil, dv: [SKRDvElement]? = nil, email: [SKREmail]? = nil, goTo: String? = nil, id: String? = nil, idf: Bool? = nil, index: Int? = nil, lbMenu: Bool? = nil, lstNews: SKRLstNews? = nil, lstProduct: [SKRProduct]? = nil, lstPromo: SKRLstPromo? = nil, map: String? = nil, name: String? = nil, nbReview: String? = nil, notGeocod: Bool? = nil, pInfo: SKRPInfos? = nil, paps: [SKRPap]? = nil, parts: [SKRPart]? = nil, phone: [SKRPhone]? = nil, photos: SKRPhotos? = nil, pic: String? = nil, pushA: SKRPushA? = nil, pushR: SKRPushR? = nil, ratg: String? = nil, revAllowed: Bool? = nil, revBlocked: Bool? = nil, sat: String? = nil, sat3d: String? = nil, schedule: [SKRSchedule]? = nil, tags: String? = nil, url: SKRUrlLr? = nil, uRLSeo: String? = nil, videos: SKRVideos? = nil) {
         self.act = act
         self.address = address
         self.albums = albums
         self.codEtab = codEtab
         self.cqfd = cqfd
-        self.dvElement = dvElement
+        self.dv = dv
         self.email = email
         self.goTo = goTo
         self.id = id
@@ -97,18 +97,18 @@ public struct SKRPlace: StargateKitModel {
         self.index = index
         self.lbMenu = lbMenu
         self.lstNews = lstNews
+        self.lstProduct = lstProduct
         self.lstPromo = lstPromo
         self.map = map
         self.name = name
         self.nbReview = nbReview
         self.notGeocod = notGeocod
         self.pInfo = pInfo
-        self.pap = pap
-        self.part = part
+        self.paps = paps
+        self.parts = parts
         self.phone = phone
         self.photos = photos
         self.pic = pic
-        self.product = product
         self.pushA = pushA
         self.pushR = pushR
         self.ratg = ratg
@@ -129,7 +129,7 @@ public struct SKRPlace: StargateKitModel {
         case albums
         case codEtab
         case cqfd
-        case dvElement
+        case dv
         case email
         case goTo
         case id
@@ -137,18 +137,18 @@ public struct SKRPlace: StargateKitModel {
         case index
         case lbMenu
         case lstNews
+        case lstProduct
         case lstPromo
         case map
         case name
         case nbReview
         case notGeocod
         case pInfo
-        case pap
-        case part
+        case paps
+        case parts
         case phone
         case photos
         case pic
-        case product
         case pushA
         case pushR
         case ratg
@@ -171,7 +171,7 @@ public struct SKRPlace: StargateKitModel {
         albums = try container.decodeIfPresent(.albums)
         codEtab = try container.decodeIfPresent(.codEtab)
         cqfd = try container.decodeIfPresent(.cqfd)
-        dvElement = try container.decodeArrayIfPresent(.dvElement)
+        dv = try container.decodeArrayIfPresent(.dv)
         email = try container.decodeArrayIfPresent(.email)
         goTo = try container.decodeIfPresent(.goTo)
         id = try container.decodeIfPresent(.id)
@@ -179,18 +179,18 @@ public struct SKRPlace: StargateKitModel {
         index = try container.decodeIfPresent(.index)
         lbMenu = try container.decodeIfPresent(.lbMenu)
         lstNews = try container.decodeIfPresent(.lstNews)
+        lstProduct = try container.decodeArrayIfPresent(.lstProduct)
         lstPromo = try container.decodeIfPresent(.lstPromo)
         map = try container.decodeIfPresent(.map)
         name = try container.decodeIfPresent(.name)
         nbReview = try container.decodeIfPresent(.nbReview)
         notGeocod = try container.decodeIfPresent(.notGeocod)
         pInfo = try container.decodeIfPresent(.pInfo)
-        pap = try container.decodeArrayIfPresent(.pap)
-        part = try container.decodeArrayIfPresent(.part)
+        paps = try container.decodeArrayIfPresent(.paps)
+        parts = try container.decodeArrayIfPresent(.parts)
         phone = try container.decodeArrayIfPresent(.phone)
         photos = try container.decodeIfPresent(.photos)
         pic = try container.decodeIfPresent(.pic)
-        product = try container.decodeArrayIfPresent(.product)
         pushA = try container.decodeIfPresent(.pushA)
         pushR = try container.decodeIfPresent(.pushR)
         ratg = try container.decodeIfPresent(.ratg)
@@ -213,7 +213,7 @@ public struct SKRPlace: StargateKitModel {
         try container.encodeIfPresent(albums, forKey: .albums)
         try container.encodeIfPresent(codEtab, forKey: .codEtab)
         try container.encodeIfPresent(cqfd, forKey: .cqfd)
-        try container.encodeIfPresent(dvElement, forKey: .dvElement)
+        try container.encodeIfPresent(dv, forKey: .dv)
         try container.encodeIfPresent(email, forKey: .email)
         try container.encodeIfPresent(goTo, forKey: .goTo)
         try container.encodeIfPresent(id, forKey: .id)
@@ -221,18 +221,18 @@ public struct SKRPlace: StargateKitModel {
         try container.encodeIfPresent(index, forKey: .index)
         try container.encodeIfPresent(lbMenu, forKey: .lbMenu)
         try container.encodeIfPresent(lstNews, forKey: .lstNews)
+        try container.encodeIfPresent(lstProduct, forKey: .lstProduct)
         try container.encodeIfPresent(lstPromo, forKey: .lstPromo)
         try container.encodeIfPresent(map, forKey: .map)
         try container.encodeIfPresent(name, forKey: .name)
         try container.encodeIfPresent(nbReview, forKey: .nbReview)
         try container.encodeIfPresent(notGeocod, forKey: .notGeocod)
         try container.encodeIfPresent(pInfo, forKey: .pInfo)
-        try container.encodeIfPresent(pap, forKey: .pap)
-        try container.encodeIfPresent(part, forKey: .part)
+        try container.encodeIfPresent(paps, forKey: .paps)
+        try container.encodeIfPresent(parts, forKey: .parts)
         try container.encodeIfPresent(phone, forKey: .phone)
         try container.encodeIfPresent(photos, forKey: .photos)
         try container.encodeIfPresent(pic, forKey: .pic)
-        try container.encodeIfPresent(product, forKey: .product)
         try container.encodeIfPresent(pushA, forKey: .pushA)
         try container.encodeIfPresent(pushR, forKey: .pushR)
         try container.encodeIfPresent(ratg, forKey: .ratg)
@@ -254,7 +254,7 @@ public struct SKRPlace: StargateKitModel {
       guard self.albums == object.albums else { return false }
       guard self.codEtab == object.codEtab else { return false }
       guard self.cqfd == object.cqfd else { return false }
-      guard self.dvElement == object.dvElement else { return false }
+      guard self.dv == object.dv else { return false }
       guard self.email == object.email else { return false }
       guard self.goTo == object.goTo else { return false }
       guard self.id == object.id else { return false }
@@ -262,18 +262,18 @@ public struct SKRPlace: StargateKitModel {
       guard self.index == object.index else { return false }
       guard self.lbMenu == object.lbMenu else { return false }
       guard self.lstNews == object.lstNews else { return false }
+      guard self.lstProduct == object.lstProduct else { return false }
       guard self.lstPromo == object.lstPromo else { return false }
       guard self.map == object.map else { return false }
       guard self.name == object.name else { return false }
       guard self.nbReview == object.nbReview else { return false }
       guard self.notGeocod == object.notGeocod else { return false }
       guard self.pInfo == object.pInfo else { return false }
-      guard self.pap == object.pap else { return false }
-      guard self.part == object.part else { return false }
+      guard self.paps == object.paps else { return false }
+      guard self.parts == object.parts else { return false }
       guard self.phone == object.phone else { return false }
       guard self.photos == object.photos else { return false }
       guard self.pic == object.pic else { return false }
-      guard self.product == object.product else { return false }
       guard self.pushA == object.pushA else { return false }
       guard self.pushR == object.pushR else { return false }
       guard self.ratg == object.ratg else { return false }

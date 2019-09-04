@@ -51,9 +51,6 @@ class DaySelectorView: PaginableView {
   let glassView: UIView = {
     let dest = UIView()
     dest.translatesAutoresizingMaskIntoConstraints = false
-    dest.backgroundColor = UIColor.blue
-    dest.layer.cornerRadius = 7.0
-
     return dest
   }()
 
@@ -97,7 +94,6 @@ class DaySelectorView: PaginableView {
   func setupView() {
     self.addSubview(self.glassView)
     self.addSubview(self.collectionView)
-    self.backgroundColor = UIColor.white
   }
 
   func setupViewModel() {
@@ -129,11 +125,17 @@ class DaySelectorView: PaginableView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  func setupStyle() {
+    self.glassView.backgroundColor = UIColor.grey2()
+    self.glassView.layer.cornerRadius = 7.0
+  }
+
   func setup() {
     self.setupView()
     self.setupLayout()
     self.setupCollectionView()
     self.setupViewModel()
+    self.setupStyle()
   }
 
   func updateSelectedIndexPath() {

@@ -17,7 +17,7 @@ public struct SKRResReviews: StargateKitModel {
 
     public var info: String?
 
-    public var lien: [SKRLien]?
+    public var liens: [SKRLien]?
 
     public var msg: String?
 
@@ -27,7 +27,7 @@ public struct SKRResReviews: StargateKitModel {
 
     public var pageCount: String?
 
-    public var partenaire: [SKRPartenaire]?
+    public var partenaires: [SKRPartenaire]?
 
     public var ratg: String?
 
@@ -41,17 +41,17 @@ public struct SKRResReviews: StargateKitModel {
 
     public var userId: String?
 
-    public init(code: String? = nil, codeCI: String? = nil, detail: [SKRDetail]? = nil, info: String? = nil, lien: [SKRLien]? = nil, msg: String? = nil, nbReview: String? = nil, page: String? = nil, pageCount: String? = nil, partenaire: [SKRPartenaire]? = nil, ratg: String? = nil, review: [SKRReview]? = nil, search: SKRSearchReview? = nil, title: String? = nil, token: String? = nil, userId: String? = nil) {
+    public init(code: String? = nil, codeCI: String? = nil, detail: [SKRDetail]? = nil, info: String? = nil, liens: [SKRLien]? = nil, msg: String? = nil, nbReview: String? = nil, page: String? = nil, pageCount: String? = nil, partenaires: [SKRPartenaire]? = nil, ratg: String? = nil, review: [SKRReview]? = nil, search: SKRSearchReview? = nil, title: String? = nil, token: String? = nil, userId: String? = nil) {
         self.code = code
         self.codeCI = codeCI
         self.detail = detail
         self.info = info
-        self.lien = lien
+        self.liens = liens
         self.msg = msg
         self.nbReview = nbReview
         self.page = page
         self.pageCount = pageCount
-        self.partenaire = partenaire
+        self.partenaires = partenaires
         self.ratg = ratg
         self.review = review
         self.search = search
@@ -65,12 +65,12 @@ public struct SKRResReviews: StargateKitModel {
         case codeCI
         case detail
         case info
-        case lien
+        case liens
         case msg
         case nbReview
         case page
         case pageCount
-        case partenaire
+        case partenaires
         case ratg
         case review
         case search
@@ -86,12 +86,12 @@ public struct SKRResReviews: StargateKitModel {
         codeCI = try container.decodeIfPresent(.codeCI)
         detail = try container.decodeArrayIfPresent(.detail)
         info = try container.decodeIfPresent(.info)
-        lien = try container.decodeArrayIfPresent(.lien)
+        liens = try container.decodeArrayIfPresent(.liens)
         msg = try container.decodeIfPresent(.msg)
         nbReview = try container.decodeIfPresent(.nbReview)
         page = try container.decodeIfPresent(.page)
         pageCount = try container.decodeIfPresent(.pageCount)
-        partenaire = try container.decodeArrayIfPresent(.partenaire)
+        partenaires = try container.decodeArrayIfPresent(.partenaires)
         ratg = try container.decodeIfPresent(.ratg)
         review = try container.decodeArrayIfPresent(.review)
         search = try container.decodeIfPresent(.search)
@@ -107,12 +107,12 @@ public struct SKRResReviews: StargateKitModel {
         try container.encodeIfPresent(codeCI, forKey: .codeCI)
         try container.encodeIfPresent(detail, forKey: .detail)
         try container.encodeIfPresent(info, forKey: .info)
-        try container.encodeIfPresent(lien, forKey: .lien)
+        try container.encodeIfPresent(liens, forKey: .liens)
         try container.encodeIfPresent(msg, forKey: .msg)
         try container.encodeIfPresent(nbReview, forKey: .nbReview)
         try container.encodeIfPresent(page, forKey: .page)
         try container.encodeIfPresent(pageCount, forKey: .pageCount)
-        try container.encodeIfPresent(partenaire, forKey: .partenaire)
+        try container.encodeIfPresent(partenaires, forKey: .partenaires)
         try container.encodeIfPresent(ratg, forKey: .ratg)
         try container.encodeIfPresent(review, forKey: .review)
         try container.encodeIfPresent(search, forKey: .search)
@@ -127,12 +127,12 @@ public struct SKRResReviews: StargateKitModel {
       guard self.codeCI == object.codeCI else { return false }
       guard self.detail == object.detail else { return false }
       guard self.info == object.info else { return false }
-      guard self.lien == object.lien else { return false }
+      guard self.liens == object.liens else { return false }
       guard self.msg == object.msg else { return false }
       guard self.nbReview == object.nbReview else { return false }
       guard self.page == object.page else { return false }
       guard self.pageCount == object.pageCount else { return false }
-      guard self.partenaire == object.partenaire else { return false }
+      guard self.partenaires == object.partenaires else { return false }
       guard self.ratg == object.ratg else { return false }
       guard self.review == object.review else { return false }
       guard self.search == object.search else { return false }

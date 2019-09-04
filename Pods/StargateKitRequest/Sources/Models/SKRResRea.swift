@@ -19,7 +19,7 @@ public struct SKRResRea: StargateKitModel {
 
     public var codeCI: String?
 
-    public var item: [SKRItem]?
+    public var list: [SKRItem]?
 
     public var msg: String?
 
@@ -29,10 +29,10 @@ public struct SKRResRea: StargateKitModel {
 
     public var userId: String?
 
-    public init(code: String? = nil, codeCI: String? = nil, item: [SKRItem]? = nil, msg: String? = nil, title: String? = nil, type: SKRType? = nil, userId: String? = nil) {
+    public init(code: String? = nil, codeCI: String? = nil, list: [SKRItem]? = nil, msg: String? = nil, title: String? = nil, type: SKRType? = nil, userId: String? = nil) {
         self.code = code
         self.codeCI = codeCI
-        self.item = item
+        self.list = list
         self.msg = msg
         self.title = title
         self.type = type
@@ -42,7 +42,7 @@ public struct SKRResRea: StargateKitModel {
     private enum CodingKeys: String, Hashable, CodingKey {
         case code
         case codeCI
-        case item
+        case list
         case msg
         case title
         case type
@@ -54,7 +54,7 @@ public struct SKRResRea: StargateKitModel {
 
         code = try container.decodeIfPresent(.code)
         codeCI = try container.decodeIfPresent(.codeCI)
-        item = try container.decodeArrayIfPresent(.item)
+        list = try container.decodeArrayIfPresent(.list)
         msg = try container.decodeIfPresent(.msg)
         title = try container.decodeIfPresent(.title)
         type = try container.decodeIfPresent(.type)
@@ -66,7 +66,7 @@ public struct SKRResRea: StargateKitModel {
 
         try container.encodeIfPresent(code, forKey: .code)
         try container.encodeIfPresent(codeCI, forKey: .codeCI)
-        try container.encodeIfPresent(item, forKey: .item)
+        try container.encodeIfPresent(list, forKey: .list)
         try container.encodeIfPresent(msg, forKey: .msg)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(type, forKey: .type)
@@ -77,7 +77,7 @@ public struct SKRResRea: StargateKitModel {
       guard let object = object as? SKRResRea else { return false }
       guard self.code == object.code else { return false }
       guard self.codeCI == object.codeCI else { return false }
-      guard self.item == object.item else { return false }
+      guard self.list == object.list else { return false }
       guard self.msg == object.msg else { return false }
       guard self.title == object.title else { return false }
       guard self.type == object.type else { return false }

@@ -30,7 +30,7 @@ public struct SKRRubriqueApiInscriptionOrcFD: StargateKitModel {
 
     public var codeAn9: String?
 
-    public var critereContributif: [SKRCritereContributifApiInscriptionOrcFD]?
+    public var criteresContributif: [SKRCritereContributifApiInscriptionOrcFD]?
 
     public var eligibleContributif: Bool?
 
@@ -56,10 +56,10 @@ public struct SKRRubriqueApiInscriptionOrcFD: StargateKitModel {
 
     public var verticalisationVitrineProduitsServices: SKRVerticalisationVitrineProduitsServices?
 
-    public init(codeAn8: String? = nil, codeAn9: String? = nil, critereContributif: [SKRCritereContributifApiInscriptionOrcFD]? = nil, eligibleContributif: Bool? = nil, eligiblePhotos: Bool? = nil, libelle: String? = nil, lienRetourResultat: String? = nil, remarketing: SKRRemarketingApiInscriptionOrcFD? = nil, segment: SKRSegmentApiInscriptionOrcFD? = nil, sensible: Bool? = nil, thematiqueTransac: String? = nil, typeParcoursTransac: SKRTypeParcoursTransac? = nil, typeRisque: SKRTypeRisque? = nil, urgence: Bool? = nil, verticalisationVitrineProduitsServices: SKRVerticalisationVitrineProduitsServices? = nil) {
+    public init(codeAn8: String? = nil, codeAn9: String? = nil, criteresContributif: [SKRCritereContributifApiInscriptionOrcFD]? = nil, eligibleContributif: Bool? = nil, eligiblePhotos: Bool? = nil, libelle: String? = nil, lienRetourResultat: String? = nil, remarketing: SKRRemarketingApiInscriptionOrcFD? = nil, segment: SKRSegmentApiInscriptionOrcFD? = nil, sensible: Bool? = nil, thematiqueTransac: String? = nil, typeParcoursTransac: SKRTypeParcoursTransac? = nil, typeRisque: SKRTypeRisque? = nil, urgence: Bool? = nil, verticalisationVitrineProduitsServices: SKRVerticalisationVitrineProduitsServices? = nil) {
         self.codeAn8 = codeAn8
         self.codeAn9 = codeAn9
-        self.critereContributif = critereContributif
+        self.criteresContributif = criteresContributif
         self.eligibleContributif = eligibleContributif
         self.eligiblePhotos = eligiblePhotos
         self.libelle = libelle
@@ -77,7 +77,7 @@ public struct SKRRubriqueApiInscriptionOrcFD: StargateKitModel {
     private enum CodingKeys: String, Hashable, CodingKey {
         case codeAn8 = "code_an8"
         case codeAn9 = "code_an9"
-        case critereContributif = "critere_contributif"
+        case criteresContributif = "criteres_contributif"
         case eligibleContributif = "eligible_contributif"
         case eligiblePhotos = "eligible_photos"
         case libelle
@@ -97,7 +97,7 @@ public struct SKRRubriqueApiInscriptionOrcFD: StargateKitModel {
 
         codeAn8 = try container.decodeIfPresent(.codeAn8)
         codeAn9 = try container.decodeIfPresent(.codeAn9)
-        critereContributif = try container.decodeArrayIfPresent(.critereContributif)
+        criteresContributif = try container.decodeArrayIfPresent(.criteresContributif)
         eligibleContributif = try container.decodeIfPresent(.eligibleContributif)
         eligiblePhotos = try container.decodeIfPresent(.eligiblePhotos)
         libelle = try container.decodeIfPresent(.libelle)
@@ -117,7 +117,7 @@ public struct SKRRubriqueApiInscriptionOrcFD: StargateKitModel {
 
         try container.encodeIfPresent(codeAn8, forKey: .codeAn8)
         try container.encodeIfPresent(codeAn9, forKey: .codeAn9)
-        try container.encodeIfPresent(critereContributif, forKey: .critereContributif)
+        try container.encodeIfPresent(criteresContributif, forKey: .criteresContributif)
         try container.encodeIfPresent(eligibleContributif, forKey: .eligibleContributif)
         try container.encodeIfPresent(eligiblePhotos, forKey: .eligiblePhotos)
         try container.encodeIfPresent(libelle, forKey: .libelle)
@@ -136,7 +136,7 @@ public struct SKRRubriqueApiInscriptionOrcFD: StargateKitModel {
       guard let object = object as? SKRRubriqueApiInscriptionOrcFD else { return false }
       guard self.codeAn8 == object.codeAn8 else { return false }
       guard self.codeAn9 == object.codeAn9 else { return false }
-      guard self.critereContributif == object.critereContributif else { return false }
+      guard self.criteresContributif == object.criteresContributif else { return false }
       guard self.eligibleContributif == object.eligibleContributif else { return false }
       guard self.eligiblePhotos == object.eligiblePhotos else { return false }
       guard self.libelle == object.libelle else { return false }

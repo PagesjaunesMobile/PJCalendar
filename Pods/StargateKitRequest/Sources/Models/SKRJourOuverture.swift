@@ -37,7 +37,7 @@ public struct SKRJourOuverture: StargateKitModel {
         case avecSansRdv = "AVEC_SANS_RDV"
     }
 
-    public var creneauHoraire: [SKRCreneauHoraireApiInscriptionOrcFD]?
+    public var creneauxHoraire: [SKRCreneauHoraireApiInscriptionOrcFD]?
 
     public var jour: SKRJour?
 
@@ -45,15 +45,15 @@ public struct SKRJourOuverture: StargateKitModel {
 
     public var type: SKRType?
 
-    public init(creneauHoraire: [SKRCreneauHoraireApiInscriptionOrcFD]? = nil, jour: SKRJour? = nil, ouvert2424: Bool? = nil, type: SKRType? = nil) {
-        self.creneauHoraire = creneauHoraire
+    public init(creneauxHoraire: [SKRCreneauHoraireApiInscriptionOrcFD]? = nil, jour: SKRJour? = nil, ouvert2424: Bool? = nil, type: SKRType? = nil) {
+        self.creneauxHoraire = creneauxHoraire
         self.jour = jour
         self.ouvert2424 = ouvert2424
         self.type = type
     }
 
     private enum CodingKeys: String, Hashable, CodingKey {
-        case creneauHoraire = "creneau_horaire"
+        case creneauxHoraire = "creneaux_horaire"
         case jour
         case ouvert2424 = "ouvert_2424"
         case type
@@ -62,7 +62,7 @@ public struct SKRJourOuverture: StargateKitModel {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        creneauHoraire = try container.decodeArrayIfPresent(.creneauHoraire)
+        creneauxHoraire = try container.decodeArrayIfPresent(.creneauxHoraire)
         jour = try container.decodeIfPresent(.jour)
         ouvert2424 = try container.decodeIfPresent(.ouvert2424)
         type = try container.decodeIfPresent(.type)
@@ -71,7 +71,7 @@ public struct SKRJourOuverture: StargateKitModel {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encodeIfPresent(creneauHoraire, forKey: .creneauHoraire)
+        try container.encodeIfPresent(creneauxHoraire, forKey: .creneauxHoraire)
         try container.encodeIfPresent(jour, forKey: .jour)
         try container.encodeIfPresent(ouvert2424, forKey: .ouvert2424)
         try container.encodeIfPresent(type, forKey: .type)
@@ -79,7 +79,7 @@ public struct SKRJourOuverture: StargateKitModel {
 
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRJourOuverture else { return false }
-      guard self.creneauHoraire == object.creneauHoraire else { return false }
+      guard self.creneauxHoraire == object.creneauxHoraire else { return false }
       guard self.jour == object.jour else { return false }
       guard self.ouvert2424 == object.ouvert2424 else { return false }
       guard self.type == object.type else { return false }

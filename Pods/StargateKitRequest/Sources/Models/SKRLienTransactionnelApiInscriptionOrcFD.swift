@@ -54,9 +54,9 @@ public struct SKRLienTransactionnelApiInscriptionOrcFD: StargateKitModel {
 
     public var affichageSeo: Bool?
 
-    public var codeEtablissement: [String]?
+    public var codesEtablissements: [String]?
 
-    public var codeRubrique: [String]?
+    public var codesRubriques: [String]?
 
     public var contenuSpecifiqueHebergement: Bool?
 
@@ -76,10 +76,10 @@ public struct SKRLienTransactionnelApiInscriptionOrcFD: StargateKitModel {
 
     public var url: String?
 
-    public init(affichageSeo: Bool? = nil, codeEtablissement: [String]? = nil, codeRubrique: [String]? = nil, contenuSpecifiqueHebergement: Bool? = nil, contenuSpecifiqueRestaurant: Bool? = nil, identifiant: String? = nil, libelle: String? = nil, produitPublicitaire: SKRProduitPublicitaireApiInscriptionOrcFD? = nil, typeLien: SKRTypeLien? = nil, typeLienTransactionnel: SKRTypeLienTransactionnel? = nil, typeSource: SKRTypeSource? = nil, url: String? = nil) {
+    public init(affichageSeo: Bool? = nil, codesEtablissements: [String]? = nil, codesRubriques: [String]? = nil, contenuSpecifiqueHebergement: Bool? = nil, contenuSpecifiqueRestaurant: Bool? = nil, identifiant: String? = nil, libelle: String? = nil, produitPublicitaire: SKRProduitPublicitaireApiInscriptionOrcFD? = nil, typeLien: SKRTypeLien? = nil, typeLienTransactionnel: SKRTypeLienTransactionnel? = nil, typeSource: SKRTypeSource? = nil, url: String? = nil) {
         self.affichageSeo = affichageSeo
-        self.codeEtablissement = codeEtablissement
-        self.codeRubrique = codeRubrique
+        self.codesEtablissements = codesEtablissements
+        self.codesRubriques = codesRubriques
         self.contenuSpecifiqueHebergement = contenuSpecifiqueHebergement
         self.contenuSpecifiqueRestaurant = contenuSpecifiqueRestaurant
         self.identifiant = identifiant
@@ -93,8 +93,8 @@ public struct SKRLienTransactionnelApiInscriptionOrcFD: StargateKitModel {
 
     private enum CodingKeys: String, Hashable, CodingKey {
         case affichageSeo = "affichage_seo"
-        case codeEtablissement = "code_etablissement"
-        case codeRubrique = "code_rubrique"
+        case codesEtablissements = "codes_etablissements"
+        case codesRubriques = "codes_rubriques"
         case contenuSpecifiqueHebergement
         case contenuSpecifiqueRestaurant
         case identifiant
@@ -110,8 +110,8 @@ public struct SKRLienTransactionnelApiInscriptionOrcFD: StargateKitModel {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         affichageSeo = try container.decodeIfPresent(.affichageSeo)
-        codeEtablissement = try container.decodeArrayIfPresent(.codeEtablissement)
-        codeRubrique = try container.decodeArrayIfPresent(.codeRubrique)
+        codesEtablissements = try container.decodeArrayIfPresent(.codesEtablissements)
+        codesRubriques = try container.decodeArrayIfPresent(.codesRubriques)
         contenuSpecifiqueHebergement = try container.decodeIfPresent(.contenuSpecifiqueHebergement)
         contenuSpecifiqueRestaurant = try container.decodeIfPresent(.contenuSpecifiqueRestaurant)
         identifiant = try container.decodeIfPresent(.identifiant)
@@ -127,8 +127,8 @@ public struct SKRLienTransactionnelApiInscriptionOrcFD: StargateKitModel {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encodeIfPresent(affichageSeo, forKey: .affichageSeo)
-        try container.encodeIfPresent(codeEtablissement, forKey: .codeEtablissement)
-        try container.encodeIfPresent(codeRubrique, forKey: .codeRubrique)
+        try container.encodeIfPresent(codesEtablissements, forKey: .codesEtablissements)
+        try container.encodeIfPresent(codesRubriques, forKey: .codesRubriques)
         try container.encodeIfPresent(contenuSpecifiqueHebergement, forKey: .contenuSpecifiqueHebergement)
         try container.encodeIfPresent(contenuSpecifiqueRestaurant, forKey: .contenuSpecifiqueRestaurant)
         try container.encodeIfPresent(identifiant, forKey: .identifiant)
@@ -143,8 +143,8 @@ public struct SKRLienTransactionnelApiInscriptionOrcFD: StargateKitModel {
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRLienTransactionnelApiInscriptionOrcFD else { return false }
       guard self.affichageSeo == object.affichageSeo else { return false }
-      guard self.codeEtablissement == object.codeEtablissement else { return false }
-      guard self.codeRubrique == object.codeRubrique else { return false }
+      guard self.codesEtablissements == object.codesEtablissements else { return false }
+      guard self.codesRubriques == object.codesRubriques else { return false }
       guard self.contenuSpecifiqueHebergement == object.contenuSpecifiqueHebergement else { return false }
       guard self.contenuSpecifiqueRestaurant == object.contenuSpecifiqueRestaurant else { return false }
       guard self.identifiant == object.identifiant else { return false }

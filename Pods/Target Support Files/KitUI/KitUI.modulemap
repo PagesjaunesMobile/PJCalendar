@@ -1,0 +1,6 @@
+framework module KitUI {
+  umbrella header "KitUI-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -4,18 +4,18 @@
 <dict>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-	    <key>NSAllowsArbitraryLoads</key>
-	    <true/>
-	    <key>NSExceptionDomains</key>
-	    <dict>
-	        <key>example.com</key>
-	        <dict>
-	            <key>NSExceptionAllowsInsecureHTTPLoads</key>
-	            <true/>
-	            <key>NSIncludesSubdomains</key>
-	            <true/>
-	        </dict>
-	    </dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>example.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
@@ -55,6 +55,12 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>DiLoIOS-45Light.ttf</string>
+		<string>DiLoIOS-55Roman.ttf</string>
+		<string>DiLoIOS-65Bold.ttf</string>
 	</array>
 </dict>
 </plist>

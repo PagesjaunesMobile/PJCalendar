@@ -16,6 +16,7 @@ target 'PJCalendar' do
   
   #pod 'CIMobKit'         , '~> 1.6.11'
   pod 'StargateKitCore', '~> 0.15.9'
+  pod 'KitUI', '1.3.4'
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 

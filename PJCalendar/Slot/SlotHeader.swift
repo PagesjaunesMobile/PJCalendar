@@ -52,6 +52,7 @@ class SlotHeaderCell: UICollectionReusableView {
   func setup() {
     self.setupView()
     self.setupLayout()
+    self.setupStyle()
   }
   
   func setupModel() {
@@ -66,6 +67,7 @@ class SlotHeaderCell: UICollectionReusableView {
       guard indexToDisplay >= 0, indexToDisplay < self.segmentedControll.numberOfSegments else { return }
       self.segmentedControll.selectedSegmentIndex = indexToDisplay
     }
+
     self.segmentedControll.selectedSegmentIndex = viewModel.segmentedControlIndexToDisplay.value
   }
 
@@ -76,6 +78,27 @@ class SlotHeaderCell: UICollectionReusableView {
     }
     self.viewModel = viewModel
     self.setupModel()
+  }
+
+  func setupStyle() {
+
+    var selected = [NSAttributedString.Key : Any]()
+    selected[NSAttributedString.Key.font] = UIFont.diloBold(size: 13)
+    selected[NSAttributedString.Key.foregroundColor] = UIColor.black
+
+    var normal = [NSAttributedString.Key : Any]()
+    normal[NSAttributedString.Key.foregroundColor] = UIColor.black
+    normal[NSAttributedString.Key.font] = UIFont.diloRoman(size: 13)
+
+    self.segmentedControll.setTitleTextAttributes(normal, for: UIControl.State.normal)
+    self.segmentedControll.setTitleTextAttributes(selected, for: UIControl.State.selected)
+    self.segmentedControll.layer.cornerRadius = 9
+
+    self.segmentedControll.backgroundColor = UIColor.grey2()
+    self.segmentedControll.tintColor = UIColor.white
+
+    self.segmentedControll.layer.borderWidth = 2.0
+    self.segmentedControll.layer.borderColor = UIColor.grey2().cgColor
   }
 
   override init(frame: CGRect) {

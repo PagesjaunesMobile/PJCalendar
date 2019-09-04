@@ -42,7 +42,6 @@ class CalendarViewController: UIViewController {
   }()
 
   func setupCollectionView() {
-    self.collectionView.backgroundColor = UIColor.orange
     self.collectionView.isOpaque = true
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
@@ -95,6 +94,12 @@ class CalendarViewController: UIViewController {
     self.setupCollectionView()
     self.setupViewModel()
     self.setupDataController()
+    self.setupStyle()
+  }
+
+  func setupStyle() {
+    self.view.backgroundColor = UIColor.white
+    self.collectionView.backgroundColor = UIColor.white
   }
 
   override func viewDidLoad() {
@@ -162,8 +167,9 @@ extension CalendarViewController: UICollectionViewDataSource {
 extension CalendarViewController: TimeSlotListViewModelDelegate {
   func reloadSlots() {
     let oldContentOffset = self.collectionView.contentOffset
+    self.collectionView.reloadData()
     self.collectionView.setCollectionViewLayout(NewCalendarFlowLayout(), animated: false) { _ in
-      if oldContentOffset.y > (self.collectionView.contentSize.height - self.collectionView.frame.size.height) {
+      if oldContentOffset.y + self.collectionView.frame.size.height > self.collectionView.contentSize.height {
         self.collectionView.contentOffset = CGPoint(x: 0, y: self.collectionView.contentSize.height - self.collectionView.frame.size.height)
       } else {
         self.collectionView.contentOffset = oldContentOffset

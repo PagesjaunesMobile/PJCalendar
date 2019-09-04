@@ -13,18 +13,18 @@ public struct SKRPapApiInscriptionOrcFD: StargateKitModel {
 
     public var nom: String?
 
-    public var transport: [SKRTransportPapApiInscriptionOrcFD]?
+    public var transports: [SKRTransportPapApiInscriptionOrcFD]?
 
-    public init(distance: SKRDistancePapApiInscriptionOrcFD? = nil, nom: String? = nil, transport: [SKRTransportPapApiInscriptionOrcFD]? = nil) {
+    public init(distance: SKRDistancePapApiInscriptionOrcFD? = nil, nom: String? = nil, transports: [SKRTransportPapApiInscriptionOrcFD]? = nil) {
         self.distance = distance
         self.nom = nom
-        self.transport = transport
+        self.transports = transports
     }
 
     private enum CodingKeys: String, Hashable, CodingKey {
         case distance
         case nom
-        case transport
+        case transports
     }
 
     public init(from decoder: Decoder) throws {
@@ -32,7 +32,7 @@ public struct SKRPapApiInscriptionOrcFD: StargateKitModel {
 
         distance = try container.decodeIfPresent(.distance)
         nom = try container.decodeIfPresent(.nom)
-        transport = try container.decodeArrayIfPresent(.transport)
+        transports = try container.decodeArrayIfPresent(.transports)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -40,14 +40,14 @@ public struct SKRPapApiInscriptionOrcFD: StargateKitModel {
 
         try container.encodeIfPresent(distance, forKey: .distance)
         try container.encodeIfPresent(nom, forKey: .nom)
-        try container.encodeIfPresent(transport, forKey: .transport)
+        try container.encodeIfPresent(transports, forKey: .transports)
     }
 
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRPapApiInscriptionOrcFD else { return false }
       guard self.distance == object.distance else { return false }
       guard self.nom == object.nom else { return false }
-      guard self.transport == object.transport else { return false }
+      guard self.transports == object.transports else { return false }
       return true
     }
 

@@ -9,7 +9,7 @@ import Foundation
 
 public struct SKRResSynchronizeFavorites: StargateKitModel {
 
-    public var ack: [SKRAck]?
+    public var acks: [SKRAck]?
 
     public var actions: [SKRAbstractFavoriAction]?
 
@@ -19,9 +19,9 @@ public struct SKRResSynchronizeFavorites: StargateKitModel {
 
     public var dateSynchronisation: DateTime?
 
-    public var favori: [SKRFavori]?
+    public var favoris: [SKRFavori]?
 
-    public var groupe: [SKRGroupe]?
+    public var groupes: [SKRGroupe]?
 
     public var msg: String?
 
@@ -33,14 +33,14 @@ public struct SKRResSynchronizeFavorites: StargateKitModel {
 
     public var userId: String?
 
-    public init(ack: [SKRAck]? = nil, actions: [SKRAbstractFavoriAction]? = nil, code: String? = nil, codeCI: String? = nil, dateSynchronisation: DateTime? = nil, favori: [SKRFavori]? = nil, groupe: [SKRGroupe]? = nil, msg: String? = nil, nbMax: Int? = nil, title: String? = nil, token: String? = nil, userId: String? = nil) {
-        self.ack = ack
+    public init(acks: [SKRAck]? = nil, actions: [SKRAbstractFavoriAction]? = nil, code: String? = nil, codeCI: String? = nil, dateSynchronisation: DateTime? = nil, favoris: [SKRFavori]? = nil, groupes: [SKRGroupe]? = nil, msg: String? = nil, nbMax: Int? = nil, title: String? = nil, token: String? = nil, userId: String? = nil) {
+        self.acks = acks
         self.actions = actions
         self.code = code
         self.codeCI = codeCI
         self.dateSynchronisation = dateSynchronisation
-        self.favori = favori
-        self.groupe = groupe
+        self.favoris = favoris
+        self.groupes = groupes
         self.msg = msg
         self.nbMax = nbMax
         self.title = title
@@ -49,13 +49,13 @@ public struct SKRResSynchronizeFavorites: StargateKitModel {
     }
 
     private enum CodingKeys: String, Hashable, CodingKey {
-        case ack
+        case acks
         case actions
         case code
         case codeCI
         case dateSynchronisation
-        case favori
-        case groupe
+        case favoris
+        case groupes
         case msg
         case nbMax
         case title
@@ -66,13 +66,13 @@ public struct SKRResSynchronizeFavorites: StargateKitModel {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        ack = try container.decodeArrayIfPresent(.ack)
+        acks = try container.decodeArrayIfPresent(.acks)
         actions = try container.decodeArrayIfPresent(.actions)
         code = try container.decodeIfPresent(.code)
         codeCI = try container.decodeIfPresent(.codeCI)
         dateSynchronisation = try container.decodeIfPresent(.dateSynchronisation)
-        favori = try container.decodeArrayIfPresent(.favori)
-        groupe = try container.decodeArrayIfPresent(.groupe)
+        favoris = try container.decodeArrayIfPresent(.favoris)
+        groupes = try container.decodeArrayIfPresent(.groupes)
         msg = try container.decodeIfPresent(.msg)
         nbMax = try container.decodeIfPresent(.nbMax)
         title = try container.decodeIfPresent(.title)
@@ -83,13 +83,13 @@ public struct SKRResSynchronizeFavorites: StargateKitModel {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encodeIfPresent(ack, forKey: .ack)
+        try container.encodeIfPresent(acks, forKey: .acks)
         try container.encodeIfPresent(actions, forKey: .actions)
         try container.encodeIfPresent(code, forKey: .code)
         try container.encodeIfPresent(codeCI, forKey: .codeCI)
         try container.encodeIfPresent(dateSynchronisation, forKey: .dateSynchronisation)
-        try container.encodeIfPresent(favori, forKey: .favori)
-        try container.encodeIfPresent(groupe, forKey: .groupe)
+        try container.encodeIfPresent(favoris, forKey: .favoris)
+        try container.encodeIfPresent(groupes, forKey: .groupes)
         try container.encodeIfPresent(msg, forKey: .msg)
         try container.encodeIfPresent(nbMax, forKey: .nbMax)
         try container.encodeIfPresent(title, forKey: .title)
@@ -99,13 +99,13 @@ public struct SKRResSynchronizeFavorites: StargateKitModel {
 
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRResSynchronizeFavorites else { return false }
-      guard self.ack == object.ack else { return false }
+      guard self.acks == object.acks else { return false }
       guard self.actions == object.actions else { return false }
       guard self.code == object.code else { return false }
       guard self.codeCI == object.codeCI else { return false }
       guard self.dateSynchronisation == object.dateSynchronisation else { return false }
-      guard self.favori == object.favori else { return false }
-      guard self.groupe == object.groupe else { return false }
+      guard self.favoris == object.favoris else { return false }
+      guard self.groupes == object.groupes else { return false }
       guard self.msg == object.msg else { return false }
       guard self.nbMax == object.nbMax else { return false }
       guard self.title == object.title else { return false }

@@ -13,7 +13,7 @@ public struct SKRResFavorisImages: StargateKitModel {
 
     public var codeCI: String?
 
-    public var image: [SKRImageFavori]?
+    public var images: [SKRImageFavori]?
 
     public var msg: String?
 
@@ -23,10 +23,10 @@ public struct SKRResFavorisImages: StargateKitModel {
 
     public var userId: String?
 
-    public init(code: String? = nil, codeCI: String? = nil, image: [SKRImageFavori]? = nil, msg: String? = nil, title: String? = nil, token: String? = nil, userId: String? = nil) {
+    public init(code: String? = nil, codeCI: String? = nil, images: [SKRImageFavori]? = nil, msg: String? = nil, title: String? = nil, token: String? = nil, userId: String? = nil) {
         self.code = code
         self.codeCI = codeCI
-        self.image = image
+        self.images = images
         self.msg = msg
         self.title = title
         self.token = token
@@ -36,7 +36,7 @@ public struct SKRResFavorisImages: StargateKitModel {
     private enum CodingKeys: String, Hashable, CodingKey {
         case code
         case codeCI
-        case image
+        case images
         case msg
         case title
         case token
@@ -48,7 +48,7 @@ public struct SKRResFavorisImages: StargateKitModel {
 
         code = try container.decodeIfPresent(.code)
         codeCI = try container.decodeIfPresent(.codeCI)
-        image = try container.decodeArrayIfPresent(.image)
+        images = try container.decodeArrayIfPresent(.images)
         msg = try container.decodeIfPresent(.msg)
         title = try container.decodeIfPresent(.title)
         token = try container.decodeIfPresent(.token)
@@ -60,7 +60,7 @@ public struct SKRResFavorisImages: StargateKitModel {
 
         try container.encodeIfPresent(code, forKey: .code)
         try container.encodeIfPresent(codeCI, forKey: .codeCI)
-        try container.encodeIfPresent(image, forKey: .image)
+        try container.encodeIfPresent(images, forKey: .images)
         try container.encodeIfPresent(msg, forKey: .msg)
         try container.encodeIfPresent(title, forKey: .title)
         try container.encodeIfPresent(token, forKey: .token)
@@ -71,7 +71,7 @@ public struct SKRResFavorisImages: StargateKitModel {
       guard let object = object as? SKRResFavorisImages else { return false }
       guard self.code == object.code else { return false }
       guard self.codeCI == object.codeCI else { return false }
-      guard self.image == object.image else { return false }
+      guard self.images == object.images else { return false }
       guard self.msg == object.msg else { return false }
       guard self.title == object.title else { return false }
       guard self.token == object.token else { return false }

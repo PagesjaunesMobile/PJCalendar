@@ -20,9 +20,9 @@ public struct SKRCritereRecherche: StargateKitModel {
 
     public var affichageSeo: Bool?
 
-    public var codeEtablissement: [String]?
+    public var codesEtablissements: [String]?
 
-    public var codeRubrique: [String]?
+    public var codesRubriques: [String]?
 
     public var contenuSpecifiqueHebergement: Bool?
 
@@ -38,10 +38,10 @@ public struct SKRCritereRecherche: StargateKitModel {
 
     public var typeSource: SKRTypeSource?
 
-    public init(affichageSeo: Bool? = nil, codeEtablissement: [String]? = nil, codeRubrique: [String]? = nil, contenuSpecifiqueHebergement: Bool? = nil, contenuSpecifiqueRestaurant: Bool? = nil, criteres: [String]? = nil, criteresRecherche: [SKRCritereRechercheOrcFD]? = nil, libelle: String? = nil, produitPublicitaire: SKRProduitPublicitaireApiInscriptionOrcFD? = nil, typeSource: SKRTypeSource? = nil) {
+    public init(affichageSeo: Bool? = nil, codesEtablissements: [String]? = nil, codesRubriques: [String]? = nil, contenuSpecifiqueHebergement: Bool? = nil, contenuSpecifiqueRestaurant: Bool? = nil, criteres: [String]? = nil, criteresRecherche: [SKRCritereRechercheOrcFD]? = nil, libelle: String? = nil, produitPublicitaire: SKRProduitPublicitaireApiInscriptionOrcFD? = nil, typeSource: SKRTypeSource? = nil) {
         self.affichageSeo = affichageSeo
-        self.codeEtablissement = codeEtablissement
-        self.codeRubrique = codeRubrique
+        self.codesEtablissements = codesEtablissements
+        self.codesRubriques = codesRubriques
         self.contenuSpecifiqueHebergement = contenuSpecifiqueHebergement
         self.contenuSpecifiqueRestaurant = contenuSpecifiqueRestaurant
         self.criteres = criteres
@@ -53,8 +53,8 @@ public struct SKRCritereRecherche: StargateKitModel {
 
     private enum CodingKeys: String, Hashable, CodingKey {
         case affichageSeo = "affichage_seo"
-        case codeEtablissement = "code_etablissement"
-        case codeRubrique = "code_rubrique"
+        case codesEtablissements = "codes_etablissements"
+        case codesRubriques = "codes_rubriques"
         case contenuSpecifiqueHebergement
         case contenuSpecifiqueRestaurant
         case criteres
@@ -68,8 +68,8 @@ public struct SKRCritereRecherche: StargateKitModel {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         affichageSeo = try container.decodeIfPresent(.affichageSeo)
-        codeEtablissement = try container.decodeArrayIfPresent(.codeEtablissement)
-        codeRubrique = try container.decodeArrayIfPresent(.codeRubrique)
+        codesEtablissements = try container.decodeArrayIfPresent(.codesEtablissements)
+        codesRubriques = try container.decodeArrayIfPresent(.codesRubriques)
         contenuSpecifiqueHebergement = try container.decodeIfPresent(.contenuSpecifiqueHebergement)
         contenuSpecifiqueRestaurant = try container.decodeIfPresent(.contenuSpecifiqueRestaurant)
         criteres = try container.decodeArrayIfPresent(.criteres)
@@ -83,8 +83,8 @@ public struct SKRCritereRecherche: StargateKitModel {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encodeIfPresent(affichageSeo, forKey: .affichageSeo)
-        try container.encodeIfPresent(codeEtablissement, forKey: .codeEtablissement)
-        try container.encodeIfPresent(codeRubrique, forKey: .codeRubrique)
+        try container.encodeIfPresent(codesEtablissements, forKey: .codesEtablissements)
+        try container.encodeIfPresent(codesRubriques, forKey: .codesRubriques)
         try container.encodeIfPresent(contenuSpecifiqueHebergement, forKey: .contenuSpecifiqueHebergement)
         try container.encodeIfPresent(contenuSpecifiqueRestaurant, forKey: .contenuSpecifiqueRestaurant)
         try container.encodeIfPresent(criteres, forKey: .criteres)
@@ -97,8 +97,8 @@ public struct SKRCritereRecherche: StargateKitModel {
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRCritereRecherche else { return false }
       guard self.affichageSeo == object.affichageSeo else { return false }
-      guard self.codeEtablissement == object.codeEtablissement else { return false }
-      guard self.codeRubrique == object.codeRubrique else { return false }
+      guard self.codesEtablissements == object.codesEtablissements else { return false }
+      guard self.codesRubriques == object.codesRubriques else { return false }
       guard self.contenuSpecifiqueHebergement == object.contenuSpecifiqueHebergement else { return false }
       guard self.contenuSpecifiqueRestaurant == object.contenuSpecifiqueRestaurant else { return false }
       guard self.criteres == object.criteres else { return false }

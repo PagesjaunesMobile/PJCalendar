@@ -31,7 +31,7 @@ public struct SKRAvisOrchInscriptionOrcFD: StargateKitModel {
 
     public var lesPlus: String?
 
-    public var notation: [SKRNotationOrchInscriptionOrcFD]?
+    public var notations: [SKRNotationOrchInscriptionOrcFD]?
 
     public var noteGlobale: Int?
 
@@ -41,7 +41,7 @@ public struct SKRAvisOrchInscriptionOrcFD: StargateKitModel {
 
     public var utilisateur: SKRUtilisateurOrchInscriptionOrcFD?
 
-    public init(codeEntite: String? = nil, commentaire: String? = nil, dateExperience: DateTime? = nil, dateFinExperience: DateTime? = nil, datePublication: DateTime? = nil, droitReponse: SKRDroitReponseOrchInscriptionOrcFD? = nil, entite: SKREntiteOrchInscriptionOrcFD? = nil, id: String? = nil, justificatifValide: Bool? = nil, lesMoins: String? = nil, lesPlus: String? = nil, notation: [SKRNotationOrchInscriptionOrcFD]? = nil, noteGlobale: Int? = nil, rubrique: SKRRubriqueOrchInscriptionOrcFD? = nil, titre: String? = nil, utilisateur: SKRUtilisateurOrchInscriptionOrcFD? = nil) {
+    public init(codeEntite: String? = nil, commentaire: String? = nil, dateExperience: DateTime? = nil, dateFinExperience: DateTime? = nil, datePublication: DateTime? = nil, droitReponse: SKRDroitReponseOrchInscriptionOrcFD? = nil, entite: SKREntiteOrchInscriptionOrcFD? = nil, id: String? = nil, justificatifValide: Bool? = nil, lesMoins: String? = nil, lesPlus: String? = nil, notations: [SKRNotationOrchInscriptionOrcFD]? = nil, noteGlobale: Int? = nil, rubrique: SKRRubriqueOrchInscriptionOrcFD? = nil, titre: String? = nil, utilisateur: SKRUtilisateurOrchInscriptionOrcFD? = nil) {
         self.codeEntite = codeEntite
         self.commentaire = commentaire
         self.dateExperience = dateExperience
@@ -53,7 +53,7 @@ public struct SKRAvisOrchInscriptionOrcFD: StargateKitModel {
         self.justificatifValide = justificatifValide
         self.lesMoins = lesMoins
         self.lesPlus = lesPlus
-        self.notation = notation
+        self.notations = notations
         self.noteGlobale = noteGlobale
         self.rubrique = rubrique
         self.titre = titre
@@ -72,7 +72,7 @@ public struct SKRAvisOrchInscriptionOrcFD: StargateKitModel {
         case justificatifValide = "justificatif_valide"
         case lesMoins = "les_moins"
         case lesPlus = "les_plus"
-        case notation
+        case notations
         case noteGlobale = "note_globale"
         case rubrique
         case titre
@@ -93,7 +93,7 @@ public struct SKRAvisOrchInscriptionOrcFD: StargateKitModel {
         justificatifValide = try container.decodeIfPresent(.justificatifValide)
         lesMoins = try container.decodeIfPresent(.lesMoins)
         lesPlus = try container.decodeIfPresent(.lesPlus)
-        notation = try container.decodeArrayIfPresent(.notation)
+        notations = try container.decodeArrayIfPresent(.notations)
         noteGlobale = try container.decodeIfPresent(.noteGlobale)
         rubrique = try container.decodeIfPresent(.rubrique)
         titre = try container.decodeIfPresent(.titre)
@@ -114,7 +114,7 @@ public struct SKRAvisOrchInscriptionOrcFD: StargateKitModel {
         try container.encodeIfPresent(justificatifValide, forKey: .justificatifValide)
         try container.encodeIfPresent(lesMoins, forKey: .lesMoins)
         try container.encodeIfPresent(lesPlus, forKey: .lesPlus)
-        try container.encodeIfPresent(notation, forKey: .notation)
+        try container.encodeIfPresent(notations, forKey: .notations)
         try container.encodeIfPresent(noteGlobale, forKey: .noteGlobale)
         try container.encodeIfPresent(rubrique, forKey: .rubrique)
         try container.encodeIfPresent(titre, forKey: .titre)
@@ -134,7 +134,7 @@ public struct SKRAvisOrchInscriptionOrcFD: StargateKitModel {
       guard self.justificatifValide == object.justificatifValide else { return false }
       guard self.lesMoins == object.lesMoins else { return false }
       guard self.lesPlus == object.lesPlus else { return false }
-      guard self.notation == object.notation else { return false }
+      guard self.notations == object.notations else { return false }
       guard self.noteGlobale == object.noteGlobale else { return false }
       guard self.rubrique == object.rubrique else { return false }
       guard self.titre == object.titre else { return false }

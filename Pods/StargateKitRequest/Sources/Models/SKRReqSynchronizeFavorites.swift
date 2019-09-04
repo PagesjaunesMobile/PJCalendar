@@ -11,27 +11,27 @@ public struct SKRReqSynchronizeFavorites: StargateKitModel {
 
     public var actions: [SKRAbstractFavoriAction]?
 
-    public var ajoutFavoris: [SKRFavoriRequest]?
+    public var ajout: [SKRFavoriRequest]?
 
     public var dateDerniereSynchronisation: DateTime?
 
-    public var suppressionFavoris: [SKRFavoriRequest]?
+    public var suppression: [SKRFavoriRequest]?
 
     public var token: String?
 
-    public init(actions: [SKRAbstractFavoriAction]? = nil, ajoutFavoris: [SKRFavoriRequest]? = nil, dateDerniereSynchronisation: DateTime? = nil, suppressionFavoris: [SKRFavoriRequest]? = nil, token: String? = nil) {
+    public init(actions: [SKRAbstractFavoriAction]? = nil, ajout: [SKRFavoriRequest]? = nil, dateDerniereSynchronisation: DateTime? = nil, suppression: [SKRFavoriRequest]? = nil, token: String? = nil) {
         self.actions = actions
-        self.ajoutFavoris = ajoutFavoris
+        self.ajout = ajout
         self.dateDerniereSynchronisation = dateDerniereSynchronisation
-        self.suppressionFavoris = suppressionFavoris
+        self.suppression = suppression
         self.token = token
     }
 
     private enum CodingKeys: String, Hashable, CodingKey {
         case actions
-        case ajoutFavoris
+        case ajout
         case dateDerniereSynchronisation
-        case suppressionFavoris
+        case suppression
         case token
     }
 
@@ -39,9 +39,9 @@ public struct SKRReqSynchronizeFavorites: StargateKitModel {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         actions = try container.decodeArrayIfPresent(.actions)
-        ajoutFavoris = try container.decodeArrayIfPresent(.ajoutFavoris)
+        ajout = try container.decodeArrayIfPresent(.ajout)
         dateDerniereSynchronisation = try container.decodeIfPresent(.dateDerniereSynchronisation)
-        suppressionFavoris = try container.decodeArrayIfPresent(.suppressionFavoris)
+        suppression = try container.decodeArrayIfPresent(.suppression)
         token = try container.decodeIfPresent(.token)
     }
 
@@ -49,18 +49,18 @@ public struct SKRReqSynchronizeFavorites: StargateKitModel {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encodeIfPresent(actions, forKey: .actions)
-        try container.encodeIfPresent(ajoutFavoris, forKey: .ajoutFavoris)
+        try container.encodeIfPresent(ajout, forKey: .ajout)
         try container.encodeIfPresent(dateDerniereSynchronisation, forKey: .dateDerniereSynchronisation)
-        try container.encodeIfPresent(suppressionFavoris, forKey: .suppressionFavoris)
+        try container.encodeIfPresent(suppression, forKey: .suppression)
         try container.encodeIfPresent(token, forKey: .token)
     }
 
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRReqSynchronizeFavorites else { return false }
       guard self.actions == object.actions else { return false }
-      guard self.ajoutFavoris == object.ajoutFavoris else { return false }
+      guard self.ajout == object.ajout else { return false }
       guard self.dateDerniereSynchronisation == object.dateDerniereSynchronisation else { return false }
-      guard self.suppressionFavoris == object.suppressionFavoris else { return false }
+      guard self.suppression == object.suppression else { return false }
       guard self.token == object.token else { return false }
       return true
     }

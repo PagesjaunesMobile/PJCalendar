@@ -1,19 +1,22 @@
 PODS:
   - Alamofire (4.8.2)
+  - KitUI (1.3.4)
   - Result (4.1.0)
   - StargateKitCore (0.15.9):
     - StargateKitRequest (~> 1.0-20190227172840)
     - Tagged (~> 0.4)
-  - StargateKitRequest (1.0-20190717104426):
+  - StargateKitRequest (1.0-20190903155022):
     - Alamofire (~> 4.8.1)
     - Result (~> 4.1.0)
   - Tagged (0.4.0)
 
 DEPENDENCIES:
+  - KitUI (= 1.3.4)
   - StargateKitCore (~> 0.15.9)
 
 SPEC REPOS:
   "git@github.com:PagesjaunesMobile/iOS-PJPods.git":
+    - KitUI
     - StargateKitCore
     - StargateKitRequest
   https://github.com/cocoapods/specs.git:
@@ -23,11 +26,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  KitUI: bd74914d4d6bb5bdab1cfca634ae0b49e8038a35
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   StargateKitCore: 37c5b949df50ec50069b946f5f2ce767b3535442
-  StargateKitRequest: 7eb6ecf8859ee6be2f7108744325dfa2d2802c7f
+  StargateKitRequest: 08b4bb8a1b0bbf286bb9306e8c09039014b048dc
   Tagged: a6babffe08b180c499a7a422661621bd4f330840
 
-PODFILE CHECKSUM: 0adebe569961abe141e8e6e98a4ced71c6ee0d18
+PODFILE CHECKSUM: b86f2af22763da5cafc8813e70adc4f57bbfe5a8
 
 COCOAPODS: 1.7.3

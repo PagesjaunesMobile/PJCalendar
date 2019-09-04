@@ -9,7 +9,7 @@ import Foundation
 
 public struct SKRPartenaire: StargateKitModel {
 
-    public var action: [SKRAction]?
+    public var actions: [SKRAction]?
 
     public var id: String?
 
@@ -21,8 +21,8 @@ public struct SKRPartenaire: StargateKitModel {
 
     public var title: String?
 
-    public init(action: [SKRAction]? = nil, id: String? = nil, label: String? = nil, message: String? = nil, name: String? = nil, title: String? = nil) {
-        self.action = action
+    public init(actions: [SKRAction]? = nil, id: String? = nil, label: String? = nil, message: String? = nil, name: String? = nil, title: String? = nil) {
+        self.actions = actions
         self.id = id
         self.label = label
         self.message = message
@@ -31,7 +31,7 @@ public struct SKRPartenaire: StargateKitModel {
     }
 
     private enum CodingKeys: String, Hashable, CodingKey {
-        case action
+        case actions
         case id
         case label
         case message
@@ -42,7 +42,7 @@ public struct SKRPartenaire: StargateKitModel {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        action = try container.decodeArrayIfPresent(.action)
+        actions = try container.decodeArrayIfPresent(.actions)
         id = try container.decodeIfPresent(.id)
         label = try container.decodeIfPresent(.label)
         message = try container.decodeIfPresent(.message)
@@ -53,7 +53,7 @@ public struct SKRPartenaire: StargateKitModel {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        try container.encodeIfPresent(action, forKey: .action)
+        try container.encodeIfPresent(actions, forKey: .actions)
         try container.encodeIfPresent(id, forKey: .id)
         try container.encodeIfPresent(label, forKey: .label)
         try container.encodeIfPresent(message, forKey: .message)
@@ -63,7 +63,7 @@ public struct SKRPartenaire: StargateKitModel {
 
     public func isEqual(to object: Any?) -> Bool {
       guard let object = object as? SKRPartenaire else { return false }
-      guard self.action == object.action else { return false }
+      guard self.actions == object.actions else { return false }
       guard self.id == object.id else { return false }
       guard self.label == object.label else { return false }
       guard self.message == object.message else { return false }

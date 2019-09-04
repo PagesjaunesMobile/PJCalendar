@@ -16,8 +16,25 @@ class HeaderCell: UICollectionReusableView {
   static let hearderheight: CGFloat = 214
   static let minHeaderSize: CGFloat = 161
 
+  let effectView: UIVisualEffectView = {
+    let dest = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
 
   let firstViewContainer: UIView = {
+    let dest = UIView()
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
+
+  let firstSeparatorView: UIView = {
+    let dest = UIView()
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
+
+  let secondSeparatorView: UIView = {
     let dest = UIView()
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
@@ -33,25 +50,46 @@ class HeaderCell: UICollectionReusableView {
   var monthView: MonthSelectorView? = nil
 
   func setupView() {
-    self.addSubview(self.firstViewContainer)
-    self.addSubview(self.secondViewContainer)
+    self.addSubview(self.effectView)
+    self.effectView.contentView.addSubview(self.firstSeparatorView)
+    self.effectView.contentView.addSubview(self.secondSeparatorView)
+    self.effectView.contentView.addSubview(self.firstViewContainer)
+    self.effectView.contentView.addSubview(self.secondViewContainer)
   }
 
   func setupLayout() {
 
     var constraints = [NSLayoutConstraint]()
 
+    // EffectView
+    constraints.append(self.effectView.topAnchor.constraint(equalTo: self.topAnchor))
+    constraints.append(self.effectView.bottomAnchor.constraint(equalTo: self.bottomAnchor))
+    constraints.append(self.effectView.trailingAnchor.constraint(equalTo: self.trailingAnchor))
+    constraints.append(self.effectView.leadingAnchor.constraint(equalTo: self.leadingAnchor))
+
     // FirstView
-    constraints.append(self.topAnchor.constraint(equalTo: self.firstViewContainer.topAnchor))
-    constraints.append(self.leadingAnchor.constraint(equalTo: self.firstViewContainer.leadingAnchor))
-    constraints.append(self.trailingAnchor.constraint(equalTo: self.firstViewContainer.trailingAnchor))
+    constraints.append(self.effectView.topAnchor.constraint(equalTo: self.firstViewContainer.topAnchor))
+    constraints.append(self.effectView.leadingAnchor.constraint(equalTo: self.firstViewContainer.leadingAnchor))
+    constraints.append(self.effectView.trailingAnchor.constraint(equalTo: self.firstViewContainer.trailingAnchor))
+
+    // FirstSeparatorView
+    constraints.append(self.firstSeparatorView.topAnchor.constraint(equalTo: self.firstViewContainer.bottomAnchor))
+    constraints.append(self.firstSeparatorView.leadingAnchor.constraint(equalTo: self.effectView.leadingAnchor, constant: 24))
+    constraints.append(self.firstSeparatorView.trailingAnchor.constraint(equalTo: self.effectView.trailingAnchor, constant: -24))
+    constraints.append(self.firstSeparatorView.heightAnchor.constraint(equalToConstant: 1.0))
 
     // SecoundView
-    constraints.append(self.secondViewContainer.topAnchor.constraint(equalTo: self.firstViewContainer.bottomAnchor))
-    constraints.append(self.secondViewContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor))
-    constraints.append(self.secondViewContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor))
-    constraints.append(self.secondViewContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor))
+    constraints.append(self.secondViewContainer.topAnchor.constraint(equalTo: self.firstSeparatorView.bottomAnchor))
+    constraints.append(self.secondViewContainer.leadingAnchor.constraint(equalTo: self.effectView.leadingAnchor))
+    constraints.append(self.secondViewContainer.trailingAnchor.constraint(equalTo: self.effectView.trailingAnchor))
     constraints.append(self.secondViewContainer.heightAnchor.constraint(equalToConstant: 88))
+
+    // SecounSeparatorView
+    constraints.append(self.secondSeparatorView.heightAnchor.constraint(equalToConstant: 1.0))
+    constraints.append(self.secondSeparatorView.topAnchor.constraint(equalTo: self.secondViewContainer.bottomAnchor))
+    constraints.append(self.secondSeparatorView.leadingAnchor.constraint(equalTo: self.effectView.leadingAnchor))
+    constraints.append(self.secondSeparatorView.trailingAnchor.constraint(equalTo: self.effectView.trailingAnchor))
+    constraints.append(self.secondSeparatorView.bottomAnchor.constraint(equalTo: self.effectView.bottomAnchor))
 
     NSLayoutConstraint.activate(constraints)
   }
@@ -97,10 +135,16 @@ class HeaderCell: UICollectionReusableView {
     self.setupDayView(dayListViewModel: dayListViewModel)
   }
 
+  func setupStyle() {
+    self.secondSeparatorView.backgroundColor = UIColor.grey4()
+    self.firstSeparatorView.backgroundColor = UIColor.grey4()
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     self.setupView()
     self.setupLayout()
+    self.setupStyle()
   }
 
   required init?(coder aDecoder: NSCoder) {
