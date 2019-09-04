@@ -27,12 +27,15 @@ class MonthViewModel {
 
   private let originalModels: [DayApiModel]
 
-  let name: String
+  let monthText: String
+  let yearText: String
   let dataController: CalendarDataController
 
-  init(model: [DayApiModel], name: String, dataController: CalendarDataController) {
+  init?(model: [DayApiModel], name: String, dataController: CalendarDataController) {
     self.originalModels = model
-    self.name = name
+    self.monthText = name
+    guard let year =  model.first?.yearText else { return nil }
+    self.yearText = year
     self.dataController = dataController
   }
 
@@ -83,7 +86,9 @@ class MonthListViewModel {
       }
 
       for (key, value) in dest {
-       months.append(MonthViewModel(model: value, name: key, dataController: dataController))
+        if let month = MonthViewModel(model: value, name: key, dataController: dataController) {
+          months.append(month)
+        }
       }
 
       months.sort { return $0 < $1 }

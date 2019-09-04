@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SlotHeaderCell: UICollectionViewCell {
+class SlotHeaderCell: UICollectionReusableView {
 
   static let reusueCellIdentifier = String(describing:SlotHeaderCell.self)
 
@@ -24,10 +24,10 @@ class SlotHeaderCell: UICollectionViewCell {
   func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
-    constraints.append(self.segmentedControll.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 26))
-    constraints.append(self.segmentedControll.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 24))
-    constraints.append(self.segmentedControll.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -24))
-    constraints.append(self.segmentedControll.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -32))
+    constraints.append(self.segmentedControll.topAnchor.constraint(equalTo: self.topAnchor, constant: 26))
+    constraints.append(self.segmentedControll.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 24))
+    constraints.append(self.segmentedControll.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -24))
+    constraints.append(self.segmentedControll.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -32))
 
     NSLayoutConstraint.activate(constraints)
   }
@@ -41,7 +41,7 @@ class SlotHeaderCell: UICollectionViewCell {
   }
 
   func setupView() {
-    self.contentView.addSubview(self.segmentedControll)
+    self.addSubview(self.segmentedControll)
   }
   
   override func prepareForReuse() {

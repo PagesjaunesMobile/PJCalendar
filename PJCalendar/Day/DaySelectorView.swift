@@ -97,6 +97,7 @@ class DaySelectorView: PaginableView {
   func setupView() {
     self.addSubview(self.glassView)
     self.addSubview(self.collectionView)
+    self.backgroundColor = UIColor.white
   }
 
   func setupViewModel() {

@@ -9,9 +9,53 @@
 import Foundation
 import UIKit
 
+class MonthSelectorViewCollectionViewLayout: UICollectionViewLayout {
+
+  var attributes = [UICollectionViewLayoutAttributes]()
+
+  override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    return true
+  }
+
+  override var collectionViewContentSize: CGSize {
+    guard let collectionView = self.collectionView else { return .zero }
+
+    return CGSize(width: CGFloat(collectionView.frame.size.width) * CGFloat(collectionView.numberOfItems(inSection: 0)), height: collectionView.frame.size.height)
+  }
+
+  override func invalidateLayout() {
+    super.invalidateLayout()
+    self.attributes.removeAll()
+  }
+
+  override func prepare() {
+
+    guard let collectionView = self.collectionView else { return }
+    self.attributes.removeAll()
+
+    for i in 0..<collectionView.numberOfItems(inSection: 0) {
+      let attr = UICollectionViewLayoutAttributes(forCellWith: IndexPath(item: i, section: 0))
+      attr.frame = CGRect(x: CGFloat(i) * collectionView.frame.size.width, y: 0, width: collectionView.frame.size.width, height: collectionView.frame.size.height)
+      self.attributes.append(attr)
+    }
+  }
+
+  override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    let dest =  self.attributes.filter { $0.frame.intersects(rect) }
+    return dest
+  }
+
+  override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+    return self.attributes.first { $0.indexPath == indexPath }
+  }
+
+}
+
 class MonthSelectorView: UIView {
 
   let viewModel: MonthListViewModel
+
+  var savedSize: CGSize = .zero
 
   var selectedIndexPath = IndexPath(item: 0, section: 0) {
     didSet {
@@ -20,10 +64,11 @@ class MonthSelectorView: UIView {
   }
 
   let collectionView: UICollectionView = {
-    let layout = UICollectionViewFlowLayout()
-    layout.scrollDirection = .horizontal
-    layout.minimumInteritemSpacing = 0
-    layout.minimumLineSpacing = 0
+    let layout = MonthSelectorViewCollectionViewLayout()
+//    layout.scrollDirection = .horizontal
+//    layout.sectionInset = UIEdgeInsets.zero
+//    layout.minimumInteritemSpacing = 0
+//    layout.minimumLineSpacing = 0
     let dest = UICollectionView(frame: .zero, collectionViewLayout: layout)
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
@@ -55,8 +100,6 @@ class MonthSelectorView: UIView {
     constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.rightButton.leftAnchor, constant: -5))
     constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor))
 
-    self.collectionView.backgroundColor = UIColor.yellow
-
     NSLayoutConstraint.activate(constraints)
   }
 
@@ -65,6 +108,7 @@ class MonthSelectorView: UIView {
     self.collectionView.register(MonthCell.self, forCellWithReuseIdentifier: MonthCell.reuseCellIdentifier)
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
+    self.collectionView.backgroundColor = UIColor.white
   }
 
   @objc func handleButtonAction(button: UIButton) {
@@ -84,7 +128,6 @@ class MonthSelectorView: UIView {
     self.addSubview(self.leftButton)
     self.addSubview(self.rightButton)
     self.addSubview(self.collectionView)
-    self.backgroundColor = UIColor.blue
   }
 
   func setupViewModel() {
@@ -106,11 +149,13 @@ class MonthSelectorView: UIView {
   }
 
   func setup() {
+    self.backgroundColor = UIColor.white
     self.setupView()
     self.setupLayout()
     self.setupCollectionView()
     self.setupViewModel()
     self.setupButtons()
+    self.collectionView.contentInsetAdjustmentBehavior = .never
   }
 
   init(viewModel: MonthListViewModel) {
@@ -155,10 +200,7 @@ extension MonthSelectorView: UICollectionViewDataSource {
   }
 }
 
-extension MonthSelectorView: UICollectionViewDelegateFlowLayout {
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return collectionView.frame.size
-  }
-}
+extension MonthSelectorView: UICollectionViewDelegate {
 
+}
 

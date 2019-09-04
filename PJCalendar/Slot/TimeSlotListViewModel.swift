@@ -95,26 +95,27 @@ class TimeSlotListViewModel {
       case .timeSlot(day: let day, period: let period):
         switch period {
         case .afternoon:
-          return day.afterNoonSlots.count + 1
+          return day.afterNoonSlots.count
         case .morning:
-          return day.moringSlots.count + 1
+          return day.moringSlots.count
         }
       case .timeSlotEmpty:
         return 0
       }
     }
+    
 
     subscript(index: Int) -> TimeSlotViewModel? {
       switch self {
       case .timeSlot(day: let day, period: let timePeriod):
         switch timePeriod {
         case .morning:
-          if index - 1 >= 0 && index - 1 < day.moringSlots.count {
-            return day.moringSlots[index - 1]
+          if index >= 0 && index < day.moringSlots.count {
+            return day.moringSlots[index]
           } else { return nil }
         case .afternoon:
-          if index - 1 >= 0 && index - 1 < day.afterNoonSlots.count {
-            return day.afterNoonSlots[index - 1]
+          if index >= 0 && index < day.afterNoonSlots.count {
+            return day.afterNoonSlots[index]
           } else { return nil }
         }
       case .timeSlotEmpty:
@@ -264,25 +265,22 @@ class TimeSlotListViewModel {
     }
   }
 
-  var slotCount: Int {
+  var itemCount: Int {
    return self.displayState.slotCount
+  }
+
+  var sectionCount: Int {
+    switch self.displayState {
+    case .notReady:
+      return 1
+    case .timeSlot:
+      return 2
+    case .timeSlotEmpty:
+      return 2
+    }
   }
 
   subscript(index: Int) -> TimeSlotViewModel? {
    return self.displayState[index]
   }
-
-  func shouldDisplayHeaderSlotCellForIndexPath(_ indexPath: IndexPath) -> Bool {
-    switch self.displayState {
-    case .timeSlot:
-      if indexPath.item == 0 {
-        return true
-      } else { return false }
-    case .timeSlotEmpty:
-      return false
-    case .notReady:
-      return false
-    }
-  }
-
 }

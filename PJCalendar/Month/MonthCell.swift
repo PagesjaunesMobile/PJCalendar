@@ -13,7 +13,24 @@ class MonthCell: UICollectionViewCell {
 
   static let reuseCellIdentifier: String = String(describing: MonthCell.self)
 
-  let titleLabel: UILabel = {
+  let containerView: UIView = {
+    let dest = UIView()
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
+
+  let monthTitle: UILabel = {
+    let dest = UILabel()
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    dest.setContentCompressionResistancePriority(UILayoutPriority.defaultLow, for: NSLayoutConstraint.Axis.vertical)
+    dest.lineBreakMode = NSLineBreakMode.byClipping
+    dest.numberOfLines = 0
+    dest.adjustsFontSizeToFitWidth = true
+    dest.minimumScaleFactor = 0.6
+    return dest
+  }()
+
+  let yearTitle: UILabel = {
     let dest = UILabel()
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
@@ -22,23 +39,34 @@ class MonthCell: UICollectionViewCell {
   func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
-    constraints.append(self.titleLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor))
-    constraints.append(self.titleLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor))
-    constraints.append(self.titleLabel.topAnchor.constraint(greaterThanOrEqualTo: self.contentView.topAnchor))
-    constraints.append(self.titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.contentView.leadingAnchor))
-    constraints.append(self.titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.contentView.trailingAnchor))
-    constraints.append(self.titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.contentView.bottomAnchor))
 
+    constraints.append(self.contentView.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor))
+    constraints.append(self.contentView.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor))
+
+    constraints.append(self.containerView.heightAnchor.constraint(equalTo: self.contentView.heightAnchor, multiplier: 0.6))
+
+    constraints.append(self.monthTitle.topAnchor.constraint(equalTo: self.containerView.topAnchor))
+    constraints.append(self.monthTitle.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor))
+    constraints.append(self.monthTitle.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor))
+
+    constraints.append(self.yearTitle.topAnchor.constraint(equalTo: self.monthTitle.bottomAnchor))
+    constraints.append(self.yearTitle.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor))
+    constraints.append(self.yearTitle.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor))
+    constraints.append(self.yearTitle.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor)
+    )
     NSLayoutConstraint.activate(constraints)
   }
 
   func setupView() {
-    self.contentView.addSubview(self.titleLabel)
+    self.contentView.addSubview(self.containerView)
+    self.containerView.addSubview(self.monthTitle)
+    self.containerView.addSubview(self.yearTitle)
   }
 
   func setupStyle() {
-    self.titleLabel.textColor = UIColor.red
-    self.titleLabel.font = UIFont.systemFont(ofSize: 30)
+    self.monthTitle.textColor = UIColor.black
+    self.yearTitle.textColor = UIColor.black
+    self.monthTitle.font = UIFont.systemFont(ofSize: 32)
   }
 
   func setup() {
@@ -57,7 +85,8 @@ class MonthCell: UICollectionViewCell {
   }
 
   func configure(model: MonthViewModel) {
-    self.titleLabel.text = model.name
+    self.monthTitle.text = model.monthText
+    self.yearTitle.text = model.yearText
   }
 
 }

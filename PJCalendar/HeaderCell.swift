@@ -11,10 +11,10 @@ import UIKit
 
 class HeaderCell: UICollectionReusableView {
 
-  static let reusueCellIdentifier = String(describing: MonthCell.self)
+  static let reusueCellIdentifier = String(describing: HeaderCell.self)
 
-  static let hearderheight: CGFloat = 237
-  static let minHeaderSize: CGFloat = 167
+  static let hearderheight: CGFloat = 214
+  static let minHeaderSize: CGFloat = 161
 
 
   let firstViewContainer: UIView = {
@@ -33,13 +33,8 @@ class HeaderCell: UICollectionReusableView {
   var monthView: MonthSelectorView? = nil
 
   func setupView() {
-
     self.addSubview(self.firstViewContainer)
     self.addSubview(self.secondViewContainer)
-
-    self.backgroundColor = .blue
-    self.firstViewContainer.backgroundColor = .orange
-    self.secondViewContainer.backgroundColor = UIColor.purple
   }
 
   func setupLayout() {
@@ -56,7 +51,7 @@ class HeaderCell: UICollectionReusableView {
     constraints.append(self.secondViewContainer.leadingAnchor.constraint(equalTo: self.leadingAnchor))
     constraints.append(self.secondViewContainer.trailingAnchor.constraint(equalTo: self.trailingAnchor))
     constraints.append(self.secondViewContainer.bottomAnchor.constraint(equalTo: self.bottomAnchor))
-    constraints.append(self.secondViewContainer.heightAnchor.constraint(equalToConstant: HeaderCell.hearderheight / 2))
+    constraints.append(self.secondViewContainer.heightAnchor.constraint(equalToConstant: 88))
 
     NSLayoutConstraint.activate(constraints)
   }
