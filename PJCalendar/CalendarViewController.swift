@@ -32,11 +32,7 @@ class CalendarViewController: UIViewController {
 
   let collectionView: UICollectionView = {
 
-    let layout = NewCalendarFlowLayout() //CalendarFlowLayout()
-
-   // layout.headerReferenceSize = CGSize(width: HeaderCell.hearderheight, height: HeaderCell.hearderheight)
-
-   // layout.sectionHeadersPinToVisibleBounds = true
+    let layout = NewCalendarFlowLayout()
 
     let dest = UICollectionView(frame: .zero, collectionViewLayout: layout)
     dest.translatesAutoresizingMaskIntoConstraints = false
@@ -46,7 +42,7 @@ class CalendarViewController: UIViewController {
   }()
 
   func setupCollectionView() {
-    self.collectionView.backgroundColor = UIColor.black
+    self.collectionView.backgroundColor = UIColor.orange
     self.collectionView.isOpaque = true
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
@@ -166,19 +162,12 @@ extension CalendarViewController: UICollectionViewDataSource {
 extension CalendarViewController: TimeSlotListViewModelDelegate {
   func reloadSlots() {
     let oldContentOffset = self.collectionView.contentOffset
-    let layout = NewCalendarFlowLayout()
-
-//    self.collectionView.reloadData()
-
     self.collectionView.setCollectionViewLayout(NewCalendarFlowLayout(), animated: false) { _ in
       if oldContentOffset.y > (self.collectionView.contentSize.height - self.collectionView.frame.size.height) {
-        layout.forceSmallHeader = true
-        layout.invalidateLayout()
-        self.collectionView.setCollectionViewLayout(layout, animated: false)
+        self.collectionView.contentOffset = CGPoint(x: 0, y: self.collectionView.contentSize.height - self.collectionView.frame.size.height)
       } else {
         self.collectionView.contentOffset = oldContentOffset
       }
-
     }
   }
 }

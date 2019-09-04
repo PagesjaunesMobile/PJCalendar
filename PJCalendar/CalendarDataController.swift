@@ -45,8 +45,13 @@ class CalendarDataController {
     self.loadingState.value = .loading
     self.apiService.makeRequest { result in
       switch result {
-      case .success(rdvList: let model):
+      case .success(rdvList: var model):
         self.loadingState.value = .ready
+        var toto = model.first!
+        let firstSlot = toto.slots.first!
+        toto.slots.removeAll()
+        toto.slots.append(firstSlot)
+        model[0] = toto
         self.days.value = model
         self.selectedDay.value = 0
       case .error:

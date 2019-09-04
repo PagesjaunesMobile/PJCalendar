@@ -14,10 +14,6 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
   let cellSize = SlotCell.cellSize
 
   let shrinkableHeightRation: CGFloat = 3.0
-  var firstShoot: Bool = true
-  var currentHeaderSize: CGSize = .zero
-
-  var forceSmallHeader = false
 
   var attributes = [UICollectionViewLayoutAttributes]()
 
@@ -33,53 +29,39 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
   private func getHeaderFrame(contentOffset: CGPoint) -> CGRect {
     guard
       let frame = self.collectionView?.frame,
-      let contentOffset = self.collectionView?.contentOffset,
-      let collectionView = self.collectionView else { return .zero }
+      let contentOffset = self.collectionView?.contentOffset
+      else { return .zero }
 
-
-    guard self.forceSmallHeader == false else {
-      return CGRect(x: 0, y: contentOffset.y, width: collectionView.frame.size.width, height: HeaderCell.minHeaderSize)
-    }
 
     let avancement = contentOffset.y / (frame.size.height / self.shrinkableHeightRation)
     let headerSize = HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight)
+
     guard headerSize >= HeaderCell.minHeaderSize else {
-      self.currentHeaderSize = CGRect(x: 0, y: contentOffset.y, width: frame.size.width, height: HeaderCell.minHeaderSize).size
       return CGRect(x: 0, y: contentOffset.y, width: frame.size.width, height: HeaderCell.minHeaderSize)
     }
-    self.currentHeaderSize = CGRect(x: 0, y: contentOffset.y, width: frame.size.width, height: HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight)).size
+
     return CGRect(x: 0, y: contentOffset.y, width: frame.size.width, height: HeaderCell.hearderheight - (avancement * HeaderCell.hearderheight))
   }
 
   var cellHeaderFrame: CGRect {
       guard let collectionView = self.collectionView else { return .zero }
-    if self.forceSmallHeader == true {
-      return CGRect(x: 0, y: HeaderCell.minHeaderSize, width: collectionView.frame.width, height: 88)
-    } else {
       return CGRect(x: 0, y: HeaderCell.hearderheight, width: collectionView.frame.width, height: 88)
-    }
   }
 
-  var cellWidthSpaceIncluded: CGFloat {
+  var cellSpacing: CGFloat {
     guard let collectionView = self.collectionView else { return 0 }
     let totalElemSizeSpacingIncluded = collectionView.frame.size.width / 3
-    return totalElemSizeSpacingIncluded
+
+    let cellSpacing = (totalElemSizeSpacingIncluded - SlotCell.cellSize.width)
+    return cellSpacing
   }
 
   private func getCellFrameFor(indexPath: IndexPath) -> CGRect {
 
     let (line, posInLine) = indexPath.item.quotientAndRemainder(dividingBy: 3)
 
-    if self.forceSmallHeader == true {
-      return CGRect(x: cellWidthSpaceIncluded * CGFloat(posInLine),
-                    y: HeaderCell.minHeaderSize + self.cellHeaderFrame.height + (CGFloat(line) * (SlotCell.cellSize.height + 10)),
-                    width: SlotCell.cellSize.width,
-                    height: SlotCell.cellSize.height)
-
-    }
-
-    return CGRect(x: cellWidthSpaceIncluded * CGFloat(posInLine),
-                  y: HeaderCell.hearderheight + self.cellHeaderFrame.height + (CGFloat(line) * (SlotCell.cellSize.height + 10)),
+    return CGRect(x: (self.cellSpacing / 2.0) +  (SlotCell.cellSize.width + self.cellSpacing) * CGFloat(posInLine),
+                  y: HeaderCell.hearderheight + self.cellHeaderFrame.height + (CGFloat(line) * (SlotCell.cellSize.height + self.cellSpacing)),
                   width: SlotCell.cellSize.width,
                   height: SlotCell.cellSize.height)
   }
@@ -130,32 +112,33 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
 
   }
 
+  func addScrolableContentOffsetIfNeeded(size: CGSize) -> CGSize {
+    guard let collectionView = self.collectionView else { return size }
+    if size.height < collectionView.frame.height + (HeaderCell.hearderheight - HeaderCell.minHeaderSize) {
+      return CGSize(width: size.width, height: collectionView.frame.height + (HeaderCell.hearderheight - HeaderCell.minHeaderSize))
+    } else {
+      return size
+    }
+  }
+
   override var collectionViewContentSize: CGSize {
     guard let collectionView = self.collectionView else { return .zero }
 
     guard collectionView.numberOfSections > 1 else {
-      if self.forceSmallHeader == true {
-        return CGSize(width: collectionView.frame.size.width, height: HeaderCell.minHeaderSize)
-      } else {
-      return CGSize(width: collectionView.frame.size.width, height: HeaderCell.hearderheight)
-      }
-
+      let dest = CGSize(width: collectionView.frame.size.width, height: HeaderCell.hearderheight)
+      return self.addScrolableContentOffsetIfNeeded(size: dest)
     }
 
     if collectionView.numberOfItems(inSection: 1) == 0 {
-      if self.forceSmallHeader == true {
-      return CGSize(width: collectionView.frame.size.width, height: HeaderCell.minHeaderSize + 88)
-      }
-      return CGSize(width: collectionView.frame.size.width, height: HeaderCell.hearderheight + 88)
+      let dest = CGSize(width: collectionView.frame.size.width, height: (HeaderCell.hearderheight) + 88)
+      return self.addScrolableContentOffsetIfNeeded(size: dest)
     }
 
     let lastIndexPath = IndexPath(item: collectionView.numberOfItems(inSection: 1) - 1, section: 1)
 
     let lastCellFrame = self.getCellFrameFor(indexPath: lastIndexPath)
 
-    let dest = CGSize(width: collectionView.frame.size.width, height: lastCellFrame.maxY)
-
-    return dest
+    return self.addScrolableContentOffsetIfNeeded(size: CGSize(width: collectionView.frame.size.width, height: lastCellFrame.maxY))
   }
 
 }

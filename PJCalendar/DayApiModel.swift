@@ -41,7 +41,7 @@ extension DayApiModel: Comparable {
 struct DayApiModel {
   let dtext: String
   let dcode: String?
-  let slots: [SlotApiModel]
+  var slots: [SlotApiModel]
 
   let monthText: String
   let dayText: String
