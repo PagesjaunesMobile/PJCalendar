@@ -12,6 +12,7 @@ import UIKit
 class SlotCell: UICollectionViewCell {
 
   static let cellSize =  CGSize(width: 88, height: 40)
+  static let iPadCellSize =  CGSize(width: 120, height: 40)
 
   let titleLabel: UILabel = {
     let dest = UILabel(frame: .zero)

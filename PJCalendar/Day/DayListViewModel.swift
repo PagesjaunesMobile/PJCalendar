@@ -27,7 +27,8 @@ class DayViewModel: Equatable {
 
   init(model: DayApiModel, dataController: CalendarDataController) {
     self.originalModel = model
-    self.dayOfTheWeek = "\(model.shortDayText)."
+    self.dayOfTheWeek = model.shortDayText
+    
     self.dayNumber = model.dayNumberText
     self.slotsViewModel = self.originalModel.slots.map(TimeSlotViewModel.init)
     self.dataController = dataController

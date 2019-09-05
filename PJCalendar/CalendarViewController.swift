@@ -31,12 +31,9 @@ class CalendarViewController: UIViewController {
   let slotListViewModel: TimeSlotListViewModel
 
   let collectionView: UICollectionView = {
-
     let layout = NewCalendarFlowLayout()
-
     let dest = UICollectionView(frame: .zero, collectionViewLayout: layout)
     dest.translatesAutoresizingMaskIntoConstraints = false
-
     dest.clipsToBounds = true
     return dest
   }()
@@ -46,6 +43,8 @@ class CalendarViewController: UIViewController {
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
     self.collectionView.contentInsetAdjustmentBehavior = .never
+    self.collectionView.showsHorizontalScrollIndicator = false
+    self.collectionView.showsVerticalScrollIndicator = false
     
     self.collectionView.register(SlotCell.self,
                                  forCellWithReuseIdentifier: SlotCell.reusueCellIdentifier)

@@ -52,6 +52,12 @@ class MonthViewModel {
 
 class MonthListViewModel {
 
+  enum ArrowButtonDisplayState {
+    case enable
+    case disabled
+    case loading
+  }
+
   enum DisplayState {
 
     static func getMonthIndexForDay(day: DayApiModel, months: [MonthViewModel]) -> Int? {
@@ -110,6 +116,9 @@ class MonthListViewModel {
   var shouldShowSpinner: Observable<Bool> = Observable<Bool>(false)
   var shouldShowMonth: Observable<Bool> = Observable<Bool>(false)
 
+  var leftButtonDisplayState: Observable<ArrowButtonDisplayState> = Observable<ArrowButtonDisplayState>(.disabled)
+  var rightButtonDisplayState: Observable<ArrowButtonDisplayState> = Observable<ArrowButtonDisplayState>(.disabled)
+
   let dataController: CalendarDataController
   var displayState: DisplayState {
     didSet {
@@ -138,9 +147,45 @@ class MonthListViewModel {
     }
   }
 
+  func updateLeftButtonIfNeeded(state: ArrowButtonDisplayState) {
+    if self.leftButtonDisplayState.value != state {
+      self.leftButtonDisplayState.value = state
+    }
+  }
+
+  func updateRightButtonIfNeeded(state: ArrowButtonDisplayState) {
+    if self.rightButtonDisplayState.value != state {
+      self.rightButtonDisplayState.value = state
+    }
+  }
+
+  func updateButtonsObservable(monthSelectedIndex: Int, months: [MonthViewModel]) {
+
+    guard months.count != 0 else {
+      self.updateLeftButtonIfNeeded(state: .disabled)
+      self.updateRightButtonIfNeeded(state: .disabled)
+      return
+    }
+
+    if monthSelectedIndex == 0 {
+      self.updateLeftButtonIfNeeded(state: .disabled)
+      self.updateRightButtonIfNeeded(state: .enable)
+    }
+
+    if monthSelectedIndex > 0 && monthSelectedIndex < months.count {
+      self.updateLeftButtonIfNeeded(state: .enable)
+    }
+
+    if monthSelectedIndex == months.count - 1 {
+      self.updateRightButtonIfNeeded(state: .disabled)
+    }
+  }
+
   func updateObservableValue() {
     switch self.displayState {
-    case .monthSelected(monthSelected: let selected, months: _):
+    case .monthSelected(monthSelected: let selected, months: let months):
+
+      self.updateButtonsObservable(monthSelectedIndex: selected, months: months)
 
       if self.shouldShowMonth.value == false {
         self.shouldShowMonth.value = true
@@ -204,7 +249,7 @@ class MonthListViewModel {
   init(dataController: CalendarDataController) {
     self.dataController = dataController
     self.displayState = DisplayState(days: self.dataController.days.value, dataController: dataController)
-    self.updateObservableValue()
     self.setupDataController()
+    self.updateObservableValue()
   }
 }

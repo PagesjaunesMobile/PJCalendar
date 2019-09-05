@@ -11,7 +11,6 @@ import UIKit
 
 class NewCalendarFlowLayout: UICollectionViewLayout {
 
-  let cellSize = SlotCell.cellSize
   let shrinkableHeightRation: CGFloat = 3.0
 
   var attributes = [UICollectionViewLayoutAttributes]()
@@ -63,22 +62,31 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
       return CGRect(x: 0, y: HeaderCell.hearderheight, width: collectionView.frame.width, height: 88)
   }
 
+  var cellSize: CGSize {
+    guard let collectionView = self.collectionView else { return .zero }
+    if collectionView.traitCollection.horizontalSizeClass == .regular && collectionView.traitCollection.verticalSizeClass == .regular {
+      return SlotCell.iPadCellSize
+    } else {
+      return SlotCell.cellSize
+    }
+  }
+
   var cellSpacing: CGFloat {
     guard let collectionView = self.collectionView else { return 0 }
     let totalElemSizeSpacingIncluded = collectionView.frame.size.width / 3
-
-    let cellSpacing = (totalElemSizeSpacingIncluded - SlotCell.cellSize.width)
-    return cellSpacing
+    return (totalElemSizeSpacingIncluded - self.cellSize.width)
   }
 
   private func getCellFrameFor(indexPath: IndexPath) -> CGRect {
 
     let (line, posInLine) = indexPath.item.quotientAndRemainder(dividingBy: 3)
 
-    return CGRect(x: (self.cellSpacing / 2.0) +  (SlotCell.cellSize.width + self.cellSpacing) * CGFloat(posInLine),
-                  y: HeaderCell.hearderheight + self.cellHeaderFrame.height + (CGFloat(line) * (SlotCell.cellSize.height + self.cellSpacing)),
-                  width: SlotCell.cellSize.width,
-                  height: SlotCell.cellSize.height)
+    let smallSpacing =  self.cellSpacing / 2.0
+
+    return CGRect(x: self.cellSpacing + (self.cellSize.width + smallSpacing) * CGFloat(posInLine),
+                  y: HeaderCell.hearderheight + self.cellHeaderFrame.height + (CGFloat(line) * (self.cellSize.height + 16)),
+                  width: self.cellSize.width,
+                  height: self.cellSize.height)
   }
 
 

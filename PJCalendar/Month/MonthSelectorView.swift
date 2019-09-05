@@ -107,6 +107,8 @@ class MonthSelectorView: UIView {
     self.collectionView.dataSource = self
     self.collectionView.delegate = self
     self.collectionView.backgroundColor = UIColor.clear
+    self.collectionView.showsVerticalScrollIndicator = false
+    self.collectionView.showsHorizontalScrollIndicator = false
   }
 
   @objc func handleButtonAction(button: UIButton) {
@@ -128,6 +130,17 @@ class MonthSelectorView: UIView {
     self.addSubview(self.collectionView)
   }
 
+  func update(button: UIButton, displayState : MonthListViewModel.ArrowButtonDisplayState) {
+    switch displayState {
+    case .enable:
+      button.isEnabled = true
+    case .disabled:
+      button.isEnabled = false
+    case .loading:
+      break
+    }
+  }
+
   func setupViewModel() {
     self.viewModel.shouldShowMonth.bind { [weak self] _, result in
       guard let `self` = self else { return }
@@ -140,25 +153,42 @@ class MonthSelectorView: UIView {
       })
     }
 
+    self.viewModel.leftButtonDisplayState.bind  { [weak self] _, displayState in
+      guard let `self` = self else { return }
+      self.update(button: self.leftButton, displayState: displayState)
+    }
+
+    self.viewModel.rightButtonDisplayState.bind  { [weak self] _, displayState in
+      guard let `self` = self else { return }
+      self.update(button: self.rightButton, displayState: displayState)
+    }
+
     self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
       guard let `self` = self else { return }
-      self.collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
+      self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
+
+    self.update(button: self.leftButton, displayState: self.viewModel.leftButtonDisplayState.value)
+    self.update(button: self.rightButton, displayState: self.viewModel.rightButtonDisplayState.value)
   }
 
   func setupStyle() {
-    self.leftButton.setImage(UIImage.resize(UIImage(named: "chevronGauche")!, size: KitUIAssetSize._16pt, color: UIColor.black), for: UIControl.State.normal)
-    self.rightButton.setImage(UIImage.resize(UIImage(named: "chevronDroit")!, size: KitUIAssetSize._16pt, color: UIColor.black), for: UIControl.State.normal)
+    self.leftButton.setImage(UIImage.resize(UIImage(named: "chevronGauche")!, size: KitUIAssetSize._16pt, color: .black), for: .normal)
+    self.leftButton.setImage(UIImage.resize(UIImage(named: "chevronGauche")!, size: KitUIAssetSize._16pt, color: .grey3()), for: .disabled)
+
+    self.rightButton.setImage(UIImage.resize(UIImage(named: "chevronDroit")!, size: KitUIAssetSize._16pt, color: .black), for: .normal)
+    self.rightButton.setImage(UIImage.resize(UIImage(named: "chevronDroit")!, size: KitUIAssetSize._16pt, color: UIColor.grey3()), for: .disabled)
   }
 
   func setup() {
     self.setupView()
     self.setupLayout()
+    self.setupStyle()
     self.setupCollectionView()
     self.setupViewModel()
     self.setupButtons()
     self.setupLayout()
-    self.setupStyle()
+
   }
 
   init(viewModel: MonthListViewModel) {

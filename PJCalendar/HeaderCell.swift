@@ -136,8 +136,8 @@ class HeaderCell: UICollectionReusableView {
   }
 
   func setupStyle() {
-    self.secondSeparatorView.backgroundColor = UIColor.grey4()
-    self.firstSeparatorView.backgroundColor = UIColor.grey4()
+    self.secondSeparatorView.backgroundColor = UIColor.grey3()
+    self.firstSeparatorView.backgroundColor = UIColor.grey3()
   }
 
   override init(frame: CGRect) {

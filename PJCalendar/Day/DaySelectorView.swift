@@ -62,14 +62,15 @@ class DaySelectorView: PaginableView {
     let dest = UICollectionView(frame: .zero, collectionViewLayout: layout)
     dest.backgroundColor = UIColor.clear
     dest.translatesAutoresizingMaskIntoConstraints = false
-
-    dest.isPagingEnabled = false
     return dest
   }()
 
   func setupCollectionView() {
     self.collectionView.delegate = self
     self.collectionView.dataSource = self
+    self.collectionView.isPagingEnabled = false
+    self.collectionView.showsHorizontalScrollIndicator = false
+    self.collectionView.showsVerticalScrollIndicator = false
     self.collectionView.register(DaySelectorCell.self, forCellWithReuseIdentifier: DaySelectorCell.reeuseIdentier)
   }
 
