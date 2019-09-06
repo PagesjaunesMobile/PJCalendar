@@ -54,6 +54,17 @@ class SlotCell: UICollectionViewCell {
     self.setupStyle()
   }
 
+  override var isSelected: Bool {
+    didSet {
+      if self.isSelected == true {
+        self.contentView.backgroundColor = UIColor.green
+      } else {
+        self.contentView.backgroundColor = UIColor.white
+      }
+
+    }
+  }
+
   override init(frame: CGRect) {
     super.init(frame: frame)
     self.setup()

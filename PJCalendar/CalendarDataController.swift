@@ -25,10 +25,17 @@ class CalendarDataController {
 
   var days: Observable<[DayApiModel]> = Observable<[DayApiModel]>([])
   var selectedDay: Observable<Int> = Observable<Int>(0)
+  var selectedSlot: Observable<Int?> = Observable<Int?>(nil)
   
-  var dayModel: DayApiModel? {
+  var selectedDayModel: DayApiModel? {
     guard selectedDay.value >= 0, selectedDay.value < self.days.value.count else { return nil }
     return self.days.value[self.selectedDay.value]
+  }
+
+  var selectedSlotModel: SlotApiModel? {
+    guard let selectedDay = self.selectedDayModel else { return nil }
+    guard let selectedSlot = self.selectedSlot.value else { return nil }
+    return nil
   }
 
   init(apiService: RdvApiService) {

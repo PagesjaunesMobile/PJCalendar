@@ -109,7 +109,7 @@ class CalendarViewController: UIViewController {
 
 extension CalendarViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+    self.slotListViewModel.userDidSelectSlot(slotIndexPath: indexPath)
   }
 }
 

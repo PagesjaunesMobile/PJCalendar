@@ -60,6 +60,9 @@ class MonthListViewModel {
 
   enum DisplayState {
 
+    case notReady
+    case monthSelected(monthSelected: Int, months: [MonthViewModel])
+
     static func getMonthIndexForDay(day: DayApiModel, months: [MonthViewModel]) -> Int? {
       if let first = (months.first { $0.dayIsContainInThisMonth(day: day) }) {
         return months.firstIndex(of: first)
@@ -108,9 +111,6 @@ class MonthListViewModel {
 
       self = .monthSelected(monthSelected: index, months: months)
     }
-
-    case notReady
-    case monthSelected(monthSelected: Int, months: [MonthViewModel])
   }
 
   var shouldShowSpinner: Observable<Bool> = Observable<Bool>(false)

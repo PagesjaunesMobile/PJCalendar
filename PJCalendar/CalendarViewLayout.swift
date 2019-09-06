@@ -116,7 +116,6 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
         let cellAttribute = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         cellAttribute.frame = self.getCellFrameFor(indexPath: indexPath)
         cellAttribute.zIndex = 0
-        
         self.attributes.append(cellAttribute)
       }
     }
@@ -161,7 +160,7 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
 
     let lastCellFrame = self.getCellFrameFor(indexPath: lastIndexPath)
 
-    return self.addScrolableContentOffsetIfNeeded(size: CGSize(width: collectionView.frame.size.width, height: lastCellFrame.maxY))
+    return self.addScrolableContentOffsetIfNeeded(size: CGSize(width: collectionView.frame.size.width, height: lastCellFrame.maxY + 16))
   }
 
 }

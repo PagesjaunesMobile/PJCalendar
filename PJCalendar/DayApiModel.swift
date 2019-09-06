@@ -8,7 +8,13 @@
 
 import Foundation
 
-struct SlotApiModel {
+extension SlotApiModel {
+  static func ==(lhrs: SlotApiModel, rhs: SlotApiModel) -> Bool {
+    return lhrs.hcode == rhs.hcode
+  }
+}
+
+struct SlotApiModel: Equatable {
   let htext: String
   let hcode: String
   let isAfterNoon: Bool
