@@ -17,15 +17,29 @@ extension TimeSlotViewModel {
 class TimeSlotViewModel: Equatable {
   private let originalModel: SlotApiModel
   let displayText: String
+  private (set) var isSelected = Observable<Bool>(false)
+  let dataController: CalendarDataController
 
-  init(model: SlotApiModel) {
+  init(model: SlotApiModel, dataController: CalendarDataController) {
     self.originalModel = model
     self.displayText = self.originalModel.htext
+     self.dataController = dataController
   }
 
+  func select() {
+    if self.dataController.updateSelectedSlot(slot: self.originalModel) == true {
+      self.isSelected.value = true
+    }
+  }
+  
+  func unSelect() {
+    self.isSelected.value = false
+  }
+  
   var isAfterNoon: Bool {
     return self.originalModel.isAfterNoon
   }
+  
 }
 
 protocol TimeSlotListViewModelDelegate: class {
@@ -78,6 +92,18 @@ class TimeSlotListViewModel {
     case timeSlot(day: DayViewModel, period: DayPeriod, slot: TimeSlotViewModel?)
     case timeSlotEmpty(previousDayWithSlot: DayViewModel?, nextDayWithSlot: DayViewModel?)
 
+    
+    var periode: DayPeriod? {
+      switch self {
+      case .notReady:
+        return nil
+      case .timeSlot(day: _, period: let period, slot: _):
+        return period
+      case .timeSlotEmpty(previousDayWithSlot: _, nextDayWithSlot: _):
+        return nil
+      }
+    }
+    
     var slotIndexInSelectedDayAndPeriod: Int? {
       switch self {
       case .timeSlot(day: let day, period: let period, slot: let slot):
@@ -178,11 +204,11 @@ class TimeSlotListViewModel {
   var shouldDisplaySLots: Observable<Bool> = Observable<Bool>(true)
   var shouldDisplayNoSlotView: Observable<Bool> = Observable<Bool>(false)
   var segmentedControlIndexToDisplay: Observable<Int> = Observable<Int>(0)
-  var selectedSlotIndexPath: Observable<IndexPath?> = Observable<IndexPath?>(nil)
 
   private var displayState: DisplayState {
     didSet {
       self.updateObservableFromDisplayState(self.displayState)
+      self.lastPeriod = self.displayState.periode
       }
     }
 
@@ -203,20 +229,6 @@ class TimeSlotListViewModel {
         self.shouldDisplaySpinner.value = false
       }
 
-      if displayState.slotIndexInSelectedDayAndPeriod == nil && self.selectedSlotIndexPath.value != nil {
-        self.selectedSlotIndexPath.value = nil
-      }
-
-      if
-        let selectedSlotIndex = displayState.slotIndexInSelectedDayAndPeriod,
-        let oldValue = self.selectedSlotIndexPath.value?.item, selectedSlotIndex != oldValue {
-        self.selectedSlotIndexPath.value = IndexPath(item: selectedSlotIndex, section: 1)
-      }
-
-      if self.selectedSlotIndexPath.value == nil, let newIndex = displayState.slotIndexInSelectedDayAndPeriod {
-        self.selectedSlotIndexPath.value = IndexPath(item: newIndex, section: 1)
-      }
-
       if self.shouldDisplaySLots.value == false {
         self.shouldDisplaySLots.value = true
       }
@@ -229,7 +241,7 @@ class TimeSlotListViewModel {
         self.segmentedControlIndexToDisplay.value = displayState.segmentedControllPeriodIndex
       }
       
-
+      
     case .timeSlotEmpty(previousDayWithSlot: _, nextDayWithSlot: _):
       if self.shouldDisplaySLots.value == true {
         self.shouldDisplaySLots.value = false
@@ -271,17 +283,39 @@ class TimeSlotListViewModel {
       }
       
       switch self.displayState {
-      case .timeSlot(day: let currentDay, period: let period, slot: _):
+      case .timeSlot(day: let currentDay, period: let period, slot: let slot):
         if dayViewModel != currentDay {
-          self.displayState = .timeSlot(day: dayViewModel, period: period, slot: nil)
+          self.displayState = .timeSlot(day: dayViewModel, period: period, slot: slot)
           self.delegate?.reloadSlots()
         }
+        
       case .timeSlotEmpty(_):
-        self.displayState = .timeSlot(day: dayViewModel, period: self.moringPeriod, slot: nil)
+        self.displayState = .timeSlot(day: dayViewModel, period: self.lastPeriod ?? self.moringPeriod, slot: nil)
         self.delegate?.reloadSlots()
+        
       case .notReady:
-        self.displayState = .timeSlot(day: dayViewModel, period: self.moringPeriod, slot: nil)
+        self.displayState = .timeSlot(day: dayViewModel, period: self.lastPeriod ?? self.moringPeriod, slot: nil)
         self.delegate?.reloadSlots()
+      }
+    }
+    self.dataController.selectedSlot.bind { [weak self] _, index in
+      guard let `self` = self else { return }
+      switch self.displayState {
+      case .notReady:
+        return
+      case .timeSlotEmpty(previousDayWithSlot: _, nextDayWithSlot: _):
+        return
+      case .timeSlot(day: let day, period: let period, slot: let slot):
+        if let timeSlotModel = self.dataController.selectedSlotModel {
+          let timeSlotViewModel = TimeSlotViewModel(model: timeSlotModel, dataController: self.dataController)
+          if let slot = slot, slot != timeSlotViewModel {
+            self.displayState = .timeSlot(day: day, period: period, slot: timeSlotViewModel)
+          } else if slot == nil {
+            self.displayState = .timeSlot(day: day, period: period, slot: timeSlotViewModel)
+          }
+        } else if slot != nil {
+          self.displayState = .timeSlot(day: day, period: period, slot: nil)
+        }
       }
     }
   }
@@ -294,9 +328,9 @@ class TimeSlotListViewModel {
 
   func userDidSelectSlot(slotIndexPath: IndexPath) {
     switch self.displayState {
-    case .timeSlot(day: let day, period: let period, slot: _):
+    case .timeSlot:
       guard let slot = self.displayState.slotForCurrrentDayAndPeriod(index: slotIndexPath.item) else { return }
-      self.displayState = .timeSlot(day: day, period: period, slot: slot)
+      slot.select()
     case .timeSlotEmpty:
       break
     case .notReady:

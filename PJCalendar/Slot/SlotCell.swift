@@ -37,29 +37,39 @@ class SlotCell: UICollectionViewCell {
   func setupView() {
     self.contentView.addSubview(self.titleLabel)
   }
+  
+  func enableSelectedStyle() {
+    self.contentView.backgroundColor = UIColor.bluePJ()
+    self.titleLabel.textColor = UIColor.white
+  }
+  
+  func enableDeselectedStyle() {
+    self.contentView.backgroundColor = UIColor.white
+    self.titleLabel.textColor = UIColor.bluePJ()
+  }
 
   func setupStyle() {
-    self.contentView.backgroundColor = UIColor.white
     self.contentView.layer.borderWidth = 1
     self.contentView.layer.cornerRadius = 4.0
     self.contentView.clipsToBounds = true
     self.contentView.layer.borderColor = UIColor.bluePJ().cgColor
-    self.titleLabel.textColor = UIColor.bluePJ()
     self.titleLabel.font = UIFont.diloRoman(size: 16)
+    
   }
 
   func setup() {
     self.setupView()
     self.setupLayout()
     self.setupStyle()
+    self.enableDeselectedStyle()
   }
 
   override var isSelected: Bool {
     didSet {
       if self.isSelected == true {
-        self.contentView.backgroundColor = UIColor.green
+        self.enableSelectedStyle()
       } else {
-        self.contentView.backgroundColor = UIColor.white
+        self.enableDeselectedStyle()
       }
 
     }
@@ -72,6 +82,7 @@ class SlotCell: UICollectionViewCell {
 
   func configure(model: TimeSlotViewModel) {
     self.titleLabel.text = model.displayText
+    self.isSelected = model.isSelected.value
   }
 
   static let reusueCellIdentifier = String(describing:SlotCell.self)

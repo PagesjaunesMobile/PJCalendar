@@ -40,7 +40,7 @@ struct RdvApiService {
 //    self.intervId = intervId
 //  }
 
-  init(etabCode: String = "09415876", calendId: String = "887", intervId: String = "1047303-756") {
+  init(etabCode: String = "55806040", calendId: String = "619343", intervId: String = "4750363") {
     self.etabCode = etabCode
     self.calendId = calendId
     self.intervId = intervId
@@ -53,7 +53,7 @@ struct RdvApiService {
                                                                                              calendId: self.calendId,
                                                                                              intervId: self.intervId,
                                                                                              goto: StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.SKRGoto.availability)
-    StargateClient.setServer(.sgmobCD_HTTP)
+    StargateClient.setServer(.prod_HTTPS)
     StargateClient.makeRequest(request: request) { result in
       switch result.result {
       case .success(let value):

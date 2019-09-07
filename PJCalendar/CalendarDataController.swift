@@ -35,7 +35,8 @@ class CalendarDataController {
   var selectedSlotModel: SlotApiModel? {
     guard let selectedDay = self.selectedDayModel else { return nil }
     guard let selectedSlot = self.selectedSlot.value else { return nil }
-    return nil
+    guard selectedSlot >= 0, selectedSlot < selectedDay.slots.count else { return nil }
+    return selectedDay.slots[selectedSlot]
   }
 
   init(apiService: RdvApiService) {
@@ -45,20 +46,23 @@ class CalendarDataController {
   func updateSelectedDay(day: DayApiModel) {
     if let dest = self.days.value.firstIndex(of: day) {
       self.selectedDay.value = Int(dest)
+      self.selectedSlot.value = nil
     }
+  }
+  
+  func updateSelectedSlot(slot: SlotApiModel) -> Bool {
+    guard let day = self.selectedDayModel else { return false }
+    guard let index = day.slots.firstIndex(of: slot) else { return false }
+    self.selectedSlot.value = Int(index)
+    return true
   }
 
   func loadData() {
     self.loadingState.value = .loading
     self.apiService.makeRequest { result in
       switch result {
-      case .success(rdvList: var model):
+      case .success(rdvList: let model):
         self.loadingState.value = .ready
-        var toto = model.first!
-        let firstSlot = toto.slots.first!
-        toto.slots.removeAll()
-        toto.slots.append(firstSlot)
-        model[0] = toto
         self.days.value = model
         self.selectedDay.value = 0
       case .error:

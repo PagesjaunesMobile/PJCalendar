@@ -30,8 +30,19 @@ class DayViewModel: Equatable {
     self.dayOfTheWeek = model.shortDayText
     
     self.dayNumber = model.dayNumberText
-    self.slotsViewModel = self.originalModel.slots.map(TimeSlotViewModel.init)
+    self.slotsViewModel = self.originalModel.slots.map { TimeSlotViewModel(model: $0, dataController: dataController) }
     self.dataController = dataController
+    
+    self.slotsViewModel.forEach { slot in
+      slot.isSelected.bind(observer: { [weak self] _, isSelected in
+        guard let `self` = self else { return }
+        guard isSelected == true else { return }
+        self.slotsViewModel.filter { elem in
+          elem != slot
+          }.forEach { $0.unSelect() }
+      })
+    }
+    
   }
 
   var moringSlots: [TimeSlotViewModel] {
@@ -49,7 +60,7 @@ class DayViewModel: Equatable {
   func userWantToShowSlotOfThisMonth() {
     self.dataController.updateSelectedDay(day: self.originalModel)
   }
-
+  
   func representDay(day: DayApiModel) -> Bool {
     return day == self.originalModel
   }
