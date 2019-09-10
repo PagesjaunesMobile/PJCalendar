@@ -42,8 +42,18 @@ class DayViewModel: Equatable {
           }.forEach { $0.unSelect() }
       })
     }
-    
   }
+  func getFirstDayWithSlotBeforeThisDay() -> DayViewModel? {
+    guard let model = self.dataController.getFirstDayWithSlotBefore(day: self.originalModel) else { return nil }
+    return DayViewModel(model: model, dataController: dataController)
+  }
+
+  func getNextDayWithSlotAfterThisDay() -> DayViewModel? {
+    guard let model = self.dataController.getFisrtDayWithSlotAter(day: self.originalModel) else { return nil }
+    return DayViewModel(model: model, dataController: dataController)
+  }
+
+
 
   var moringSlots: [TimeSlotViewModel] {
     return self.slotsViewModel.filter { $0.isAfterNoon == false }
@@ -57,7 +67,7 @@ class DayViewModel: Equatable {
     return self.slotsViewModel.isEmpty
   }
 
-  func userWantToShowSlotOfThisMonth() {
+  func userWantToShowSlotOfThisDay() {
     self.dataController.updateSelectedDay(day: self.originalModel)
   }
   
@@ -116,7 +126,7 @@ class DayListViewModel {
     switch self.displayState {
     case .daySelected(day: _, days: let days):
       if indexPath.item < days.count && indexPath.item >= 0 {
-        days[indexPath.item].userWantToShowSlotOfThisMonth()
+        days[indexPath.item].userWantToShowSlotOfThisDay()
       }
     case .notReady:
       break

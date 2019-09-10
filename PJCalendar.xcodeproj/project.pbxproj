@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		47C80D072DDCD1D99B75165E /* Pods_PJCalendar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61493DFF722567178D133637 /* Pods_PJCalendar.framework */; };
+		A12F5F1A232652D10077006C /* NoSlotCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12F5F19232652D10077006C /* NoSlotCell.swift */; };
 		A13263C122FC47CB00B5C53E /* RdvApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C022FC47CB00B5C53E /* RdvApiService.swift */; };
 		A13263C3230AE72400B5C53E /* DayApiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C2230AE72400B5C53E /* DayApiModel.swift */; };
 		A13263C5230B037500B5C53E /* CalendarDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A13263C4230B037500B5C53E /* CalendarDataController.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		3F0813D74FF016968A8146E6 /* Pods-PJCalendar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJCalendar.release.xcconfig"; path = "Target Support Files/Pods-PJCalendar/Pods-PJCalendar.release.xcconfig"; sourceTree = "<group>"; };
 		61493DFF722567178D133637 /* Pods_PJCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A12F5F19232652D10077006C /* NoSlotCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoSlotCell.swift; sourceTree = "<group>"; };
 		A13263C022FC47CB00B5C53E /* RdvApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RdvApiService.swift; sourceTree = "<group>"; };
 		A13263C2230AE72400B5C53E /* DayApiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayApiModel.swift; sourceTree = "<group>"; };
 		A13263C4230B037500B5C53E /* CalendarDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataController.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				A13263C2230AE72400B5C53E /* DayApiModel.swift */,
 				A13263C4230B037500B5C53E /* CalendarDataController.swift */,
 				A1E2A8942315573700471757 /* Observable.swift */,
+				A12F5F19232652D10077006C /* NoSlotCell.swift */,
 			);
 			path = PJCalendar;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				A13263C3230AE72400B5C53E /* DayApiModel.swift in Sources */,
 				A1850D8922E9D4F6007E8FAD /* ViewController.swift in Sources */,
 				A13263CB230BFA9700B5C53E /* TimeSlotListViewModel.swift in Sources */,
+				A12F5F1A232652D10077006C /* NoSlotCell.swift in Sources */,
 				A1E2A8952315573700471757 /* Observable.swift in Sources */,
 				A1850D9D22E9DF25007E8FAD /* SlotCell.swift in Sources */,
 				A13263C5230B037500B5C53E /* CalendarDataController.swift in Sources */,

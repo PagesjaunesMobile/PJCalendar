@@ -56,6 +56,8 @@ class CalendarViewController: UIViewController {
     self.collectionView.register(SlotHeaderCell.self,
                                  forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                  withReuseIdentifier: SlotHeaderCell.reusueCellIdentifier)
+
+    self.collectionView.register(NoSlotCell.self, forCellWithReuseIdentifier: NoSlotCell.reusueCellIdentifier)
   }
 
   func setupDataController() {
@@ -78,12 +80,6 @@ class CalendarViewController: UIViewController {
   }
 
   func setupViewModel() {
-    self.slotListViewModel.shouldDisplaySLots.bind { [weak self] _, result in
-      guard let `self` = self else { return }
-      if result == true {
-        self.collectionView.reloadData()
-      }
-    }
     self.slotListViewModel.delegate = self
   }
 
@@ -128,6 +124,15 @@ extension CalendarViewController: UICollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+    guard self.slotListViewModel.shouldDisplayNoSlotCell == false  else {
+      let dequeueCell = collectionView.dequeueReusableCell(withReuseIdentifier: NoSlotCell.reusueCellIdentifier, for: indexPath)
+      guard let castedCell = dequeueCell as? NoSlotCell else { return dequeueCell }
+      guard let model = self.slotListViewModel.noSlotModel else { return dequeueCell }
+
+      castedCell.configure(viewModel: model)
+      return castedCell
+    }
 
     let dequeueCell = collectionView.dequeueReusableCell(withReuseIdentifier: SlotCell.reusueCellIdentifier, for: indexPath)
 
@@ -174,5 +179,11 @@ extension CalendarViewController: TimeSlotListViewModelDelegate {
         self.collectionView.contentOffset = oldContentOffset
       }
     }
+  }
+}
+
+extension CalendarViewController: NewCalendarFlowLayoutDelegate {
+  var shouldDisplayNoSlot: Bool {
+    return self.slotListViewModel.shouldDisplayNoSlotCell
   }
 }

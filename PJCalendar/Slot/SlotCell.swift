@@ -54,7 +54,7 @@ class SlotCell: UICollectionViewCell {
     self.contentView.clipsToBounds = true
     self.contentView.layer.borderColor = UIColor.bluePJ().cgColor
     self.titleLabel.font = UIFont.diloRoman(size: 16)
-    
+    self.titleLabel.textColor = UIColor.bluePJ()
   }
 
   func setup() {
@@ -71,7 +71,6 @@ class SlotCell: UICollectionViewCell {
       } else {
         self.enableDeselectedStyle()
       }
-
     }
   }
 

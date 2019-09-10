@@ -57,6 +57,14 @@ class CalendarDataController {
     return true
   }
 
+  func getFirstDayWithSlotBefore(day: DayApiModel) -> DayApiModel? {
+    return self.days.value.filter { ($0 < day) && $0.slots.isEmpty == false }.first
+  }
+
+  func getFisrtDayWithSlotAter(day: DayApiModel) -> DayApiModel? {
+    return self.days.value.filter { ($0 > day) && $0.slots.isEmpty == false }.first
+  }
+
   func loadData() {
     self.loadingState.value = .loading
     self.apiService.makeRequest { result in

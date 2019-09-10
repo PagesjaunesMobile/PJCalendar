@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+protocol NewCalendarFlowLayoutDelegate: class {
+  var shouldDisplayNoSlot: Bool { get }
+}
+
 class NewCalendarFlowLayout: UICollectionViewLayout {
 
   let shrinkableHeightRation: CGFloat = 3.0
@@ -89,6 +93,11 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
                   height: self.cellSize.height)
   }
 
+  var shouldPresentNoSlot: Bool {
+    guard let delegate = self.collectionView?.delegate as? NewCalendarFlowLayoutDelegate else { return false }
+    return delegate.shouldDisplayNoSlot
+  }
+
 
   override func prepare() {
 
@@ -103,6 +112,13 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
     headerAttributes.frame = self.getHeaderFrame(contentOffset: collectionView.contentOffset)
     headerAttributes.zIndex = 1
     self.attributes.append(headerAttributes)
+
+    guard self.shouldPresentNoSlot == false else {
+      let noSlotAttributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(item: 0, section: 1))
+      noSlotAttributes.frame = CGRect(x: 0, y: HeaderCell.hearderheight, width: collectionView.frame.size.width, height: 400)
+      self.attributes.append(noSlotAttributes)
+      return
+    }
 
     if collectionView.numberOfSections > 1 {
       let headerCellAttributes = UICollectionViewLayoutAttributes(
@@ -148,6 +164,11 @@ class NewCalendarFlowLayout: UICollectionViewLayout {
 
     guard collectionView.numberOfSections > 1 else {
       let dest = CGSize(width: collectionView.frame.size.width, height: HeaderCell.hearderheight)
+      return self.addScrolableContentOffsetIfNeeded(size: dest)
+    }
+
+    guard self.shouldPresentNoSlot == false else {
+      let dest = CGSize(width: collectionView.frame.size.width, height: HeaderCell.hearderheight + 400)
       return self.addScrolableContentOffsetIfNeeded(size: dest)
     }
 

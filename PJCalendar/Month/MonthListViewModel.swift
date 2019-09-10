@@ -217,7 +217,8 @@ class MonthListViewModel {
     }
 
     self.dataController.selectedDay.bind { _, newIndex in
-      guard let monthSelected = self.displayState.getMonthIndexForDay(day: self.dataController.days.value[newIndex]) else { return }
+      guard let day = self.dataController.selectedDayModel else { return }
+      guard let monthSelected = self.displayState.getMonthIndexForDay(day: day) else { return }
       switch self.displayState {
       case .monthSelected(monthSelected: _, months: let months):
         self.displayState = .monthSelected(monthSelected: monthSelected, months: months)
