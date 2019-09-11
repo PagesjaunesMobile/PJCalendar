@@ -44,6 +44,12 @@ extension DayApiModel: Comparable {
   }
 }
 
+extension DayApiModel: Hashable {
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(self.realDate)
+  }
+}
+
 struct DayApiModel {
   let dtext: String
   let dcode: String?

@@ -14,12 +14,14 @@ class CalendarDataController {
     case ready
     case loading
     case error
+    case noResult
   }
 
   let morningName = "Matin"
   let afterNoonName = "Apres midi"
 
-  var loadingState = Observable<LoadingState>(.loading)
+  var initialLoadingState = Observable<LoadingState>(.loading)
+  var lazyLoadingState = Observable<LoadingState>(.ready)
 
   let apiService: RdvApiService
 
@@ -47,6 +49,9 @@ class CalendarDataController {
     if let dest = self.days.value.firstIndex(of: day) {
       self.selectedDay.value = Int(dest)
       self.selectedSlot.value = nil
+      if selectedDay.value >= (self.days.value.count / 2) {
+        self.loadNextResult()
+      }
     }
   }
   
@@ -58,7 +63,7 @@ class CalendarDataController {
   }
 
   func getFirstDayWithSlotBefore(day: DayApiModel) -> DayApiModel? {
-    return self.days.value.filter { ($0 < day) && $0.slots.isEmpty == false }.first
+    return self.days.value.filter { ($0 < day) && $0.slots.isEmpty == false }.last
   }
 
   func getFisrtDayWithSlotAter(day: DayApiModel) -> DayApiModel? {
@@ -66,15 +71,36 @@ class CalendarDataController {
   }
 
   func loadData() {
-    self.loadingState.value = .loading
-    self.apiService.makeRequest { result in
+    self.initialLoadingState.value = .loading
+    self.apiService.loadData() { result in
       switch result {
       case .success(rdvList: let model):
-        self.loadingState.value = .ready
+        self.initialLoadingState.value = .ready
         self.days.value = model
         self.selectedDay.value = 0
       case .error:
-        self.loadingState.value = .error
+        self.initialLoadingState.value = .error
+      case .noResult:
+        self.initialLoadingState.value = .noResult
+      }
+    }
+  }
+
+  func loadNextResult() {
+    guard self.lazyLoadingState.value == .ready || self.lazyLoadingState.value == .error else { return }
+    self.lazyLoadingState.value = .loading
+    self.apiService.loadNextResult(fromDate: self.days.value.last!.realDate) { result in
+      switch result {
+      case .success(rdvList: let model):
+        self.lazyLoadingState.value = .ready
+        let newsDay = self.days.value + model
+        let uniqueDay = Array(Set(newsDay))
+        let sorted = uniqueDay.sorted()
+        self.days.value = sorted
+      case .error:
+        self.lazyLoadingState.value = .error
+      case .noResult:
+        self.lazyLoadingState.value = .noResult
       }
     }
   }

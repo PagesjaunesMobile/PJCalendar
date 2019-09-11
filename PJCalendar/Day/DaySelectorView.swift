@@ -10,28 +10,31 @@ import Foundation
 import UIKit
 
 class PaginableView: UIView, UIScrollViewDelegate {
-  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
 
-    guard let collectionView = scrollView as? UICollectionView else { return }
+  func getCenteredOffsetFromOffset(contentOffset: CGPoint, scrollView: UIScrollView) -> CGPoint {
+    guard let collectionView = scrollView as? UICollectionView else { return contentOffset }
 
-    guard let attribute0 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) else { return }
-    guard let attribute1 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 1, section: 0)) else { return }
+    guard let attribute0 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 0, section: 0)) else { return contentOffset }
+    guard let attribute1 = collectionView.collectionViewLayout.layoutAttributesForItem(at: IndexPath(item: 1, section: 0)) else { return contentOffset }
 
     let itemSpace: CGFloat = attribute1.frame.origin.x - attribute0.frame.origin.x
 
-    let offset: CGFloat
-
-    let precisePage = targetContentOffset.pointee.x / itemSpace
+    let precisePage = contentOffset.x / itemSpace
     let page: Int
-    if precisePage.truncatingRemainder(dividingBy: 1.0) < 0.5 {
-      page = Int(floor(targetContentOffset.pointee.x / itemSpace))
-    } else {
-      page = Int(ceil(targetContentOffset.pointee.x / itemSpace))
-    }
-    offset = (CGFloat(page) * itemSpace)
 
-    targetContentOffset.pointee = CGPoint(x: offset , y:  targetContentOffset.pointee.y)
+    if precisePage.truncatingRemainder(dividingBy: 1.0) < 0.5 {
+      page = Int(floor(contentOffset.x / itemSpace))
+    } else {
+      page = Int(ceil(contentOffset.x / itemSpace))
+    }
+
+    return CGPoint(x: (CGFloat(page) * itemSpace), y: contentOffset.y)
   }
+
+  func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    targetContentOffset.pointee = self.getCenteredOffsetFromOffset(contentOffset: targetContentOffset.pointee, scrollView: scrollView)
+  }
+
 }
 
 class DaySelectorView: PaginableView {
@@ -39,6 +42,8 @@ class DaySelectorView: PaginableView {
   var index: CGFloat = 0
 
   var isScrollAnimated = false
+
+  var shouldReloadWhenAnimationStop = false
 
   var selectedIndexPath = IndexPath(item: 0, section: 0) {
     didSet {
@@ -72,6 +77,11 @@ class DaySelectorView: PaginableView {
     self.collectionView.showsHorizontalScrollIndicator = false
     self.collectionView.showsVerticalScrollIndicator = false
     self.collectionView.register(DaySelectorCell.self, forCellWithReuseIdentifier: DaySelectorCell.reeuseIdentier)
+  }
+
+  func restoreOffset(contentOffset: CGPoint) {
+    let offset = self.getCenteredOffsetFromOffset(contentOffset: contentOffset, scrollView: self.collectionView)
+    self.collectionView.setContentOffset(offset, animated: false)
   }
 
   func setupLayout() {
@@ -112,8 +122,11 @@ class DaySelectorView: PaginableView {
     self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
       guard let `self` = self, indexPath != self.selectedIndexPath  else { return }
       self.isScrollAnimated = true
+      guard self.shouldReloadWhenAnimationStop == false else { return }
       self.collectionView.scrollToItem(at: indexPath, at: UICollectionView.ScrollPosition.centeredHorizontally, animated: true)
     }
+
+    self.viewModel.delegate = self
   }
 
   init(viewModel: DayListViewModel) {
@@ -174,16 +187,55 @@ extension DaySelectorView: UICollectionViewDelegateFlowLayout {
 
 extension DaySelectorView {
 
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    self.isScrollAnimated = false
+  }
+
   func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
     self.isScrollAnimated = false
-    self.updateSelectedIndexPath()
+    if self.shouldReloadWhenAnimationStop == true {
+      self.shouldReloadWhenAnimationStop = false
+      let oldContentOffset = self.collectionView.contentOffset
+      self.collectionView.reloadData()
+      self.collectionView.setContentOffset(oldContentOffset, animated: false)
+    }
+    //self.updateSelectedIndexPath()
   }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard self.isScrollAnimated == false else {
       return
     }
+    
     self.updateSelectedIndexPath()
+  }
+
+  func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+
+    if self.shouldReloadWhenAnimationStop == true {
+      self.shouldReloadWhenAnimationStop = false
+      let offset = self.collectionView.contentOffset
+      self.collectionView.reloadData()
+      self.collectionView.setContentOffset(offset, animated: false)
+    }
   }
 }
 
+
+extension DaySelectorView: DayListViewModelDelegate {
+  func shouldReloadDays() {
+
+    guard
+        self.collectionView.isDragging == true ||
+        self.collectionView.isDecelerating  == true ||
+          self.collectionView.isTracking == true || self.isScrollAnimated == true
+      else {
+        let oldContentOffset = self.collectionView.contentOffset
+        self.collectionView.reloadData()
+        self.collectionView.setContentOffset(oldContentOffset, animated: false)
+        self.shouldReloadWhenAnimationStop = false
+        return
+    }
+    self.shouldReloadWhenAnimationStop = true
+  }
+}

@@ -14,7 +14,6 @@ extension DayViewModel{
   }
 }
 
-
 class DayViewModel: Equatable {
 
   private let originalModel: DayApiModel
@@ -76,6 +75,10 @@ class DayViewModel: Equatable {
   }
 }
 
+protocol DayListViewModelDelegate: class {
+  func shouldReloadDays()
+}
+
 class DayListViewModel {
 
   enum DisplayState {
@@ -83,14 +86,16 @@ class DayListViewModel {
     case notReady
     case daySelected(day: Int, days: [DayViewModel])
 
-    init(days: [DayApiModel], selectedDay: Int = 0, dataController: CalendarDataController) {
+    init(days: [DayViewModel], selectedDay: Int = 0, dataController: CalendarDataController) {
       if days.isEmpty == true {
         self = .notReady
       } else {
-        self = .daySelected(day: selectedDay, days: days.map { DayViewModel(model: $0, dataController: dataController) })
+        self = .daySelected(day: selectedDay, days: days)
       }
     }
   }
+
+  weak var delegate: DayListViewModelDelegate? = nil
 
   let dataController: CalendarDataController
   var displayState: DisplayState {
@@ -135,7 +140,7 @@ class DayListViewModel {
 
   func updateObervableFromDisplaySate(state: DisplayState) {
     switch state {
-    case .daySelected(day: let selectedDay, days: _):
+    case .daySelected(day: let selectedDay, days: let days):
       if self.shouldDisplayDays.value == false {
         self.shouldDisplayDays.value = true
       }
@@ -144,7 +149,7 @@ class DayListViewModel {
         self.shouldDisplaySpinner.value = false
       }
 
-      if self.selectedIndexPath.value != IndexPath(item: selectedDay, section: 0) {
+      if self.selectedIndexPath.value != IndexPath(item: selectedDay, section: 0) && selectedDay < days.count {
         self.selectedIndexPath.value = IndexPath(item: selectedDay, section: 0)
       }
 
@@ -162,7 +167,17 @@ class DayListViewModel {
   func setupDataController() {
     self.dataController.days.bind { [weak self] _, newModels in
       guard let `self` = self else { return }
-      self.displayState = DisplayState(days: newModels, dataController: self.dataController)
+
+      let newViewModels = newModels.map { DayViewModel(model: $0, dataController: self.dataController) }
+
+      switch self.displayState {
+      case .daySelected(day: let day, days: _):
+        self.displayState = .daySelected(day: day, days: newViewModels)
+        self.delegate?.shouldReloadDays()
+      case .notReady:
+        self.displayState = DisplayState(days: newViewModels, dataController: self.dataController)
+        self.delegate?.shouldReloadDays()
+      }
     }
 
     self.dataController.selectedDay.bind { [weak self] _ , day in
@@ -180,7 +195,10 @@ class DayListViewModel {
 
   init(dataController: CalendarDataController) {
     self.dataController = dataController
-    self.displayState = DisplayState(days: dataController.days.value, selectedDay: dataController.selectedDay.value, dataController: dataController)
+    self.displayState = DisplayState(days: dataController.days.value.map { DayViewModel(model: $0, dataController: dataController) },
+                                     selectedDay: dataController.selectedDay.value,
+                                     dataController: dataController)
+
     self.updateObervableFromDisplaySate(state: self.displayState)
     self.setupDataController()
   }

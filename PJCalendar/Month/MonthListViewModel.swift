@@ -20,7 +20,10 @@ extension MonthViewModel: Comparable {
     guard let firstLeft = lhs.originalModels.first, let firstRight = rhs.originalModels.first else { return false }
     return firstLeft < firstRight
   }
+}
 
+protocol MonthListViewModelDelegate: class {
+  func shouldReloadMonth()
 }
 
 class MonthViewModel {
@@ -31,9 +34,10 @@ class MonthViewModel {
   let yearText: String
   let dataController: CalendarDataController
 
-  init?(model: [DayApiModel], name: String, dataController: CalendarDataController) {
+  init?(model: [DayApiModel], dataController: CalendarDataController) {
     self.originalModels = model
-    self.monthText = name.capitalized
+    guard let first = model.first else { return nil }
+    self.monthText = first.monthText.capitalized
     guard let year =  model.first?.yearText else { return nil }
     self.yearText = year
     self.dataController = dataController
@@ -48,9 +52,36 @@ class MonthViewModel {
     self.dataController.updateSelectedDay(day: first)
   }
 
+  static func getMonthsViewModelFrom(daysModel: [DayApiModel], datacontroller: CalendarDataController) -> [MonthViewModel] {
+
+    var months: [MonthViewModel] = []
+
+    var dest: [String : [DayApiModel]] = [:]
+
+    for aDay in daysModel {
+      if var tab = dest[aDay.monthText + aDay.yearText] {
+        tab.append(aDay)
+        dest[aDay.monthText + aDay.yearText] = tab
+      } else {
+        dest[aDay.monthText + aDay.yearText] = [aDay]
+      }
+    }
+
+    for (_, value) in dest {
+      if let month = MonthViewModel(model: value, dataController: datacontroller) {
+        months.append(month)
+      }
+    }
+
+    months.sort { return $0 < $1 }
+    return months
+  }
+
 }
 
 class MonthListViewModel {
+
+  weak var delegate: MonthListViewModelDelegate?
 
   enum ArrowButtonDisplayState {
     case enable
@@ -80,35 +111,12 @@ class MonthListViewModel {
     }
 
     init(days: [DayApiModel], dataController: CalendarDataController) {
-
-      var months: [MonthViewModel] = []
-
-      var dest: [String : [DayApiModel]] = [:]
-
-      for aDay in days {
-        if var tab = dest[aDay.monthText] {
-          tab.append(aDay)
-          dest[aDay.monthText] = tab
-        } else {
-          dest[aDay.monthText] = [aDay]
-        }
-      }
-
-      for (key, value) in dest {
-        if let month = MonthViewModel(model: value, name: key, dataController: dataController) {
-          months.append(month)
-        }
-      }
-
-      months.sort { return $0 < $1 }
-
+      let months = MonthViewModel.getMonthsViewModelFrom(daysModel: days, datacontroller: dataController)
 
       guard months.isEmpty == false else { self = .notReady; return }
-
-      guard let index = DisplayState.getMonthIndexForDay(day: dataController.days.value[dataController.selectedDay.value], months: months) else {
+      guard let selectedDay = dataController.selectedDayModel, let index = DisplayState.getMonthIndexForDay(day: selectedDay, months: months) else {
         self = .notReady; return
       }
-
       self = .monthSelected(monthSelected: index, months: months)
     }
   }
@@ -174,9 +182,12 @@ class MonthListViewModel {
 
     if monthSelectedIndex > 0 && monthSelectedIndex < months.count {
       self.updateLeftButtonIfNeeded(state: .enable)
+      self.updateRightButtonIfNeeded(state: .enable)
     }
 
-    if monthSelectedIndex == months.count - 1 {
+    if monthSelectedIndex == months.count - 1 && self.dataController.lazyLoadingState.value == .loading {
+      self.updateRightButtonIfNeeded(state: .loading)
+    } else if monthSelectedIndex == months.count - 1 {
       self.updateRightButtonIfNeeded(state: .disabled)
     }
   }
@@ -211,9 +222,29 @@ class MonthListViewModel {
   }
 
   func setupDataController() {
+
+    self.dataController.lazyLoadingState.bind { _, state in
+      switch self.displayState {
+      case .monthSelected(monthSelected: let monthSelected, months: let months):
+        self.updateButtonsObservable(monthSelectedIndex: monthSelected, months: months)
+      case .notReady:
+        break
+      }
+    }
+
     self.dataController.days.bind { [weak self] _, days in
       guard let `self` = self else { return }
-      self.displayState = DisplayState(days: days, dataController: self.dataController)
+
+      switch self.displayState {
+      case .notReady:
+        self.displayState = DisplayState(days: days, dataController: self.dataController)
+        self.delegate?.shouldReloadMonth()
+      case .monthSelected(monthSelected: let monthIndex, months: _):
+        let months = MonthViewModel.getMonthsViewModelFrom(daysModel: days, datacontroller: self.dataController)
+        self.displayState = .monthSelected(monthSelected: monthIndex, months: months)
+        self.delegate?.shouldReloadMonth()
+      }
+
     }
 
     self.dataController.selectedDay.bind { _, newIndex in
@@ -240,10 +271,17 @@ class MonthListViewModel {
   }
 
   func userWantToDisplayNextMont() {
+    switch self.displayState {
+    case .monthSelected(monthSelected: _, months: let months):
+      guard self.selectedIndexPath.value.item + 1 < months.count else { return }
     self.userWantToDisplayMonthDay(indexPath: IndexPath(item: self.selectedIndexPath.value.item + 1, section: 0))
+    case .notReady:
+      break
+    }
   }
 
   func userWantToDisplayPreviousMonth() {
+    guard self.selectedIndexPath.value.item - 1 >= 0 else { return }
     self.userWantToDisplayMonthDay(indexPath: IndexPath(item: self.selectedIndexPath.value.item - 1, section: 0))
   }
 

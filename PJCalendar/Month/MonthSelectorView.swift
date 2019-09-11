@@ -56,13 +56,21 @@ class MonthSelectorView: UIView {
 
   let viewModel: MonthListViewModel
 
-  var savedSize: CGSize = .zero
+  var shouldReloadWhenScrollStop  = false
 
   var selectedIndexPath = IndexPath(item: 0, section: 0) {
     didSet {
       self.viewModel.userWantToDisplayMonthDay(indexPath: selectedIndexPath)
     }
   }
+
+  var isAnimated: Bool = false
+
+  let spinner: UIActivityIndicatorView = {
+    let dest = UIActivityIndicatorView(style: .gray)
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
 
   let collectionView: UICollectionView = {
     let layout = MonthSelectorViewCollectionViewLayout()
@@ -97,6 +105,9 @@ class MonthSelectorView: UIView {
     constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.rightButton.leftAnchor, constant: -16))
     constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor))
 
+    constraints.append(self.rightButton.centerXAnchor.constraint(equalTo: self.spinner.centerXAnchor))
+    constraints.append(self.rightButton.centerYAnchor.constraint(equalTo: self.spinner.centerYAnchor))
+
     NSLayoutConstraint.activate(constraints)
   }
 
@@ -112,6 +123,7 @@ class MonthSelectorView: UIView {
   }
 
   @objc func handleButtonAction(button: UIButton) {
+    guard self.shouldReloadWhenScrollStop == false else { return }
     if button == self.leftButton {
         self.viewModel.userWantToDisplayPreviousMonth()
     } else if button == self.rightButton {
@@ -127,17 +139,31 @@ class MonthSelectorView: UIView {
   func setupView() {
     self.addSubview(self.leftButton)
     self.addSubview(self.rightButton)
+    self.addSubview(self.spinner)
     self.addSubview(self.collectionView)
   }
 
   func update(button: UIButton, displayState : MonthListViewModel.ArrowButtonDisplayState) {
+
     switch displayState {
     case .enable:
+      if button == self.rightButton {
+        self.spinner.stopAnimating()
+        self.spinner.isHidden = true
+      }
+      button.isHidden = false
       button.isEnabled = true
     case .disabled:
+      if button == self.rightButton {
+        self.spinner.stopAnimating()
+        self.spinner.isHidden = true
+      }
+      button.isHidden = false
       button.isEnabled = false
     case .loading:
-      break
+      button.isHidden = true
+      self.spinner.startAnimating()
+      self.spinner.isHidden = false
     }
   }
 
@@ -165,11 +191,16 @@ class MonthSelectorView: UIView {
 
     self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
       guard let `self` = self else { return }
+      guard self.shouldReloadWhenScrollStop == false else {
+        return
+      }
+      self.isAnimated = true
       self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
 
     self.update(button: self.leftButton, displayState: self.viewModel.leftButtonDisplayState.value)
     self.update(button: self.rightButton, displayState: self.viewModel.rightButtonDisplayState.value)
+    self.viewModel.delegate = self
   }
 
   func setupStyle() {
@@ -214,6 +245,27 @@ extension MonthSelectorView: UIScrollViewDelegate {
     if let index = collectionView.indexPathForItem(at: center)/*, self.selectedIndexPath != index*/ {
       self.selectedIndexPath = index
     }
+
+    if shouldReloadWhenScrollStop == true {
+      let oldOffset = self.collectionView.contentOffset
+      self.collectionView.reloadData()
+      self.collectionView.setContentOffset(oldOffset, animated: false)
+      self.shouldReloadWhenScrollStop = false
+    }
+  }
+
+  func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    self.isAnimated = false
+  }
+
+  func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+    self.isAnimated = false
+    if shouldReloadWhenScrollStop == true {
+      let oldOffset = self.collectionView.contentOffset
+      self.collectionView.reloadData()
+      self.collectionView.setContentOffset(oldOffset, animated: false)
+      self.shouldReloadWhenScrollStop = false
+    }
   }
 
 }
@@ -234,5 +286,22 @@ extension MonthSelectorView: UICollectionViewDataSource {
 
 extension MonthSelectorView: UICollectionViewDelegate {
 
+}
+
+extension MonthSelectorView: MonthListViewModelDelegate {
+  func shouldReloadMonth() {
+
+    guard
+        self.collectionView.isDragging == true ||
+        self.collectionView.isDecelerating == true ||
+        self.isAnimated == true || self.collectionView.isTracking == true else  {
+      let oldValue = self.collectionView.contentOffset
+      self.collectionView.reloadData()
+      self.collectionView.setContentOffset(oldValue, animated: false)
+          self.shouldReloadWhenScrollStop = false
+      return
+    }
+    self.shouldReloadWhenScrollStop = true
+  }
 }
 

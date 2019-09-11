@@ -15,6 +15,7 @@ struct RdvApiService {
 
   enum Result {
     case success(rdvList: [DayApiModel])
+    case noResult
     case error
   }
 
@@ -40,34 +41,77 @@ struct RdvApiService {
 //    self.intervId = intervId
 //  }
 
-  init(etabCode: String = "55806040", calendId: String = "619343", intervId: String = "4750363") {
+  init(etabCode: String = "09592944", calendId: String = "999626975", intervId: String = "1003774611") {
     self.etabCode = etabCode
     self.calendId = calendId
     self.intervId = intervId
   }
 
+  func loadNextResult(fromDate date: Date, completion: @escaping (Result) -> Void) {
+    self.performRequest(date: date, completion: completion)
+  }
 
-  func makeRequest(completion: @escaping (Result) -> Void) {
+  func performRequest(date: Date? = nil, completion: @escaping (Result) -> Void) {
+
+    let dateStr: String?
+
+    if let date = date {
+      let dateFormater = DateFormatter()
+      dateFormater.dateFormat = "yyyy-MM-dd hh:mm:ss"
+      dateStr = dateFormater.string(from: date)
+    } else {
+      dateStr = nil
+    }
+
+
 
     let request = StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.Request(etabCode: self.etabCode,
                                                                                              calendId: self.calendId,
                                                                                              intervId: self.intervId,
-                                                                                             goto: StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.SKRGoto.availability)
-    StargateClient.setServer(.prod_HTTPS)
+                                                                                             goto: StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.SKRGoto.availability, /*period: "120J",*/ sdtime: dateStr)
+    StargateClient.setServer(.relmanti_HTTP)
+ //   StargateClient.setServer(.gcpProd_HTTPS)
     StargateClient.makeRequest(request: request) { result in
       switch result.result {
       case .success(let value):
         switch value {
         case .status200(let resDispoSante):
 
-          guard let days = resDispoSante.days?.day else { return }
+//          let data = try? JSONEncoder().encode(resDispoSante)
+//          let urlPath = FileManager.default.urls(for: .cachesDirectory, in: .localDomainMask)
+//          let firltURL = urlPath.first
+//          if var url = firltURL {
+//            url.appendPathComponent("resDispoSante.json")
+//            print(url)
+//            try? data?.write(to: url)
+//          }
+
+          guard let codeCI = resDispoSante.codeCI else {
+            completion(.error)
+            return
+          }
+
+          if codeCI == "8083" {
+            completion(.noResult)
+            return
+          }
+
+          guard codeCI == "8081" else {
+            completion(.error)
+            return
+          }
+
+          guard let days = resDispoSante.days?.day else {
+            completion(.error)
+            return
+          }
 
           let dest: [DayApiModel] = days.compactMap {
             guard let dText = $0.dtext else { return nil }
 
             let slots:[SlotApiModel]? = $0.hours?.compactMap {
               guard let text = $0.htext, let code = $0.hcode else { return nil }
-              
+
               return SlotApiModel(htext: text, hcode: code)
             }
 
@@ -82,5 +126,9 @@ struct RdvApiService {
         completion(.error)
       }
     }
+  }
+
+  func loadData(completion: @escaping (Result) -> Void) {
+    self.performRequest(completion: completion)
   }
 }

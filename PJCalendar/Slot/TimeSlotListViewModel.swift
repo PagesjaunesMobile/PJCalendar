@@ -235,6 +235,17 @@ class TimeSlotListViewModel {
     }
   }
 
+  private func getPeriodForDay(day: DayViewModel) -> DayPeriod {
+    if day.afterNoonSlots.isEmpty {
+      return self.moringPeriod
+    }
+
+    if day.moringSlots.isEmpty {
+      return self.afterNoonPeriod
+    }
+    return self.lastPeriod
+  }
+
   private func setupDataController() {
     self.dataController.selectedDay.bind { [weak self] _, index in
       guard let `self` = self else { return }
@@ -249,18 +260,19 @@ class TimeSlotListViewModel {
       }
       
       switch self.displayState {
-      case .timeSlot(day: let currentDay, period: let period, slot: let slot):
+      case .timeSlot(day: let currentDay, period: _, slot: let slot):
+
         if dayViewModel != currentDay {
-          self.displayState = .timeSlot(day: dayViewModel, period: period, slot: slot)
+          self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriodForDay(day: dayViewModel), slot: slot)
           self.delegate?.reloadSlots()
         }
         
-      case .timeSlotEmpty(_):
-        self.displayState = .timeSlot(day: dayViewModel, period: self.lastPeriod, slot: nil)
+      case .timeSlotEmpty:
+        self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriodForDay(day: dayViewModel), slot: nil)
         self.delegate?.reloadSlots()
         
       case .notReady:
-        self.displayState = .timeSlot(day: dayViewModel, period: self.lastPeriod, slot: nil)
+        self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriodForDay(day: dayViewModel), slot: nil)
         self.delegate?.reloadSlots()
       }
     }
