@@ -112,6 +112,7 @@ class DayListViewModel {
     switch self.displayState {
     case .daySelected(day: _, days: let days):
       return days.count
+
     case .notReady:
       return 0
     }
@@ -120,8 +121,9 @@ class DayListViewModel {
   subscript (index: IndexPath) -> DayViewModel? {
     switch self.displayState {
     case .daySelected(day: _, days: let days):
-      guard index.item < days.count && index.item >= 0 else { return nil }
-      return days[index.item]
+        guard index.item < days.count && index.item >= 0 else { return nil }
+        return days[index.item]
+
     case .notReady:
       return nil
     }

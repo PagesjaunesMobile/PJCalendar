@@ -69,7 +69,7 @@ struct RdvApiService {
                                                                                              calendId: self.calendId,
                                                                                              intervId: self.intervId,
                                                                                              goto: StargateKitRequest.Transactionnel.RecupererDisponibiliteRendezVous.SKRGoto.availability, /*period: "120J",*/ sdtime: dateStr)
-    StargateClient.setServer(.relmanti_HTTP)
+    StargateClient.setServer(.sgmobCD_HTTPS)
  //   StargateClient.setServer(.gcpProd_HTTPS)
     StargateClient.makeRequest(request: request) { result in
       switch result.result {

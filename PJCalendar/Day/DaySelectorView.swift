@@ -43,6 +43,8 @@ class DaySelectorView: PaginableView {
 
   var isScrollAnimated = false
 
+  let spinner = UIActivityIndicatorView(style: .gray)
+
   var shouldReloadWhenAnimationStop = false
 
   var selectedIndexPath = IndexPath(item: 0, section: 0) {
@@ -105,6 +107,8 @@ class DaySelectorView: PaginableView {
   func setupView() {
     self.addSubview(self.glassView)
     self.addSubview(self.collectionView)
+    self.collectionView.addSubview(self.spinner)
+    self.spinner.hidesWhenStopped = true
   }
 
   func setupViewModel() {
@@ -163,13 +167,13 @@ class DaySelectorView: PaginableView {
 
 extension DaySelectorView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return self.viewModel.daysCount
+      return self.viewModel.daysCount
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DaySelectorCell.reeuseIdentier, for: indexPath)
-    guard let castedCell = cell as? DaySelectorCell, let model = self.viewModel[indexPath] else { return cell }
-    castedCell.configure(model)
+    guard let viewModel = self.viewModel[indexPath], let castedCell = cell as? DaySelectorCell else { return cell }
+    castedCell.configure(viewModel)
     return castedCell
   }
 }
@@ -195,18 +199,17 @@ extension DaySelectorView {
     self.isScrollAnimated = false
     if self.shouldReloadWhenAnimationStop == true {
       self.shouldReloadWhenAnimationStop = false
+      self.spinner.stopAnimating()
       let oldContentOffset = self.collectionView.contentOffset
       self.collectionView.reloadData()
       self.collectionView.setContentOffset(oldContentOffset, animated: false)
     }
-    //self.updateSelectedIndexPath()
   }
 
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     guard self.isScrollAnimated == false else {
       return
     }
-    
     self.updateSelectedIndexPath()
   }
 
@@ -214,6 +217,7 @@ extension DaySelectorView {
 
     if self.shouldReloadWhenAnimationStop == true {
       self.shouldReloadWhenAnimationStop = false
+      self.spinner.stopAnimating()
       let offset = self.collectionView.contentOffset
       self.collectionView.reloadData()
       self.collectionView.setContentOffset(offset, animated: false)
@@ -223,6 +227,14 @@ extension DaySelectorView {
 
 
 extension DaySelectorView: DayListViewModelDelegate {
+
+  func updateSpinnerFrame() {
+    let offset = ((collectionView.frame.size.width / 2.0) - (DaySelectorCell.cellSize.width / 2.0))
+    let centerY = (self.collectionView.frame.size.height / 2.0) - (spinner.frame.size.height / 2.0)
+    let x = (self.collectionView.contentSize.width - offset) + (DaySelectorCell.cellSize.width / 2.0)
+    self.spinner.frame = CGRect(x: x, y: centerY, width: spinner.frame.size.width, height: spinner.frame.size.height)
+  }
+
   func shouldReloadDays() {
 
     guard
@@ -230,12 +242,16 @@ extension DaySelectorView: DayListViewModelDelegate {
         self.collectionView.isDecelerating  == true ||
           self.collectionView.isTracking == true || self.isScrollAnimated == true
       else {
+        self.spinner.stopAnimating()
         let oldContentOffset = self.collectionView.contentOffset
         self.collectionView.reloadData()
         self.collectionView.setContentOffset(oldContentOffset, animated: false)
         self.shouldReloadWhenAnimationStop = false
         return
     }
+
     self.shouldReloadWhenAnimationStop = true
+    self.updateSpinnerFrame()
+    self.spinner.startAnimating()
   }
 }
