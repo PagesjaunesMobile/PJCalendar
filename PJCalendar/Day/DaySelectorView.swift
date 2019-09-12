@@ -112,16 +112,6 @@ class DaySelectorView: PaginableView {
   }
 
   func setupViewModel() {
-    self.viewModel.shouldDisplayDays.bind { [weak self] _, newValue in
-      guard let `self` = self else { return }
-      UIView.animate(withDuration: 0.35, animations: { [weak self] in
-        guard let `self` = self else { return }
-        self.collectionView.alpha = newValue ? 1.0 : 0.0
-        if newValue == true {
-          self.collectionView.reloadData()
-        }
-      })
-    }
 
     self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
       guard let `self` = self, indexPath != self.selectedIndexPath  else { return }
@@ -203,6 +193,8 @@ extension DaySelectorView {
       let oldContentOffset = self.collectionView.contentOffset
       self.collectionView.reloadData()
       self.collectionView.setContentOffset(oldContentOffset, animated: false)
+    } else {
+      self.updateSelectedIndexPath()
     }
   }
 

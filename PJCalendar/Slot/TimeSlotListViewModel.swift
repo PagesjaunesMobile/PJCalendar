@@ -18,6 +18,7 @@ class TimeSlotViewModel: Equatable {
   private let originalModel: SlotApiModel
   let displayText: String
   private (set) var isSelected = Observable<Bool>(false)
+
   let dataController: CalendarDataController
 
   init(model: SlotApiModel, dataController: CalendarDataController) {
@@ -199,7 +200,7 @@ class TimeSlotListViewModel {
   let dataController: CalendarDataController
 
   weak var delegate: TimeSlotListViewModelDelegate?
-  var segmentedControlIndexToDisplay: Observable<Int> = Observable<Int>(0)
+  var segmentedControlIndexToDisplay = Observable<Int>(0)
 
   private var displayState: DisplayState {
     didSet {

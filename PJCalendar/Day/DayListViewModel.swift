@@ -52,8 +52,6 @@ class DayViewModel: Equatable {
     return DayViewModel(model: model, dataController: dataController)
   }
 
-
-
   var moringSlots: [TimeSlotViewModel] {
     return self.slotsViewModel.filter { $0.isAfterNoon == false }
   }
@@ -98,15 +96,14 @@ class DayListViewModel {
   weak var delegate: DayListViewModelDelegate? = nil
 
   let dataController: CalendarDataController
+
   var displayState: DisplayState {
     didSet {
       self.updateObervableFromDisplaySate(state: self.displayState)
     }
   }
 
-  var shouldDisplayDays: Observable<Bool> = Observable<Bool>(false)
-  var shouldDisplaySpinner: Observable<Bool> = Observable<Bool>(false)
-  var selectedIndexPath: Observable<IndexPath> = Observable<IndexPath>(IndexPath.init(row: 0, section: 0))
+  var selectedIndexPath = Observable<IndexPath>(IndexPath.init(row: 0, section: 0))
 
   var daysCount: Int {
     switch self.displayState {
@@ -143,26 +140,11 @@ class DayListViewModel {
   func updateObervableFromDisplaySate(state: DisplayState) {
     switch state {
     case .daySelected(day: let selectedDay, days: let days):
-      if self.shouldDisplayDays.value == false {
-        self.shouldDisplayDays.value = true
-      }
-
-      if self.shouldDisplaySpinner.value == true {
-        self.shouldDisplaySpinner.value = false
-      }
-
       if self.selectedIndexPath.value != IndexPath(item: selectedDay, section: 0) && selectedDay < days.count {
         self.selectedIndexPath.value = IndexPath(item: selectedDay, section: 0)
       }
-
     case .notReady:
-      if self.shouldDisplayDays.value == true {
-        self.shouldDisplayDays.value = false
-      }
-
-      if self.shouldDisplaySpinner.value == false {
-        self.shouldDisplaySpinner.value = true
-      }
+      break
     }
   }
 

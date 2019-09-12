@@ -52,8 +52,8 @@ class MonthCell: UICollectionViewCell {
     constraints.append(self.yearTitle.topAnchor.constraint(equalTo: self.monthTitle.bottomAnchor))
     constraints.append(self.yearTitle.leadingAnchor.constraint(equalTo: self.containerView.leadingAnchor))
     constraints.append(self.yearTitle.trailingAnchor.constraint(equalTo: self.containerView.trailingAnchor))
-    constraints.append(self.yearTitle.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor)
-    )
+    constraints.append(self.yearTitle.bottomAnchor.constraint(equalTo: self.containerView.bottomAnchor))
+    
     NSLayoutConstraint.activate(constraints)
   }
 

@@ -94,11 +94,17 @@ class MonthSelectorView: UIView {
   func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
-    constraints.append(self.leftButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16))
+    constraints.append(self.leftButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0))
     constraints.append(self.leftButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
 
-    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16))
+    constraints.append(self.leftButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44))
+    constraints.append(self.leftButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 44))
+
+    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0))
     constraints.append(self.rightButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
+
+    constraints.append(self.rightButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 44))
+    constraints.append(self.rightButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 44))
 
     constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.topAnchor))
     constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.leftButton.rightAnchor, constant: 16))
@@ -168,17 +174,6 @@ class MonthSelectorView: UIView {
   }
 
   func setupViewModel() {
-    self.viewModel.shouldShowMonth.bind { [weak self] _, result in
-      guard let `self` = self else { return }
-      UIView.animate(withDuration: 0.35, animations: { [weak self] in
-        guard let `self` = self else { return }
-        self.collectionView.alpha = result ? 1.0 : 0.0
-        if result == true {
-          self.collectionView.reloadData()
-        }
-      })
-    }
-
     self.viewModel.leftButtonDisplayState.bind  { [weak self] _, displayState in
       guard let `self` = self else { return }
       self.update(button: self.leftButton, displayState: displayState)

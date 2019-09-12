@@ -38,6 +38,24 @@ class CalendarViewController: UIViewController {
     return dest
   }()
 
+  let spinner: UIActivityIndicatorView = {
+    let dest = UIActivityIndicatorView(style: .gray)
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
+
+  let cancelButton: UIButton = {
+    let dest = UIButton(frame: .zero)
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
+
+  let okButton: UIButton = {
+    let dest = UIButton(frame: .zero)
+    dest.translatesAutoresizingMaskIntoConstraints = false
+    return dest
+  }()
+
   func setupCollectionView() {
     self.collectionView.isOpaque = true
     self.collectionView.dataSource = self
@@ -60,36 +78,125 @@ class CalendarViewController: UIViewController {
     self.collectionView.register(NoSlotCell.self, forCellWithReuseIdentifier: NoSlotCell.reusueCellIdentifier)
   }
 
+  func displayErrorMessage() {
+    let alert = UIAlertController(title: "Oups !",
+                                  message: "Une erreur technique est survenue.\nVeuillez réessayer.",
+                                  preferredStyle: UIAlertController.Style.alert)
+
+    let retry = UIAlertAction(title: "Réessayer", style: .default) { _ in
+      self.dataController.loadData()
+    }
+
+    let cancel = UIAlertAction(title: "Fermer", style: .cancel, handler: nil)
+
+    alert.addAction(retry)
+    alert.addAction(cancel)
+
+    self.present(alert, animated: true, completion: nil)
+
+  }
+
+  func displayNoSlotMessage() {
+    let alert = UIAlertController(title: "Oups !",
+                                  message: "Aucun créneau disponible.",
+                                  preferredStyle: UIAlertController.Style.alert)
+
+
+    let cancel = UIAlertAction(title: "Fermer", style: .cancel, handler: nil)
+
+    alert.addAction(cancel)
+
+    self.present(alert, animated: true, completion: nil)
+  }
+
   func setupDataController() {
     self.dataController.loadData()
+
+    self.collectionView.alpha = 0.0
+    self.spinner.startAnimating()
+
+    self.dataController.initialLoadingState.bind { [weak self] (_, newValue) in
+      guard let `self` = self else { return }
+      switch newValue {
+      case .error:
+        self.displayErrorMessage()
+      case .loading:
+        break
+      case .noResult:
+        self.displayNoSlotMessage()
+      case .ready:
+        self.spinner.stopAnimating()
+        UIView.animate(withDuration: 0.35, animations: { self.collectionView.alpha = 1.0 } )
+      }
+    }
+
   }
 
   func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
-    constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor))
-    constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor))
+//    constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor))
+//    constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor))
+//    constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor))
+//    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor))
+//
+//    constraints.append(self.spinner.centerXAnchor.constraint(equalTo: self.view.centerXAnchor))
+//    constraints.append(self.spinner.centerYAnchor.constraint(equalTo: self.view.centerYAnchor))
+//
+//    constraints.append(self.cancelButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16))
+//    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10))
+//
+//    constraints.append(self.cancelButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16))
+//    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10))
+
+    constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor))
+    constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor))
     constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor))
     constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor))
+
+    constraints.append(self.spinner.centerXAnchor.constraint(equalTo: self.view.centerXAnchor))
+    constraints.append(self.spinner.centerYAnchor.constraint(equalTo: self.view.centerYAnchor))
+
+    constraints.append(self.cancelButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16))
+    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10))
+
+    constraints.append(self.cancelButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16))
+    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10))
 
     NSLayoutConstraint.activate(constraints)
   }
 
   func setupView() {
     self.view.addSubview(self.collectionView)
+    self.view.addSubview(self.spinner)
+    self.view.addSubview(self.okButton)
+    self.view.addSubview(self.cancelButton)
   }
 
   func setupViewModel() {
     self.slotListViewModel.delegate = self
   }
 
+  func setupSpinner() {
+    self.spinner.hidesWhenStopped = true
+  }
+
+  func setupButtons() {
+    self.cancelButton.setTitleColor(UIColor.bluePJ(), for: UIControl.State.normal)
+    self.okButton.setTitleColor(UIColor.bluePJ(), for: UIControl.State.normal)
+    self.cancelButton.setTitle("Annuler", for: UIControl.State.normal)
+    self.okButton.setTitle("OK", for: UIControl.State.normal)
+  }
+
   func setup() {
     self.setupView()
     self.setupLayout()
+    self.setupSpinner()
     self.setupCollectionView()
     self.setupViewModel()
     self.setupDataController()
     self.setupStyle()
+    self.setupButtons()
   }
 
   func setupStyle() {

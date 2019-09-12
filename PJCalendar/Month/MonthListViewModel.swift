@@ -121,11 +121,8 @@ class MonthListViewModel {
     }
   }
 
-  var shouldShowSpinner: Observable<Bool> = Observable<Bool>(false)
-  var shouldShowMonth: Observable<Bool> = Observable<Bool>(false)
-
-  var leftButtonDisplayState: Observable<ArrowButtonDisplayState> = Observable<ArrowButtonDisplayState>(.disabled)
-  var rightButtonDisplayState: Observable<ArrowButtonDisplayState> = Observable<ArrowButtonDisplayState>(.disabled)
+  var leftButtonDisplayState = Observable<ArrowButtonDisplayState>(.disabled)
+  var rightButtonDisplayState = Observable<ArrowButtonDisplayState>(.disabled)
 
   let dataController: CalendarDataController
   var displayState: DisplayState {
@@ -143,7 +140,7 @@ class MonthListViewModel {
     }
   }
 
-  var selectedIndexPath: Observable<IndexPath> = Observable<IndexPath>(IndexPath(item: 0, section: 0))
+  var selectedIndexPath = Observable<IndexPath>(IndexPath(item: 0, section: 0))
 
   subscript (index: IndexPath) -> MonthViewModel? {
     switch self.displayState {
@@ -195,29 +192,14 @@ class MonthListViewModel {
   func updateObservableValue() {
     switch self.displayState {
     case .monthSelected(monthSelected: let selected, months: let months):
-
       self.updateButtonsObservable(monthSelectedIndex: selected, months: months)
-
-      if self.shouldShowMonth.value == false {
-        self.shouldShowMonth.value = true
-      }
-
-      if self.shouldShowSpinner.value == true {
-        self.shouldShowSpinner.value = false
-      }
-
       let indexPath = IndexPath(item: selected, section: 0)
       if self.selectedIndexPath.value != indexPath {
         self.selectedIndexPath.value = indexPath
       }
 
     case .notReady:
-      if self.shouldShowMonth.value == true {
-        self.shouldShowMonth.value = false
-      }
-      if self.shouldShowSpinner.value == false {
-        self.shouldShowSpinner.value = true
-      }
+      break
     }
   }
 
@@ -244,7 +226,6 @@ class MonthListViewModel {
         self.displayState = .monthSelected(monthSelected: monthIndex, months: months)
         self.delegate?.shouldReloadMonth()
       }
-
     }
 
     self.dataController.selectedDay.bind { _, newIndex in
