@@ -21,7 +21,6 @@ class CalendarViewController: UIViewController {
     self.dayListViewModel = DayListViewModel(dataController: dataController)
     self.monthListViewModel = MonthListViewModel(dataController: dataController)
     self.slotListViewModel = TimeSlotListViewModel(dataController: dataController)
-
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -62,6 +61,13 @@ class CalendarViewController: UIViewController {
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
   }()
+
+  func presentCalendarOn(viewController: UIViewController) {
+    if viewController.view.traitCollection.horizontalSizeClass == .regular && viewController.traitCollection.verticalSizeClass == .regular {
+      self.modalPresentationStyle = .formSheet
+    }
+    viewController.present(self, animated: true, completion: nil)
+  }
 
   func setupCollectionView() {
     self.collectionView.isOpaque = true
@@ -137,6 +143,13 @@ class CalendarViewController: UIViewController {
       }
     }
 
+    self.dataController.selectedSlot.bind { [weak self] _, value in
+      guard let `self` = self else { return }
+      self.okButton.isEnabled = (value != nil )
+    }
+
+    self.okButton.isEnabled = (self.dataController.selectedSlot.value != nil)
+
   }
 
   func setupLayout() {
@@ -186,6 +199,11 @@ class CalendarViewController: UIViewController {
   func setupButtons() {
     self.cancelButton.setTitleColor(UIColor.bluePJ(), for: UIControl.State.normal)
     self.okButton.setTitleColor(UIColor.bluePJ(), for: UIControl.State.normal)
+    self.okButton.setTitleColor(UIColor.lightGray, for: UIControl.State.disabled)
+
+    self.okButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+    self.cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+
     self.cancelButton.setTitle("Annuler", for: UIControl.State.normal)
     self.okButton.setTitle("OK", for: UIControl.State.normal)
     self.okButton.addTarget(self, action: #selector(userDidTouchOkButton), for: .touchUpInside)

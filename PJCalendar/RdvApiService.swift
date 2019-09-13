@@ -77,15 +77,6 @@ struct RdvApiService {
         switch value {
         case .status200(let resDispoSante):
 
-//          let data = try? JSONEncoder().encode(resDispoSante)
-//          let urlPath = FileManager.default.urls(for: .cachesDirectory, in: .localDomainMask)
-//          let firltURL = urlPath.first
-//          if var url = firltURL {
-//            url.appendPathComponent("resDispoSante.json")
-//            print(url)
-//            try? data?.write(to: url)
-//          }
-
           guard let codeCI = resDispoSante.codeCI else {
             completion(.error)
             return

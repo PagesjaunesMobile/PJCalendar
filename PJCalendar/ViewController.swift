@@ -33,8 +33,9 @@ class ViewController: UIViewController {
     let calendar = CalendarViewController(dataController: dataController)
     calendar.delegate = self
 
+   
     self.calendar = calendar
-    self.present(calendar, animated: true, completion: nil)
+    calendar.presentCalendarOn(viewController: self)
   }
 
 
