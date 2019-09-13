@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+protocol CalendarViewControllerDelegate: class {
+  func calendar(_ calendar: CalendarViewController, didTapOnCancelButton button: UIButton)
+  func calendar(_ calendar: CalendarViewController, didSelectDate selectedDate: Date, andCode code: String)
+}
+
 class CalendarViewController: UIViewController {
 
   init(dataController: CalendarDataController) {
@@ -25,6 +30,8 @@ class CalendarViewController: UIViewController {
   }
   
   let dataController: CalendarDataController
+
+  weak var delegate: CalendarViewControllerDelegate? = nil
 
   let dayListViewModel: DayListViewModel
   let monthListViewModel: MonthListViewModel
@@ -135,33 +142,19 @@ class CalendarViewController: UIViewController {
   func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
-//    constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor))
-//    constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor))
-//    constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor))
-//    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor))
-//
-//    constraints.append(self.spinner.centerXAnchor.constraint(equalTo: self.view.centerXAnchor))
-//    constraints.append(self.spinner.centerYAnchor.constraint(equalTo: self.view.centerYAnchor))
-//
-//    constraints.append(self.cancelButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16))
-//    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10))
-//
-//    constraints.append(self.cancelButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16))
-//    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 10))
-
-    constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor))
-    constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor))
-    constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor))
-    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor))
-
     constraints.append(self.spinner.centerXAnchor.constraint(equalTo: self.view.centerXAnchor))
     constraints.append(self.spinner.centerYAnchor.constraint(equalTo: self.view.centerYAnchor))
 
     constraints.append(self.cancelButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16))
-    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10))
+    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0))
 
-    constraints.append(self.cancelButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16))
-    constraints.append(self.cancelButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 10))
+    constraints.append(self.okButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16))
+    constraints.append(self.okButton.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0))
+
+    constraints.append(self.collectionView.topAnchor.constraint(equalTo: okButton.bottomAnchor))
+    constraints.append(self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor))
+    constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor))
+    constraints.append(self.collectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor))
 
     NSLayoutConstraint.activate(constraints)
   }
@@ -181,11 +174,22 @@ class CalendarViewController: UIViewController {
     self.spinner.hidesWhenStopped = true
   }
 
+  @objc func userDidTouchCancelButton() {
+    self.delegate?.calendar(self, didTapOnCancelButton: self.okButton)
+  }
+
+  @objc func userDidTouchOkButton() {
+    guard let slot = self.dataController.selectedSlotModel else { return }
+    self.delegate?.calendar(self, didSelectDate: slot.originalDate, andCode: slot.hcode)
+  }
+
   func setupButtons() {
     self.cancelButton.setTitleColor(UIColor.bluePJ(), for: UIControl.State.normal)
     self.okButton.setTitleColor(UIColor.bluePJ(), for: UIControl.State.normal)
     self.cancelButton.setTitle("Annuler", for: UIControl.State.normal)
     self.okButton.setTitle("OK", for: UIControl.State.normal)
+    self.okButton.addTarget(self, action: #selector(userDidTouchOkButton), for: .touchUpInside)
+    self.cancelButton.addTarget(self, action: #selector(userDidTouchCancelButton), for: .touchUpInside)
   }
 
   func setup() {

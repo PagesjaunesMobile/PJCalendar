@@ -19,9 +19,21 @@ struct SlotApiModel: Equatable {
   let hcode: String
   let isAfterNoon: Bool
 
-  init(htext: String, hcode: String) {
+  let originalDate: Date
+
+  init?(htext: String, hcode: String) {
     self.hcode = hcode
     self.htext = htext
+
+    let dateFormater = DateFormatter()
+    dateFormater.locale = Locale(identifier: "fr_FR")
+
+    dateFormater.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    guard let date = dateFormater.date(from: self.hcode) else {
+      return nil
+    }
+
+    self.originalDate = date
 
     if let dest = self.htext.lowercased().split(separator: "h").first,
       let intValue = Int(String(dest).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)),
